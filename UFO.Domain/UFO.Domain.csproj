@@ -38,7 +38,7 @@
     <Compile Include="Artist.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Category.cs" />
-    <Compile Include="DatabaseEntity.cs" />
+    <Compile Include="DatabaseObject.cs" />
     <Compile Include="NoIdException.cs" />
     <Compile Include="Performance.cs" />
     <Compile Include="User.cs" />
