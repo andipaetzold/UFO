@@ -84,7 +84,6 @@
                 using (var reader = database.ExecuteReader(command))
                 {
                     IList<Venue> result = new List<Venue>();
-
                     while (reader.Read())
                     {
                         result.Add(
@@ -95,7 +94,6 @@
                                 (decimal)reader["Latitude"],
                                 (decimal)reader["Longitude"]));
                     }
-
                     return result;
                 }
             }

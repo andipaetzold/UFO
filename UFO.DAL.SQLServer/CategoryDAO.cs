@@ -8,7 +8,7 @@
     using UFO.Domain;
 
     public class CategoryDAO : ICategoryDAO
-    { 
+    {
         private const string SQLGetAll = @"
             SELECT 
                 [Id], 
@@ -69,12 +69,10 @@
                 using (var reader = database.ExecuteReader(command))
                 {
                     IList<Category> result = new List<Category>();
-
                     while (reader.Read())
                     {
                         result.Add(new Category((int)reader["Id"], (string)reader["Name"]));
                     }
-
                     return result;
                 }
             }
@@ -131,7 +129,7 @@
                 return database.ExecuteNonQuery(command) == 1;
             }
         }
-        
+
         #endregion
 
         private DbCommand CreateGetAllCommand()

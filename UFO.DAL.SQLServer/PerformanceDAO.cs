@@ -72,27 +72,23 @@
 
         public IEnumerable<Performance> GetAll()
         {
-            IList<Performance> result = new List<Performance>();
             using (var command = CreateGetAllCommand())
             {
                 using (var reader = database.ExecuteReader(command))
                 {
+                    IList<Performance> result = new List<Performance>();
                     while (reader.Read())
                     {
-                        // get artist
                         var artistId = (int)reader["Artist_Id"];
                         var artistDAO = new ArtistDAO(database);
                         var artist = artistDAO.GetById(artistId);
 
-                        // get venue
                         var venueId = (int)reader["Venue_Id"];
                         var venueDAO = new VenueDAO(database);
                         var venue = venueDAO.GetById(venueId);
 
-                        // add result
                         result.Add(new Performance((int)reader["Id"], (DateTime)reader["DateTime"], artist, venue));
                     }
-
                     return result;
                 }
             }
@@ -106,21 +102,16 @@
                 {
                     if (reader.Read())
                     {
-                        // get artist
                         var artistId = (int)reader["Artist_Id"];
                         var artistDAO = new ArtistDAO(database);
                         var artist = artistDAO.GetById(artistId);
 
-                        // get venue
                         var venueId = (int)reader["Venue_Id"];
                         var venueDAO = new VenueDAO(database);
                         var venue = venueDAO.GetById(venueId);
 
-                        // return artist
                         return new Performance((int)reader["Id"], (DateTime)reader["DateTime"], artist, venue);
                     }
-
-                    // get category
                     return null;
                 }
             }
@@ -178,7 +169,6 @@
         private DbCommand CreateGetByIdCommand(int id)
         {
             var getByIdCommenCommand = database.CreateCommand(SQLGetById);
-
             database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
             return getByIdCommenCommand;
         }
@@ -186,7 +176,6 @@
         private DbCommand CreateInsertCommand(DateTime dateTime, int artist, int venue)
         {
             var insertCommand = database.CreateCommand(SQLInsert);
-
             database.DefineParameter(insertCommand, "Name", DbType.DateTime, dateTime);
             database.DefineParameter(insertCommand, "Artist", DbType.Int32, artist);
             database.DefineParameter(insertCommand, "Venue", DbType.Int32, venue);

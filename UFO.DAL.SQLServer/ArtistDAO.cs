@@ -88,7 +88,6 @@
                                 (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                                 (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
                     }
-
                     return result;
                 }
             }
@@ -167,7 +166,6 @@
         private DbCommand CreateGetByIdCommand(int id)
         {
             var getByIdCommand = database.CreateCommand(SQLGetById);
-
             database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
             return getByIdCommand;
         }
@@ -175,7 +173,6 @@
         private DbCommand CreateInsertCommand(string name, string imageFileName, string email, string videoUrl)
         {
             var insertCommand = database.CreateCommand(SQLInsert);
-
             database.DefineParameter(insertCommand, "Name", DbType.String, name);
             database.DefineParameter(insertCommand, "ImageFileName", DbType.String, imageFileName);
             database.DefineParameter(insertCommand, "Email", DbType.String, email);

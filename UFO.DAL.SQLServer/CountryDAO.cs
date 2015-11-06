@@ -68,12 +68,10 @@
                 using (var reader = database.ExecuteReader(command))
                 {
                     IList<Country> result = new List<Country>();
-
                     while (reader.Read())
                     {
                         result.Add(new Country((int)reader["Id"], (string)reader["Name"]));
                     }
-
                     return result;
                 }
             }
