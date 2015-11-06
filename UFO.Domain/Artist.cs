@@ -1,7 +1,6 @@
 ﻿namespace UFO.Domain
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Artist
@@ -12,49 +11,21 @@
 
         #endregion
 
-        public Artist(
-            int id,
-            string name,
-            IEnumerable<Category> categories,
-            IEnumerable<Country> countries,
-            string imageFileName,
-            string email,
-            string videoUrl)
-            : this(name, categories, countries, imageFileName, email, videoUrl)
+        public Artist(int id, string name, string imageFileName, string email, string videoUrl)
+            : this(name, imageFileName, email, videoUrl)
         {
             Id = id;
         }
 
-        public Artist(
-            string name,
-            IEnumerable<Category> categories,
-            IEnumerable<Country> countries,
-            string imageFileName,
-            string email,
-            string videoUrl)
+        public Artist(string name, string imageFileName, string email, string videoUrl)
         {
             Name = name;
             ImageFileName = imageFileName;
             Email = email;
             VideoUrl = videoUrl;
-
-            // categories
-            foreach (var category in categories)
-            {
-                Categories.Add(category);
-            }
-
-            // countries
-            foreach (var country in countries)
-            {
-                Countries.Add(country);
-            }
         }
 
         #region Properties
-
-        public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
-        public ICollection<Country> Countries { get; set; } = new HashSet<Country>();
 
         [StringLength(128)]
         public string Email { get; set; }
@@ -91,8 +62,7 @@
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ Categories.GetHashCode() ^ Countries.GetHashCode() ^ ImageFileName.GetHashCode()
-                   ^ Email.GetHashCode() ^ VideoUrl.GetHashCode();
+            return Name.GetHashCode() ^ ImageFileName.GetHashCode() ^ Email.GetHashCode() ^ VideoUrl.GetHashCode();
         }
     }
 }

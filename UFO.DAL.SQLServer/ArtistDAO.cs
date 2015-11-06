@@ -73,20 +73,17 @@
 
         public IEnumerable<Artist> GetAll()
         {
-            IList<Artist> result = new List<Artist>();
             using (var command = CreateGetAllCommand())
             {
                 using (var reader = database.ExecuteReader(command))
                 {
+                    IList<Artist> result = new List<Artist>();
                     while (reader.Read())
                     {
-                        // add result
                         result.Add(
                             new Artist(
                                 (int)reader["Id"],
                                 (string)reader["Name"],
-                                null,
-                                new Country[0],
                                 (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
                                 (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                                 (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
@@ -105,18 +102,13 @@
                 {
                     if (reader.Read())
                     {
-                        // return artist
                         return new Artist(
                             (int)reader["Id"],
                             (string)reader["Name"],
-                            null,
-                            new Country[0],
                             (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
                             (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                             (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]);
                     }
-
-                    // get category
                     return null;
                 }
             }
@@ -174,10 +166,10 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQLGetById);
+            var getByIdCommand = database.CreateCommand(SQLGetById);
 
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
         private DbCommand CreateInsertCommand(string name, string imageFileName, string email, string videoUrl)

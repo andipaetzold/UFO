@@ -11,6 +11,6 @@
 
         bool Insert(Country country);
 
-        bool Update(Country country);
+        bool Update(Country country); 
     }
 }

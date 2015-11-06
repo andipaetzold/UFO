@@ -8,14 +8,8 @@
     using UFO.Domain;
 
     public class CountryDAO : ICountryDAO
-    {
-        private const string SQL_GET_ALL = @"
-            SELECT 
-                [Id], 
-                [Name] 
-            FROM 
-                [Country];";
-        private const string SQL_GET_BY_ID = @"
+    { 
+        private const string SQLGetById = @"
             SELECT 
                 [Id], 
                 [Name] 
@@ -23,7 +17,13 @@
                 [Country] 
             WHERE 
                 [Id]=@Id;";
-        private const string SQL_INSERT = @"
+        private const string SQLGetAll = @"
+            SELECT 
+                [Id], 
+                [Name] 
+            FROM 
+                [Country];";
+        private const string SQLInsert = @"
             INSERT INTO 
                 [Country] 
             (
@@ -33,7 +33,7 @@
             VALUES (
                 @Name
             );";
-        private const string SQL_UPDATE_BY_ID = @"
+        private const string SQLUpdateById = @"
             UPDATE 
                 [Country] 
             SET 
@@ -130,31 +130,32 @@
                 return database.ExecuteNonQuery(command) == 1;
             }
         }
+        
 
         #endregion
 
         private DbCommand CreateGetAllCommand()
         {
-            return database.CreateCommand(SQL_GET_ALL);
+            return database.CreateCommand(SQLGetAll);
         }
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQL_GET_BY_ID);
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            var getByIdCommand = database.CreateCommand(SQLGetById);
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
         private DbCommand CreateInsertCommand(string name)
         {
-            var insertCommand = database.CreateCommand(SQL_INSERT);
+            var insertCommand = database.CreateCommand(SQLInsert);
             database.DefineParameter(insertCommand, "Name", DbType.String, name);
             return insertCommand;
         }
 
         private DbCommand CreateUpdateByIdCommand(int id, string name)
         {
-            var updateByIdCommand = database.CreateCommand(SQL_UPDATE_BY_ID);
+            var updateByIdCommand = database.CreateCommand(SQLUpdateById);
             database.DefineParameter(updateByIdCommand, "Id", DbType.Int32, id);
             database.DefineParameter(updateByIdCommand, "Name", DbType.String, name);
             return updateByIdCommand;

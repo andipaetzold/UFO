@@ -8,7 +8,7 @@
     using UFO.Domain;
 
     public class CategoryDAO : ICategoryDAO
-    {
+    { 
         private const string SQLGetAll = @"
             SELECT 
                 [Id], 
@@ -131,7 +131,7 @@
                 return database.ExecuteNonQuery(command) == 1;
             }
         }
-
+        
         #endregion
 
         private DbCommand CreateGetAllCommand()

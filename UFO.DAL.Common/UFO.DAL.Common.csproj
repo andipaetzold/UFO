@@ -36,6 +36,7 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IArtistCategoryDAO.cs" />
     <Compile Include="IArtistDAO.cs" />
     <Compile Include="ICategoryDAO.cs" />
     <Compile Include="ICountryDAO.cs" />
