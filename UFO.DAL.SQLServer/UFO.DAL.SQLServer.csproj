@@ -51,6 +51,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArtistCountryDAO.cs" />
     <Compile Include="ArtistCategoryDAO.cs" />
     <Compile Include="PerformanceDAO.cs" />
     <Compile Include="ArtistDAO.cs" />

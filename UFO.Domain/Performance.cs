@@ -2,14 +2,8 @@
 {
     using System;
 
-    public class Performance
+    public class Performance : DatabaseObject
     {
-        #region Fields
-
-        private int? id;
-
-        #endregion
-
         public Performance(int id, DateTime dateTime, Artist artist, Venue venue)
             : this(dateTime, artist, venue)
         {
@@ -27,21 +21,6 @@
 
         public Artist Artist { get; set; }
         public DateTime DateTime { get; set; }
-
-        public int Id
-        {
-            get
-            {
-                if (id == null)
-                {
-                    throw new Exception("This performance doesn't have an Id yet.");
-                }
-
-                return id.Value;
-            }
-            set { id = value; }
-        }
-
         public Venue Venue { get; set; }
 
         #endregion

@@ -1,16 +1,9 @@
 ﻿namespace UFO.Domain
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Artist
+    public class Artist : DatabaseObject
     {
-        #region Fields
-
-        private int? id;
-
-        #endregion
-
         public Artist(int id, string name, string imageFileName, string email, string videoUrl)
             : this(name, imageFileName, email, videoUrl)
         {
@@ -29,20 +22,6 @@
 
         [StringLength(128)]
         public string Email { get; set; }
-
-        public int Id
-        {
-            get
-            {
-                if (id == null)
-                {
-                    throw new Exception("This artist doesn't have an Id yet.");
-                }
-
-                return id.Value;
-            }
-            set { id = value; }
-        }
 
         [StringLength(128)]
         public string ImageFileName { get; set; }

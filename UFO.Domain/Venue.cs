@@ -1,16 +1,9 @@
 ﻿namespace UFO.Domain
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Venue
+    public class Venue : DatabaseObject
     {
-        #region Fields
-
-        private int? id;
-
-        #endregion
-
         public Venue(int id, string shortName, string name, decimal? latitude, decimal? longitude)
         {
             Id = id;
@@ -21,20 +14,6 @@
         }
 
         #region Properties
-
-        public int Id
-        {
-            get
-            {
-                if (id == null)
-                {
-                    throw new Exception("This venue doesn't have an Id yet.");
-                }
-
-                return id.Value;
-            }
-            set { id = value; }
-        }
 
         [Range(-90, 90)]
         public decimal? Latitude { get; set; }
