@@ -9,6 +9,11 @@
 
     public class VenueDAO : IVenueDAO
     {
+        private const string SQLDeleteById = @"
+            DELETE FROM
+                [Venue]
+            WHERE
+                [Id]=@Id;";
         private const string SQLGetAll = @"
             SELECT
                 [Id],
@@ -43,7 +48,7 @@
             (
                 @ShortName,
                 @Name,
-                @Langitude,
+                @Latitude,
                 @Longitude
             );";
         private const string SQLUpdateById = @"
@@ -77,7 +82,27 @@
 
         #region IVenueDAO Members
 
-        public IEnumerable<Venue> GetAll()
+        public bool Delete(Venue venue)
+        {
+            // check parameter
+            if (venue == null)
+            {
+                throw new ArgumentNullException(nameof(venue));
+            }
+
+            // update
+            using (var command = CreateDeleteByIdCommand(venue.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    venue.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<Venue> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
@@ -91,8 +116,8 @@
                                 (int)reader["Id"],
                                 (string)reader["ShortName"],
                                 (string)reader["Name"],
-                                (decimal)reader["Latitude"],
-                                (decimal)reader["Longitude"]));
+                                (decimal?)((reader["Latitude"] == DBNull.Value) ? null : reader["Latitude"]),
+                                (decimal?)((reader["Longitude"] == DBNull.Value) ? null : reader["Longitude"])));
                     }
                     return result;
                 }
@@ -111,8 +136,8 @@
                             (int)reader["Id"],
                             (string)reader["ShortName"],
                             (string)reader["Name"],
-                            (decimal)reader["Latitude"],
-                            (decimal)reader["Longitude"]);
+                            (decimal?)((reader["Latitude"] == DBNull.Value) ? null : reader["Latitude"]),
+                            (decimal?)((reader["Longitude"] == DBNull.Value) ? null : reader["Longitude"]));
                     }
                     return null;
                 }
@@ -155,7 +180,7 @@
 
                 if (id.HasValue)
                 {
-                    venue.Id = id.Value;
+                    venue.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -164,6 +189,13 @@
 
         #endregion
 
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
+
         private DbCommand CreateGetAllCommand()
         {
             return database.CreateCommand(SQLGetAll);
@@ -171,9 +203,9 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQLGetById);
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            var getByIdCommand = database.CreateCommand(SQLGetById);
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
         private DbCommand CreateInsertCommand(string shortName, string name, decimal? latitude, decimal? longitude)

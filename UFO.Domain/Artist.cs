@@ -7,7 +7,7 @@
         public Artist(int id, string name, string imageFileName, string email, string videoUrl)
             : this(name, imageFileName, email, videoUrl)
         {
-            Id = id;
+            InsertedInDatabase(id);
         }
 
         public Artist(string name, string imageFileName, string email, string videoUrl)
@@ -41,7 +41,8 @@
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ ImageFileName.GetHashCode() ^ Email.GetHashCode() ^ VideoUrl.GetHashCode();
+            return (Name?.GetHashCode() ?? 0) ^ (ImageFileName?.GetHashCode() ?? 0) ^ (Email?.GetHashCode() ?? 0)
+                   ^ (VideoUrl?.GetHashCode() ?? 0);
         }
     }
 }

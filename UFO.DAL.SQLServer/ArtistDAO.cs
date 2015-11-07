@@ -9,6 +9,11 @@
 
     public class ArtistDAO : IArtistDAO
     {
+        private const string SQLDeleteById = @"
+            DELETE FROM
+                [Artist]
+            WHERE 
+                [Id] = @Id;";
         private const string SQLGetAll = @"
             SELECT
                 [Id],
@@ -16,7 +21,8 @@
                 [ImageFileName],
                 [Email],
                 [VideoUrl]
-            FROM [Artist]";
+            FROM
+                [Artist]";
         private const string SQLGetById = @"
             SELECT
                 [Id],
@@ -24,32 +30,38 @@
                 [ImageFileName],
                 [Email],
                 [VideoUrl]
-            FROM [Artist]
+            FROM
+                [Artist]
             WHERE
                 [Id] = @Id;";
         private const string SQLInsert = @"
-            INSERT INTO 
-                [Artist] 
+            INSERT INTO
+                [Artist]
             (
-                [Name], 
-                [ImageFileName], 
-                [Email], 
+                [Name],
+                [ImageFileName],
+                [Email],
                 [VideoUrl]
-            ) 
-            OUTPUT [Inserted].[Id] 
+            )
+            OUTPUT
+                [Inserted].[Id] 
             VALUES 
             (
                 @Name, 
                 @ImageFileName, 
-                @Email, @VideoUrl
+                @Email,
+                @VideoUrl
             );";
         private const string SQLUpdateById = @"
-            UPDATE 
-                [Artist] 
-            SET 
-                [Name]=@Name 
+            UPDATE
+                [Artist]
+            SET
+                [Name] = @Name,
+                [ImageFileName] = @ImageFileName,
+                [Email] = @Email,
+                [VideoUrl] = @VideoUrl
             WHERE 
-                [Id]=@Id;";
+                [Id] = @Id;";
 
         #region Fields
 
@@ -71,7 +83,27 @@
 
         #region IArtistDAO Members
 
-        public IEnumerable<Artist> GetAll()
+        public bool Delete(Artist artist)
+        {
+            // check parameter
+            if (artist == null)
+            {
+                throw new ArgumentNullException(nameof(artist));
+            }
+
+            // update
+            using (var command = CreateDeleteByIdCommand(artist.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    artist.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<Artist> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
@@ -93,26 +125,6 @@
             }
         }
 
-        public Artist GetById(int id)
-        {
-            using (var command = CreateGetByIdCommand(id))
-            {
-                using (var reader = database.ExecuteReader(command))
-                {
-                    if (reader.Read())
-                    {
-                        return new Artist(
-                            (int)reader["Id"],
-                            (string)reader["Name"],
-                            (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
-                            (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
-                            (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]);
-                    }
-                    return null;
-                }
-            }
-        }
-
         public bool Insert(Artist artist)
         {
             // check parameter
@@ -128,7 +140,7 @@
 
                 if (id.HasValue)
                 {
-                    artist.Id = id.Value;
+                    artist.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -156,7 +168,34 @@
             }
         }
 
+        public Artist GetById(int id)
+        {
+            using (var command = CreateGetByIdCommand(id))
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    if (reader.Read())
+                    {
+                        return new Artist(
+                            (int)reader["Id"],
+                            (string)reader["Name"],
+                            (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
+                            (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
+                            (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]);
+                    }
+                    return null;
+                }
+            }
+        }
+
         #endregion
+
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
 
         private DbCommand CreateGetAllCommand()
         {

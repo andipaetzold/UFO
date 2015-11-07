@@ -1,0 +1,27 @@
+﻿namespace UFO.UnitTest.Domain
+{
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using UFO.Domain;
+
+    [TestClass]
+    public class CategoryTest
+    {
+        [TestMethod]
+        [ExpectedException(typeof(DatabaseIdException))]
+        public void CreateNoIdObjectTest()
+        {
+            var category = new Category("name");
+
+            var id = category.Id;
+        }
+
+        [TestMethod]
+        public void CreateObjectTest()
+        {
+            var category = new Category(13, "name");
+
+            Assert.AreEqual(13, category.Id);
+            Assert.AreEqual("name", category.Name);
+        }
+    }
+}

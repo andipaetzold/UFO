@@ -72,44 +72,6 @@
 
         #region IArtistCategoryDAO Members
 
-        public IEnumerable<Artist> GetByCategoryId(int id)
-        {
-            using (var command = CreateGetByCategoryIdCommand(id))
-            {
-                using (var reader = database.ExecuteReader(command))
-                {
-                    IList<Artist> result = new List<Artist>();
-                    while (reader.Read())
-                    {
-                        result.Add(
-                            new Artist(
-                                (int)reader["Id"],
-                                (string)reader["Name"],
-                                (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
-                                (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
-                                (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
-                    }
-                    return result;
-                }
-            }
-        }
-
-        public IEnumerable<Category> GetByArtistId(int id)
-        {
-            using (var command = CreateGetByArtistIdCommand(id))
-            {
-                using (var reader = database.ExecuteReader(command))
-                {
-                    IList<Category> result = new List<Category>();
-                    while (reader.Read())
-                    {
-                        result.Add(new Category((int)reader["Id"], (string)reader["Name"]));
-                    }
-                    return result;
-                }
-            }
-        }
-
         public bool Insert(Artist artist, Category category)
         {
             // check parameter
@@ -145,6 +107,58 @@
             using (var command = CreateDeleteCommand(artist.Id, category.Id))
             {
                 return database.ExecuteNonQuery(command) == 1;
+            }
+        }
+
+        public ICollection<Category> GetByArtist(Artist artist)
+        {
+            // check parameter
+            if (artist == null)
+            {
+                throw new ArgumentNullException(nameof(artist));
+            }
+
+            // get categories
+            using (var command = CreateGetByArtistIdCommand(artist.Id))
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    IList<Category> result = new List<Category>();
+                    while (reader.Read())
+                    {
+                        result.Add(new Category((int)reader["Id"], (string)reader["Name"]));
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public ICollection<Artist> GetByCategory(Category category)
+        {
+            // check parameter
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            // get artists
+            using (var command = CreateGetByCategoryIdCommand(category.Id))
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    IList<Artist> result = new List<Artist>();
+                    while (reader.Read())
+                    {
+                        result.Add(
+                            new Artist(
+                                (int)reader["Id"],
+                                (string)reader["Name"],
+                                (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
+                                (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
+                                (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
+                    }
+                    return result;
+                }
             }
         }
 

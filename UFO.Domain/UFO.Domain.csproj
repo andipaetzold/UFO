@@ -39,7 +39,7 @@
     <Compile Include="Country.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="DatabaseObject.cs" />
-    <Compile Include="NoIdException.cs" />
+    <Compile Include="DatabaseIdException.cs" />
     <Compile Include="Performance.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Venue.cs" />

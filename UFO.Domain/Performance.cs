@@ -7,7 +7,7 @@
         public Performance(int id, DateTime dateTime, Artist artist, Venue venue)
             : this(dateTime, artist, venue)
         {
-            Id = id;
+            InsertedInDatabase(id);
         }
 
         public Performance(DateTime dateTime, Artist artist, Venue venue)
@@ -32,7 +32,8 @@
 
         public override int GetHashCode()
         {
-            return Artist.GetHashCode() ^ DateTime.GetHashCode() ^ Venue.GetHashCode();
+            // TODO: DateTime
+            return Artist.GetHashCode() ^ Venue.GetHashCode();
         }
     }
 }

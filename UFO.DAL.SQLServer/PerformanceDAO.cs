@@ -43,16 +43,23 @@
                 @Venue_Id
             );";
         private const string SQLUpdateById = @"
-            UPDATE 
-                [Artist] 
-            SET 
-                [Name]=@Name 
-            WHERE 
-                [Id]=@Id;";
+            UPDATE
+                [Performance]
+            SET
+                [DateTime] = @DateTime,
+                [Artist_Id] = @Artist_Id,
+                [Venue_Id] = @Venue_Id
+            WHERE
+                [Id] = @Id;";
 
         #region Fields
 
         private readonly IDatabase database;
+        private readonly string SQLDeleteById = @"
+            DELETE FROM
+                [Performance]
+            WHERE
+                [Id] = @Id;";
 
         #endregion
 
@@ -70,7 +77,27 @@
 
         #region IPerformanceDAO Members
 
-        public IEnumerable<Performance> GetAll()
+        public bool Delete(Performance performance)
+        {
+            // check parameter
+            if (performance == null)
+            {
+                throw new ArgumentNullException(nameof(performance));
+            }
+
+            // insert
+            using (var command = CreateDeleteByIdCommand(performance.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    performance.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<Performance> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
@@ -132,7 +159,7 @@
 
                 if (id.HasValue)
                 {
-                    performance.Id = id.Value;
+                    performance.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -161,6 +188,13 @@
 
         #endregion
 
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
+
         private DbCommand CreateGetAllCommand()
         {
             return database.CreateCommand(SQLGetAll);
@@ -168,27 +202,27 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQLGetById);
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            var getByIdCommand = database.CreateCommand(SQLGetById);
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
-        private DbCommand CreateInsertCommand(DateTime dateTime, int artist, int venue)
+        private DbCommand CreateInsertCommand(DateTime dateTime, int artistId, int venueId)
         {
             var insertCommand = database.CreateCommand(SQLInsert);
-            database.DefineParameter(insertCommand, "Name", DbType.DateTime, dateTime);
-            database.DefineParameter(insertCommand, "Artist", DbType.Int32, artist);
-            database.DefineParameter(insertCommand, "Venue", DbType.Int32, venue);
+            database.DefineParameter(insertCommand, "DateTime", DbType.DateTime, dateTime);
+            database.DefineParameter(insertCommand, "Artist_Id", DbType.Int32, artistId);
+            database.DefineParameter(insertCommand, "Venue_Id", DbType.Int32, venueId);
             return insertCommand;
         }
 
-        private DbCommand CreateUpdateByIdCommand(int id, DateTime dateTime, int artist, int venue)
+        private DbCommand CreateUpdateByIdCommand(int id, DateTime dateTime, int artistId, int venueId)
         {
             var updateByIdCommand = database.CreateCommand(SQLUpdateById);
             database.DefineParameter(updateByIdCommand, "Id", DbType.Int32, id);
-            database.DefineParameter(updateByIdCommand, "Name", DbType.DateTime, dateTime);
-            database.DefineParameter(updateByIdCommand, "Artist", DbType.Int32, artist);
-            database.DefineParameter(updateByIdCommand, "Venue", DbType.Int32, venue);
+            database.DefineParameter(updateByIdCommand, "DateTime", DbType.DateTime, dateTime);
+            database.DefineParameter(updateByIdCommand, "Artist_Id", DbType.Int32, artistId);
+            database.DefineParameter(updateByIdCommand, "Venue_Id", DbType.Int32, venueId);
             return updateByIdCommand;
         }
     }

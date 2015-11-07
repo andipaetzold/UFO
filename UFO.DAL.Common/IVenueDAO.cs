@@ -5,7 +5,9 @@
 
     public interface IVenueDAO
     {
-        IEnumerable<Venue> GetAll();
+        bool Delete(Venue venue);
+
+        ICollection<Venue> GetAll();
 
         Venue GetById(int id);
 

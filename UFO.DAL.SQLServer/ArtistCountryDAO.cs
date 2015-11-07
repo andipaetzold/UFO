@@ -72,9 +72,16 @@
 
         #region IArtistCountryDAO Members
 
-        public IEnumerable<Country> GetByArtistId(int id)
+        public ICollection<Country> GetByArtist(Artist artist)
         {
-            using (var command = CreateGetByArtistIdCommand(id))
+            // check parameter
+            if (artist == null)
+            {
+                throw new ArgumentNullException(nameof(artist));
+            }
+
+            // get countries
+            using (var command = CreateGetByArtistIdCommand(artist.Id))
             {
                 using (var reader = database.ExecuteReader(command))
                 {
@@ -126,9 +133,16 @@
             }
         }
 
-        public IEnumerable<Artist> GetByCountryId(int id)
+        public ICollection<Artist> GetByCountry(Country country)
         {
-            using (var command = CreateGetByountryIdCommand(id))
+            // check parameter
+            if (country == null)
+            {
+                throw new ArgumentNullException(nameof(country));
+            }
+
+            // get artists
+            using (var command = CreateGetByountryIdCommand(country.Id))
             {
                 using (var reader = database.ExecuteReader(command))
                 {

@@ -1,15 +1,16 @@
 ﻿namespace UFO.DAL.Common
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using UFO.Domain;
 
     public interface IArtistCountryDAO
     {
         bool Delete(Artist artist, Country country);
 
-        IEnumerable<Country> GetByArtistId(int id);
+        ICollection<Country> GetByArtist(Artist artist);
 
-        IEnumerable<Artist> GetByCountryId(int id);
+        ICollection<Artist> GetByCountry(Country country);
 
         bool Insert(Artist artist, Country country);
     }

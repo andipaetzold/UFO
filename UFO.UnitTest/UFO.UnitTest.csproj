@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,9 +52,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Domain\DatabaseIdExceptionTest.cs" />
+    <Compile Include="SQLServer\ArtistTest.cs" />
+    <Compile Include="SQLServer\ArtistCountryTest.cs" />
+    <Compile Include="SQLServer\ArtistCategoryTest.cs" />
+    <Compile Include="Domain\ArtistTest.cs" />
+    <Compile Include="Domain\CountryTest.cs" />
+    <Compile Include="SQLServer\PerformanceTest.cs" />
+    <Compile Include="SQLServer\VenueTest.cs" />
+    <Compile Include="SQLServer\CountryTest.cs" />
+    <Compile Include="SQLServer\CategoryTest.cs" />
+    <Compile Include="SQLServer\DatabaseTest.cs" />
+    <Compile Include="SQLServer\UnitTestHelper.cs" />
+    <Compile Include="SQLServer\UserTest.cs" />
+    <Compile Include="Domain\UserTest.cs" />
+    <Compile Include="Domain\PerformanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CategoryTest.cs" />
-    <Compile Include="UserTest.cs" />
+    <Compile Include="Domain\CategoryTest.cs" />
+    <Compile Include="Domain\VenueTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.DAL.Common\UFO.DAL.Common.csproj">

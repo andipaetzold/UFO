@@ -7,9 +7,9 @@
     {
         bool Delete(Artist artist, Category category);
 
-        IEnumerable<Category> GetByArtistId(int id);
+        ICollection<Category> GetByArtist(Artist artist);
 
-        IEnumerable<Artist> GetByCategoryId(int id);
+        ICollection<Artist> GetByCategory(Category category);
 
         bool Insert(Artist artist, Category category);
     }

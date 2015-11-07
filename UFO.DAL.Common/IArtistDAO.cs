@@ -5,7 +5,9 @@
 
     public interface IArtistDAO
     {
-        IEnumerable<Artist> GetAll();
+        bool Delete(Artist artist);
+
+        ICollection<Artist> GetAll();
 
         Artist GetById(int id);
 

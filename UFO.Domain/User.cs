@@ -7,7 +7,7 @@
         public User(int id, string username, string password, string email, bool isAdmin)
             : this(username, password, email, isAdmin)
         {
-            Id = id;
+            InsertedInDatabase(id);
         }
 
         public User(string username, string password, string email, bool isAdmin)

@@ -5,7 +5,9 @@
 
     public interface IUserDAO
     {
-        IEnumerable<User> GetAll();
+        bool Delete(User user);
+
+        ICollection<User> GetAll();
 
         User GetById(int id);
 

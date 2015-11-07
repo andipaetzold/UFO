@@ -9,6 +9,11 @@
 
     public class UserDAO : IUserDAO
     {
+        private const string SQLDeleteById = @"
+            DELETE FROM
+                [User]
+            WHERE
+                [Id]=@Id;";
         private const string SQLGetAll = @"
             SELECT
                 [Id],
@@ -77,14 +82,33 @@
 
         #region IUserDAO Members
 
-        public IEnumerable<User> GetAll()
+        public bool Delete(User user)
+        {
+            // check parameter
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            // insert
+            using (var command = CreateDeleteByIdCommand(user.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    user.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<User> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
                 using (var reader = database.ExecuteReader(command))
                 {
                     IList<User> result = new List<User>();
-
                     while (reader.Read())
                     {
                         result.Add(
@@ -95,7 +119,6 @@
                                 (string)reader["Email"],
                                 (bool)reader["IsAdmin"]));
                     }
-
                     return result;
                 }
             }
@@ -152,7 +175,7 @@
 
                 if (id.HasValue)
                 {
-                    user.Id = id.Value;
+                    user.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -161,6 +184,13 @@
 
         #endregion
 
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
+
         private DbCommand CreateGetAllCommand()
         {
             return database.CreateCommand(SQLGetAll);
@@ -168,9 +198,9 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQLGetById);
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            var getByIdCommand = database.CreateCommand(SQLGetById);
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
         private DbCommand CreateInsertCommand(string username, string password, string email, bool isAdmin)

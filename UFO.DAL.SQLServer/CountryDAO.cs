@@ -8,13 +8,10 @@
     using UFO.Domain;
 
     public class CountryDAO : ICountryDAO
-    { 
-        private const string SQLGetById = @"
-            SELECT 
-                [Id], 
-                [Name] 
-            FROM 
-                [Country] 
+    {
+        private const string SQLDeleteById = @"
+            DELETE FROM
+                [Country]
             WHERE 
                 [Id]=@Id;";
         private const string SQLGetAll = @"
@@ -23,6 +20,14 @@
                 [Name] 
             FROM 
                 [Country];";
+        private const string SQLGetById = @"
+            SELECT 
+                [Id], 
+                [Name] 
+            FROM 
+                [Country] 
+            WHERE 
+                [Id]=@Id;";
         private const string SQLInsert = @"
             INSERT INTO 
                 [Country] 
@@ -61,7 +66,27 @@
 
         #region ICountryDAO Members
 
-        public IEnumerable<Country> GetAll()
+        public bool Delete(Country country)
+        {
+            // check parameter
+            if (country == null)
+            {
+                throw new ArgumentNullException(nameof(country));
+            }
+
+            // insert
+            using (var command = CreateDeleteByIdCommand(country.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    country.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<Country> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
@@ -107,7 +132,7 @@
 
                 if (id.HasValue)
                 {
-                    country.Id = id.Value;
+                    country.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -128,9 +153,15 @@
                 return database.ExecuteNonQuery(command) == 1;
             }
         }
-        
 
         #endregion
+
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
 
         private DbCommand CreateGetAllCommand()
         {

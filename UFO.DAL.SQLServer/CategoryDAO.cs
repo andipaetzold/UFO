@@ -38,13 +38,18 @@
             UPDATE 
                 [Category] 
             SET 
-                [Name]=@Name 
+                [Name] = @Name 
             WHERE 
-                [Id]=@Id;";
+                [Id] = @Id;";
 
         #region Fields
 
         private readonly IDatabase database;
+        private readonly string SQLDeleteById = @"
+            DELETE FROM 
+                [Category] 
+            WHERE 
+                [Id] = @Id;";
 
         #endregion
 
@@ -62,7 +67,27 @@
 
         #region ICategoryDAO Members
 
-        public IEnumerable<Category> GetAll()
+        public bool Delete(Category category)
+        {
+            // check parameter
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            // insert
+            using (var command = CreateDeleteByIdCommand(category.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    category.DeletedFromDatabase();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<Category> GetAll()
         {
             using (var command = CreateGetAllCommand())
             {
@@ -108,7 +133,7 @@
 
                 if (id.HasValue)
                 {
-                    category.Id = id.Value;
+                    category.InsertedInDatabase(id.Value);
                     return true;
                 }
                 return false;
@@ -132,6 +157,13 @@
 
         #endregion
 
+        private DbCommand CreateDeleteByIdCommand(int id)
+        {
+            var deleteByIdCommand = database.CreateCommand(SQLDeleteById);
+            database.DefineParameter(deleteByIdCommand, "Id", DbType.Int32, id);
+            return deleteByIdCommand;
+        }
+
         private DbCommand CreateGetAllCommand()
         {
             return database.CreateCommand(SQLGetAll);
@@ -139,9 +171,9 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
-            var getByIdCommenCommand = database.CreateCommand(SQLGetById);
-            database.DefineParameter(getByIdCommenCommand, "Id", DbType.Int32, id);
-            return getByIdCommenCommand;
+            var getByIdCommand = database.CreateCommand(SQLGetById);
+            database.DefineParameter(getByIdCommand, "Id", DbType.Int32, id);
+            return getByIdCommand;
         }
 
         private DbCommand CreateInsertCommand(string name)

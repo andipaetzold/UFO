@@ -1,11 +1,14 @@
 ﻿namespace UFO.DAL.Common
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using UFO.Domain;
 
     public interface ICategoryDAO
     {
-        IEnumerable<Category> GetAll();
+        bool Delete(Category category);
+
+        ICollection<Category> GetAll();
 
         Category GetById(int id);
 

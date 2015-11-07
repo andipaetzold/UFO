@@ -59,9 +59,9 @@
             try
             {
                 connection = GetOpenConnection();
-                command.Connection = GetOpenConnection();
+                command.Connection = connection;
 
-                return command.ExecuteReader();
+                return command.ExecuteReader(CommandBehavior.CloseConnection);
             }
             catch (Exception e)
             {
@@ -70,7 +70,7 @@
             }
             finally
             {
-                ReleaseConnection(connection);
+                // ReleaseConnection(connection);
             }
         }
 
@@ -108,14 +108,10 @@
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            if (!Enum.IsDefined(typeof(DbType), type))
-            {
-                throw new ArgumentOutOfRangeException(nameof(type));
-            }
 
             // define parameter
             var paramIndex = DeclareParameter(command, name, type);
-            command.Parameters[paramIndex].Value = value;
+            command.Parameters[paramIndex].Value = value ?? DBNull.Value;
         }
 
         public int DeclareParameter(DbCommand command, string name, DbType type)
@@ -124,10 +120,6 @@
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
-            }
-            if (!Enum.IsDefined(typeof(DbType), type))
-            {
-                throw new ArgumentOutOfRangeException(nameof(type));
             }
 
             // declare parameter

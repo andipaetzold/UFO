@@ -1,11 +1,14 @@
 ﻿namespace UFO.DAL.Common
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using UFO.Domain;
 
     public interface IPerformanceDAO
     {
-        IEnumerable<Performance> GetAll();
+        bool Delete(Performance performance);
+
+        ICollection<Performance> GetAll();
 
         Performance GetById(int id);
 

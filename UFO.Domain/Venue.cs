@@ -5,8 +5,13 @@
     public class Venue : DatabaseObject
     {
         public Venue(int id, string shortName, string name, decimal? latitude, decimal? longitude)
+            : this(shortName, name, latitude, longitude)
         {
-            Id = id;
+            InsertedInDatabase(id);
+        }
+
+        public Venue(string shortName, string name, decimal? latitude, decimal? longitude)
+        {
             ShortName = shortName;
             Name = name;
             Latitude = latitude;
