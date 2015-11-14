@@ -4,28 +4,32 @@
 
     public class Artist : DatabaseObject
     {
-        public Artist(int id, string name, string imageFileName, string email, string videoUrl)
-            : this(name, imageFileName, email, videoUrl)
+        public Artist(int id, string name, Category category, byte[] image, string email, string videoUrl)
+            : this(name, category, image, email, videoUrl)
         {
             InsertedInDatabase(id);
         }
 
-        public Artist(string name, string imageFileName, string email, string videoUrl)
+        public Artist(string name, Category category, byte[] image, string email, string videoUrl)
         {
             Name = name;
-            ImageFileName = imageFileName;
+            Image = image;
             Email = email;
             VideoUrl = videoUrl;
         }
 
         #region Properties
 
+        [Required]
+        public Category Category { get; set; }
+
         [StringLength(128)]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [StringLength(128)]
-        public string ImageFileName { get; set; }
+        public byte[] Image { get; set; }
 
+        [Required]
         [StringLength(128)]
         public string Name { get; set; }
 
@@ -41,8 +45,8 @@
 
         public override int GetHashCode()
         {
-            return (Name?.GetHashCode() ?? 0) ^ (ImageFileName?.GetHashCode() ?? 0) ^ (Email?.GetHashCode() ?? 0)
-                   ^ (VideoUrl?.GetHashCode() ?? 0);
+            return (Name?.GetHashCode() ?? 0) ^ (Category?.GetHashCode() ?? 0) ^ (Image?.GetHashCode() ?? 0)
+                   ^ (Email?.GetHashCode() ?? 0) ^ (VideoUrl?.GetHashCode() ?? 0);
         }
     }
 }

@@ -149,11 +149,18 @@
                     IList<Artist> result = new List<Artist>();
                     while (reader.Read())
                     {
+                        // Category
+                        Category category = null;
+
+                        // image
+                        byte[] image = null;
+
                         result.Add(
                             new Artist(
                                 (int)reader["Id"],
                                 (string)reader["Name"],
-                                (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
+                                category,
+                                image,
                                 (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                                 (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
                     }

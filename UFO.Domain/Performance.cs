@@ -1,6 +1,7 @@
 ﻿namespace UFO.Domain
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class Performance : DatabaseObject
     {
@@ -19,8 +20,13 @@
 
         #region Properties
 
+        [Required]
         public Artist Artist { get; set; }
+
+        [Required]
         public DateTime DateTime { get; set; }
+
+        [Required]
         public Venue Venue { get; set; }
 
         #endregion

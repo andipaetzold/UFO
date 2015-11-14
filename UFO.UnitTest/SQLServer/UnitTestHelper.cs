@@ -9,10 +9,17 @@
 
     public static class UnitTestHelper
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
+
         public static Artist GetRandomArtist()
         {
-            return new Artist(GetRandomString(), GetRandomString(), GetRandomString(), GetRandomString());
+            // TODO
+            return new Artist(GetRandomString(), null, null, GetRandomString(), GetRandomString());
+        }
+
+        public static bool GetRandomBoolean()
+        {
+            return random.Next(0, 2) == 0;
         }
 
         public static Category GetRandomCategory()
@@ -23,6 +30,11 @@
         public static Country GetRandomCountry()
         {
             return new Country(GetRandomString());
+        }
+
+        public static DateTime GetRandomDateTime()
+        {
+            return DateTime.UtcNow.AddDays(random.Next(90));
         }
 
         public static Artist GetRandomInsertedArtist()
@@ -75,15 +87,7 @@
 
         public static Performance GetRandomPerformance()
         {
-            return new Performance(
-                GetRandomDateTime(),
-                GetRandomInsertedArtist(),
-                GetRandomInsertedVenue());
-        }
-
-        public static DateTime GetRandomDateTime()
-        {
-            return DateTime.UtcNow.AddDays(random.Next(90));
+            return new Performance(GetRandomDateTime(), GetRandomInsertedArtist(), GetRandomInsertedVenue());
         }
 
         public static string GetRandomString()
@@ -91,8 +95,7 @@
             var length = 8;
 
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         public static User GetRandomUser()
@@ -100,18 +103,9 @@
             return new User(GetRandomString(), GetRandomString(), GetRandomString(), GetRandomBoolean());
         }
 
-        public static bool GetRandomBoolean()
-        {
-            return random.Next(0, 2) == 0;
-        }
-
         public static Venue GetRandomVenue()
         {
-            return new Venue(
-                GetRandomString(),
-                GetRandomString(),
-                random.Next(-90, 90),
-                random.Next(-180, 180));
+            return new Venue(GetRandomString(), GetRandomString(), random.Next(-90, 90), random.Next(-180, 180));
         }
 
         public static IDatabase GetUnitTestDatabase()

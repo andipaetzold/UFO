@@ -1,9 +1,15 @@
 ﻿namespace UFO.Domain
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table(nameof(User))]
     public class User : DatabaseObject
     {
+        public User()
+        {
+        }
+
         public User(int id, string username, string password, string email, bool isAdmin)
             : this(username, password, email, isAdmin)
         {
@@ -20,15 +26,22 @@
 
         #region Properties
 
+        [Column("Email")]
         [StringLength(128)]
         [EmailAddress]
         public string Email { get; set; }
 
+        [Column("IsAdmin")]
+        [Required]
         public bool IsAdmin { get; set; }
 
+        [Column("Password")]
+        [Required]
         [StringLength(32)]
         public string Password { get; set; }
 
+        [Column("Username")]
+        [Required]
         [StringLength(64)]
         public string Username { get; set; }
 

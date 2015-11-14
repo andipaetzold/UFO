@@ -17,6 +17,7 @@
 
         #region Properties
 
+        [Required]
         [StringLength(128)]
         public string Name { get; set; }
 

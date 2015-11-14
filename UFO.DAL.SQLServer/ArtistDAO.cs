@@ -112,11 +112,18 @@
                     IList<Artist> result = new List<Artist>();
                     while (reader.Read())
                     {
+                        // Category
+                        Category category = null;
+
+                        // image
+                        byte[] image = null;
+
                         result.Add(
                             new Artist(
                                 (int)reader["Id"],
                                 (string)reader["Name"],
-                                (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
+                                category,
+                                image,
                                 (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                                 (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]));
                     }
@@ -134,7 +141,13 @@
             }
 
             // insert
-            using (var command = CreateInsertCommand(artist.Name, artist.ImageFileName, artist.Email, artist.VideoUrl))
+            using (
+                var command = CreateInsertCommand(
+                    artist.Name,
+                    artist.Category,
+                    artist.Image,
+                    artist.Email,
+                    artist.VideoUrl))
             {
                 var id = database.ExecuteScalar(command) as int?;
 
@@ -160,7 +173,8 @@
                 var command = CreateUpdateByIdCommand(
                     artist.Id,
                     artist.Name,
-                    artist.ImageFileName,
+                    artist.Category,
+                    artist.Image,
                     artist.Email,
                     artist.VideoUrl))
             {
@@ -176,10 +190,17 @@
                 {
                     if (reader.Read())
                     {
+                        // Category
+                        Category category = null;
+
+                        // image
+                        byte[] image = null;
+
                         return new Artist(
                             (int)reader["Id"],
                             (string)reader["Name"],
-                            (reader["ImageFileName"] == DBNull.Value) ? null : (string)reader["ImageFileName"],
+                            category,
+                            image,
                             (reader["Email"] == DBNull.Value) ? null : (string)reader["Email"],
                             (reader["VideoUrl"] == DBNull.Value) ? null : (string)reader["VideoUrl"]);
                     }
@@ -209,11 +230,17 @@
             return getByIdCommand;
         }
 
-        private DbCommand CreateInsertCommand(string name, string imageFileName, string email, string videoUrl)
+        private DbCommand CreateInsertCommand(
+            string name,
+            Category category,
+            byte[] image,
+            string email,
+            string videoUrl)
         {
             var insertCommand = database.CreateCommand(SQLInsert);
             database.DefineParameter(insertCommand, "Name", DbType.String, name);
-            database.DefineParameter(insertCommand, "ImageFileName", DbType.String, imageFileName);
+            database.DefineParameter(insertCommand, "Category_Id", DbType.Int32, category.Id);
+            database.DefineParameter(insertCommand, "Image", DbType.Binary, image);
             database.DefineParameter(insertCommand, "Email", DbType.String, email);
             database.DefineParameter(insertCommand, "VideoUrl", DbType.String, videoUrl);
             return insertCommand;
@@ -222,14 +249,16 @@
         private DbCommand CreateUpdateByIdCommand(
             int id,
             string name,
-            string imageFileName,
+            Category category,
+            byte[] image,
             string email,
             string videoUrl)
         {
             var updateByIdCommand = database.CreateCommand(SQLUpdateById);
             database.DefineParameter(updateByIdCommand, "Id", DbType.Int32, id);
             database.DefineParameter(updateByIdCommand, "Name", DbType.String, name);
-            database.DefineParameter(updateByIdCommand, "ImageFileName", DbType.String, imageFileName);
+            database.DefineParameter(updateByIdCommand, "Category_Id", DbType.Int32, category.Id);
+            database.DefineParameter(updateByIdCommand, "Image", DbType.Binary, image);
             database.DefineParameter(updateByIdCommand, "Email", DbType.String, email);
             database.DefineParameter(updateByIdCommand, "VideoUrl", DbType.String, videoUrl);
             return updateByIdCommand;

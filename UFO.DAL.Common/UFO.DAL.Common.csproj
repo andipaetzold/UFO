@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IArtistCountryDAO.cs" />
-    <Compile Include="IArtistCategoryDAO.cs" />
     <Compile Include="IArtistDAO.cs" />
     <Compile Include="ICategoryDAO.cs" />
     <Compile Include="ICountryDAO.cs" />

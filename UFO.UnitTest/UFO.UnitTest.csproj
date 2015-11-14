@@ -55,7 +55,6 @@
     <Compile Include="Domain\DatabaseIdExceptionTest.cs" />
     <Compile Include="SQLServer\ArtistTest.cs" />
     <Compile Include="SQLServer\ArtistCountryTest.cs" />
-    <Compile Include="SQLServer\ArtistCategoryTest.cs" />
     <Compile Include="Domain\ArtistTest.cs" />
     <Compile Include="Domain\CountryTest.cs" />
     <Compile Include="SQLServer\PerformanceTest.cs" />
