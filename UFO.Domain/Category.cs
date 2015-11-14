@@ -10,6 +10,10 @@
             InsertedInDatabase(id);
         }
 
+        public Category()
+        {
+            
+        }
         public Category(string name)
         {
             Name = name;

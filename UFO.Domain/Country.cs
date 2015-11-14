@@ -15,6 +15,10 @@
             Name = name;
         }
 
+        public Country()
+        {
+        }
+
         #region Properties
 
         [Required]

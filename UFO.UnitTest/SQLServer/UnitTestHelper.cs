@@ -13,8 +13,12 @@
 
         public static Artist GetRandomArtist()
         {
-            // TODO
-            return new Artist(GetRandomString(), null, null, GetRandomString(), GetRandomString());
+            return new Artist(
+                GetRandomString(),
+                GetRandomInsertedCategory(),
+                GetRandomString(),
+                GetRandomEmail(),
+                GetRandomString());
         }
 
         public static bool GetRandomBoolean()
@@ -35,6 +39,11 @@
         public static DateTime GetRandomDateTime()
         {
             return DateTime.UtcNow.AddDays(random.Next(90));
+        }
+
+        private static string GetRandomEmail()
+        {
+            return GetRandomString() + "@" + GetRandomString() + ".de";
         }
 
         public static Artist GetRandomInsertedArtist()
@@ -100,7 +109,7 @@
 
         public static User GetRandomUser()
         {
-            return new User(GetRandomString(), GetRandomString(), GetRandomString(), GetRandomBoolean());
+            return new User(GetRandomString(), GetRandomString(), GetRandomEmail(), GetRandomBoolean());
         }
 
         public static Venue GetRandomVenue()

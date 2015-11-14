@@ -4,15 +4,20 @@
 
     public class Artist : DatabaseObject
     {
-        public Artist(int id, string name, Category category, byte[] image, string email, string videoUrl)
+        public Artist(int id, string name, Category category, string image, string email, string videoUrl)
             : this(name, category, image, email, videoUrl)
         {
             InsertedInDatabase(id);
         }
 
-        public Artist(string name, Category category, byte[] image, string email, string videoUrl)
+        public Artist()
+        {
+        }
+
+        public Artist(string name, Category category, string image, string email, string videoUrl)
         {
             Name = name;
+            Category = category;
             Image = image;
             Email = email;
             VideoUrl = videoUrl;
@@ -27,7 +32,8 @@
         [EmailAddress]
         public string Email { get; set; }
 
-        public byte[] Image { get; set; }
+        [StringLength(128)]
+        public string Image { get; set; }
 
         [Required]
         [StringLength(128)]

@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics;
 
     public abstract class DatabaseObject
@@ -13,14 +12,8 @@
 
         #endregion
 
-        public DatabaseObject()
-        {
-            var a = 5;
-        }
-
         #region Properties
 
-        [Column(nameof(Id))]
         public int Id
         {
             get

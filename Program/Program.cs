@@ -2,6 +2,7 @@
 {
     using System;
     using System.Configuration;
+    using System.Linq;
     using UFO.DAL.SQLServer;
     using UFO.Domain;
 
@@ -9,19 +10,20 @@
     {
         static void Main(string[] args)
         {
-            var userDAO = new UserDAO(new Database(ConfigurationManager.ConnectionStrings["UnitTest"].ConnectionString));
+            Console.WriteLine("------------");
 
-            var user = new User("username", "password", "andi.paetzold@gmail.com", true);
-            Console.WriteLine(userDAO.Insert(user));
+            var database = new Database(ConfigurationManager.ConnectionStrings["UnitTest"].ConnectionString);
 
-            var id = user.Id;
-            var user2 = userDAO.GetById(id);
+            var categoryDAO = new CategoryDAO(database);
+            categoryDAO.Insert(new Category("name"));
 
-            var user3 = new User("username2", "password2", "andi.paetzold@gmail.com", true);
-            Console.WriteLine(userDAO.Insert(user3));
-            var list = userDAO.GetAll();
+            var artist = new Artist("nameaa", categoryDAO.GetAll().First(), null, "andi.paetzold@gmail.com", null);
 
-            Console.WriteLine(userDAO.Delete(user));
+            var artistDAO = new ArtistDAO(database);
+
+            var a = artistDAO.GetAll();
+            artistDAO.Insert(artist);
+            a = artistDAO.GetAll();
 
             Console.ReadLine();
         }

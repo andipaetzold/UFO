@@ -111,7 +111,15 @@
 
             // define parameter
             var paramIndex = DeclareParameter(command, name, type);
-            command.Parameters[paramIndex].Value = value ?? DBNull.Value;
+
+            if (type != DbType.Binary)
+            {
+                command.Parameters[paramIndex].Value = value ?? DBNull.Value;
+            }
+            else
+            {
+                command.Parameters[paramIndex].Value = value;
+            }
         }
 
         public int DeclareParameter(DbCommand command, string name, DbType type)

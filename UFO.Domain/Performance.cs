@@ -5,6 +5,10 @@
 
     public class Performance : DatabaseObject
     {
+        public Performance()
+        {
+        }
+
         public Performance(int id, DateTime dateTime, Artist artist, Venue venue)
             : this(dateTime, artist, venue)
         {

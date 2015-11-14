@@ -4,6 +4,10 @@
 
     public class Venue : DatabaseObject
     {
+        public Venue()
+        {
+        }
+
         public Venue(int id, string shortName, string name, decimal? latitude, decimal? longitude)
             : this(shortName, name, latitude, longitude)
         {

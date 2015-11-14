@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data;
     using System.Data.Common;
     using System.Linq;
@@ -10,41 +9,90 @@
     using System.Text;
     using UFO.DAL.Common;
     using UFO.Domain;
-    using Prop = System.Tuple<string, object, System.Data.DbType>;
 
     public class DatabaseObjectDAO<T>
         where T : DatabaseObject, new()
     {
-        #region Fields
-
-        protected readonly IDatabase database;
-
-        private readonly Dictionary<Type, DbType> dbTypeDictionary = new Dictionary<Type, DbType>
+        private static readonly Dictionary<Type, DbType> DbTypeDictionary = new Dictionary<Type, DbType>
             {
                 { typeof(int), DbType.Int32 },
+                { typeof(int?), DbType.Int32 },
                 { typeof(string), DbType.String },
-                { typeof(bool), DbType.Boolean }
+                { typeof(bool), DbType.Boolean },
+                { typeof(decimal), DbType.Decimal },
+                { typeof(decimal?), DbType.Decimal },
+                { typeof(DateTime), DbType.DateTime }
             };
+
+        #region Fields
+
+        private readonly IDatabase database;
 
         #endregion
 
         public DatabaseObjectDAO(IDatabase database)
         {
+            // check parameter
+            if (database == null)
+            {
+                throw new ArgumentNullException(nameof(database));
+            }
+
             this.database = database;
         }
 
         #region Properties
 
-        private string TableName
-        {
-            get
-            {
-                var tableAttribute = (TableAttribute)typeof(T).GetCustomAttribute(typeof(TableAttribute));
-                return tableAttribute.Name;
-            }
-        }
+        public static string TableName => typeof(T).Name;
 
         #endregion
+
+        public ICollection<Tuple<string, string, string>> CreateColumnList(out List<string> joins)
+        {
+            // joins
+            joins = new List<string>();
+
+            // table, column, alias
+            var list = new List<Tuple<string, string, string>>();
+
+            var properties = GetProperties();
+            foreach (var propertyInfo in properties)
+            {
+                var columnName = GetColumnNameFromPropertyInfo(propertyInfo);
+
+                // "normal" column
+                if (DbTypeDictionary.ContainsKey(propertyInfo.PropertyType))
+                {
+                    list.Add(new Tuple<string, string, string>(TableName, columnName, $"{TableName}_{columnName}"));
+                }
+
+                // column with reference
+                if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
+                {
+                    // Id for reference
+                    list.Add(new Tuple<string, string, string>(TableName, $"{columnName}", $"{TableName}_{columnName}"));
+
+                    // Create foreign DAO
+                    var genericType = typeof(DatabaseObjectDAO<>).MakeGenericType(propertyInfo.PropertyType);
+                    var o = Activator.CreateInstance(genericType, database);
+
+                    // Column list
+                    var methodInfo = genericType.GetMethod(nameof(CreateColumnList));
+                    var parameters = new object[] { null };
+                    var listOther = (ICollection<Tuple<string, string, string>>)methodInfo.Invoke(o, parameters);
+                    list.AddRange(listOther);
+
+                    // add joins
+                    var foreignTableName = genericType.GetProperty(nameof(TableName)).GetValue(o);
+                    joins.Add(
+                        $"JOIN [{foreignTableName}] ON ([{TableName}].[{columnName}] = [{foreignTableName}].[Id])");
+                    var foreignJoins = (List<string>)parameters[0];
+                    joins.AddRange(foreignJoins);
+                }
+            }
+
+            return list;
+        }
 
         private DbCommand CreateDeleteByIdCommand(object id)
         {
@@ -59,8 +107,34 @@
 
         private DbCommand CreateGetAllCommand()
         {
+            List<string> joins;
+            var columnList = CreateColumnList(out joins);
+
             // command text
-            string commandText = $"SELECT * FROM [{TableName}];";
+            var commandTextBuilder = new StringBuilder();
+
+            // command - select
+            commandTextBuilder.Append("SELECT ");
+            foreach (var column in columnList)
+            {
+                commandTextBuilder.AppendFormat("[{0}].[{1}] as [{2}]", column.Item1, column.Item2, column.Item3);
+
+                if (columnList.Last() != column)
+                {
+                    commandTextBuilder.Append(", ");
+                }
+            }
+
+            // command - from
+            commandTextBuilder.AppendFormat(" FROM [{0}] ", TableName);
+
+            // command - join
+            foreach (var @join in joins)
+            {
+                commandTextBuilder.Append(@join);
+            }
+
+            var commandText = commandTextBuilder.ToString();
 
             // command
             return database.CreateCommand(commandText);
@@ -68,8 +142,38 @@
 
         private DbCommand CreateGetByIdCommand(int id)
         {
+            List<string> joins;
+            var columnList = CreateColumnList(out joins);
+
             // command text
-            string commandText = $"SELECT * FROM [{TableName}] WHERE [Id] = @Id;";
+            var commandTextBuilder = new StringBuilder();
+
+            // command - select
+            commandTextBuilder.Append("SELECT ");
+            foreach (var column in columnList)
+            {
+                commandTextBuilder.AppendFormat("[{0}].[{1}] as [{2}]", column.Item1, column.Item2, column.Item3);
+
+                if (columnList.Last() != column)
+                {
+                    commandTextBuilder.Append(", ");
+                }
+            }
+
+            // command - from
+            commandTextBuilder.AppendFormat(" FROM [{0}] ", TableName);
+
+            // command - join
+            foreach (var @join in joins)
+            {
+                commandTextBuilder.Append(@join);
+            }
+
+            // command - where
+            commandTextBuilder.AppendFormat(" WHERE [{0}].[Id] = @Id", TableName);
+
+            // finish
+            var commandText = commandTextBuilder.ToString();
 
             // command
             var command = database.CreateCommand(commandText);
@@ -80,10 +184,12 @@
         private DbCommand CreateInsertCommand(T o)
         {
             // column name list
-            var columnNames = GetColumnNameProperties();
+            var columnNames = GetColumnNameProperties("Id");
 
             // command text
             var commandTextBuilder = new StringBuilder();
+
+            // command - into
             commandTextBuilder.AppendFormat("INSERT INTO [{0}] (", TableName);
             foreach (var columnName in columnNames)
             {
@@ -94,7 +200,11 @@
                 }
             }
             commandTextBuilder.Append(") ");
-            commandTextBuilder.Append("OUTPUT[Inserted].[Id] ");
+
+            // command - output
+            commandTextBuilder.Append("OUTPUT [Inserted].[Id] ");
+
+            // command - values
             commandTextBuilder.Append("VALUES (");
             foreach (var columnName in columnNames)
             {
@@ -109,46 +219,79 @@
 
             // command
             var command = database.CreateCommand(commandText);
-            foreach (var propertyInfo in GetColumnProperties())
+            foreach (var propertyInfo  in GetProperties("Id"))
             {
                 var columnName = GetColumnNameFromPropertyInfo(propertyInfo);
-                var dbType = dbTypeDictionary[propertyInfo.PropertyType];
-                database.DefineParameter(command, columnName, dbType, propertyInfo.GetValue(o));
+                object value;
+
+                DbType dbType;
+                if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
+                {
+                    dbType = DbType.Int32;
+                    value = ((DatabaseObject)propertyInfo.GetValue(o)).Id;
+                }
+                else
+                {
+                    dbType = DbTypeDictionary[propertyInfo.PropertyType];
+                    value = propertyInfo.GetValue(o);
+                }
+                database.DefineParameter(command, columnName, dbType, value);
             }
             return command;
         }
 
-        private T CreateObjectFromDataReader(IDataRecord reader)
+        public T CreateObjectFromDataReader(IDataRecord reader)
         {
             var o = new T();
 
-            var properties = GetColumnProperties();
+            var properties = GetProperties("Id");
             foreach (var property in properties)
             {
+                // types
+                var propertyType = property.PropertyType;
+                var propertyTypeWithoutNullable = propertyType;
+                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    propertyTypeWithoutNullable = propertyType.GetGenericArguments()[0];
+                }
+
                 // columnName
                 var columnName = GetColumnNameFromPropertyInfo(property);
                 if (columnName == null)
                 {
                     continue;
                 }
-
-                // dbtype
-                var dbType = dbTypeDictionary?[property.PropertyType];
-                if (dbType == null)
-                {
-                    continue;
-                }
+                var alias = TableName + "_" + columnName;
 
                 // data
-                var readerObject = reader[columnName];
-                var data = readerObject == DBNull.Value ? null : Convert.ChangeType(readerObject, property.PropertyType);
+                object data = null;
+
+                // dbtype
+                DbType dbType;
+                if (DbTypeDictionary.TryGetValue(propertyTypeWithoutNullable, out dbType))
+                {
+                    var readerObject = reader[alias];
+                    data = readerObject == DBNull.Value
+                               ? null
+                               : Convert.ChangeType(readerObject, propertyTypeWithoutNullable);
+                }
+                if (property.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
+                {
+                    // Create foreign DAO
+                    var genericType = typeof(DatabaseObjectDAO<>).MakeGenericType(propertyType);
+                    var foreignDAO = Activator.CreateInstance(genericType, database);
+
+                    var methodInfo = genericType.GetMethod(nameof(CreateObjectFromDataReader));
+
+                    data = methodInfo.Invoke(foreignDAO, new object[] { reader });
+                }
 
                 // set
                 property.SetValue(o, data);
             }
 
             // set id
-            o.InsertedInDatabase((int)reader["Id"]);
+            o.InsertedInDatabase((int)reader[TableName + "_Id"]);
 
             return o;
         }
@@ -156,7 +299,7 @@
         private DbCommand CreateUpdateByIdCommand(T o)
         {
             // column name list
-            var columnNames = GetColumnNameProperties();
+            var columnNames = GetColumnNameProperties("Id");
 
             // command text
             var commandTextBuilder = new StringBuilder();
@@ -177,11 +320,22 @@
             // command
             var command = database.CreateCommand(commandText);
             database.DefineParameter(command, "Id", DbType.Int32, o.Id);
-            foreach (var propertyInfo in GetColumnProperties())
+            foreach (var propertyInfo in GetProperties("Id"))
             {
                 var columnName = GetColumnNameFromPropertyInfo(propertyInfo);
-                var dbType = dbTypeDictionary[propertyInfo.PropertyType];
-                database.DefineParameter(command, columnName, dbType, propertyInfo.GetValue(o));
+                object value;
+                DbType dbType;
+                if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
+                {
+                    dbType = DbType.Int32;
+                    value = ((DatabaseObject)propertyInfo.GetValue(o)).Id;
+                }
+                else
+                {
+                    dbType = DbTypeDictionary[propertyInfo.PropertyType];
+                    value = propertyInfo.GetValue(o);
+                }
+                database.DefineParameter(command, columnName, dbType, value);
             }
             return command;
         }
@@ -236,36 +390,43 @@
             }
         }
 
-        private string GetColumnNameFromPropertyInfo(PropertyInfo propertyInfo)
+        private static string GetColumnNameFromPropertyInfo(PropertyInfo propertyInfo)
         {
-            var columnAttribute = propertyInfo.GetCustomAttribute(typeof(ColumnAttribute)) as ColumnAttribute;
-            return columnAttribute?.Name;
+            var columnName = propertyInfo.Name;
+            if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
+            {
+                columnName += "_Id";
+            }
+
+            return columnName;
         }
 
-        private ICollection<string> GetColumnNameProperties()
+        private static ICollection<string> GetColumnNameProperties(params string[] columnsExclude)
         {
             var list = new List<string>();
 
             foreach (var propertyInfo in typeof(T).GetProperties())
             {
-                var columnAttribute = propertyInfo.GetCustomAttribute(typeof(ColumnAttribute)) as ColumnAttribute;
-                if (columnAttribute != null && columnAttribute.Name != "Id")
+                var columnName = GetColumnNameFromPropertyInfo(propertyInfo);
+
+                if (columnsExclude == null || !columnsExclude.Contains(columnName))
                 {
-                    list.Add(columnAttribute.Name);
+                    list.Add(columnName);
                 }
             }
 
             return list;
         }
 
-        private ICollection<PropertyInfo> GetColumnProperties()
+        private static ICollection<PropertyInfo> GetProperties(params string[] columnsExclude)
         {
             var list = new List<PropertyInfo>();
 
             foreach (var propertyInfo in typeof(T).GetProperties())
             {
-                var columnAttribute = propertyInfo.GetCustomAttribute(typeof(ColumnAttribute)) as ColumnAttribute;
-                if (columnAttribute != null && columnAttribute.Name != "Id")
+                var columnName = GetColumnNameFromPropertyInfo(propertyInfo);
+
+                if (columnsExclude == null || !columnsExclude.Contains(columnName))
                 {
                     list.Add(propertyInfo);
                 }
