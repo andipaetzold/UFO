@@ -83,9 +83,8 @@
                     list.AddRange(listOther);
 
                     // add joins
-                    var foreignTableName = genericType.GetProperty(nameof(TableName)).GetValue(o);
-                    joins.Add(
-                        $"JOIN [{foreignTableName}] ON ([{TableName}].[{columnName}] = [{foreignTableName}].[Id])");
+                    var foreignTableName = (string)genericType.GetProperty(nameof(TableName)).GetValue(o);
+                    joins.Add(CreateJoinStatement(TableName, columnName, foreignTableName));
                     var foreignJoins = (List<string>)parameters[0];
                     joins.AddRange(foreignJoins);
                 }
@@ -97,12 +96,18 @@
         private DbCommand CreateDeleteByIdCommand(object id)
         {
             // command text
-            string commandText = $"DELETE FROM [{TableName}] WHERE [Id] = @Id;";
+            var commandText = CreateDeleteStatement(TableName, new List<string> { "[Id] = @Id" });
 
             // command
             var command = database.CreateCommand(commandText);
             database.DefineParameter(command, "Id", DbType.Int32, id);
             return command;
+        }
+
+        private static string CreateDeleteStatement(string table, IEnumerable<string> where)
+        {
+            var whereSQL = string.Join(" AND ", where);
+            return $"DELETE FROM [{table}] WHERE {whereSQL};";
         }
 
         private DbCommand CreateGetAllCommand()
@@ -187,35 +192,19 @@
             var columnNames = GetColumnNameProperties("Id");
 
             // command text
-            var commandTextBuilder = new StringBuilder();
-
-            // command - into
-            commandTextBuilder.AppendFormat("INSERT INTO [{0}] (", TableName);
-            foreach (var columnName in columnNames)
+            var columns = new List<string>();
+            foreach (var column in columnNames)
             {
-                commandTextBuilder.AppendFormat("[{0}]", columnName);
-                if (columnNames.Last() != columnName)
-                {
-                    commandTextBuilder.Append(", ");
-                }
+                columns.Add($"[{column}]");
             }
-            commandTextBuilder.Append(") ");
 
-            // command - output
-            commandTextBuilder.Append("OUTPUT [Inserted].[Id] ");
-
-            // command - values
-            commandTextBuilder.Append("VALUES (");
-            foreach (var columnName in columnNames)
+            var values = new List<string>();
+            foreach (var column in columnNames)
             {
-                commandTextBuilder.AppendFormat("@{0}", columnName);
-                if (columnNames.Last() != columnName)
-                {
-                    commandTextBuilder.Append(", ");
-                }
+                values.Add($"@{column}");
             }
-            commandTextBuilder.Append(")");
-            var commandText = commandTextBuilder.ToString();
+
+            var commandText = CreateInsertStatement(TableName, columns, values);
 
             // command
             var command = database.CreateCommand(commandText);
@@ -239,6 +228,20 @@
             }
             return command;
         }
+
+        private static string CreateInsertStatement(
+            string table,
+            IEnumerable<string> columns,
+            IEnumerable<string> values)
+        {
+            var columnSQL = string.Join(", ", columns);
+            var valuesSQL = string.Join(", ", values);
+
+            return $"INSERT INTO [{table}] ({columnSQL}) OUTPUT [Inserted].[Id] VALUES ({valuesSQL});";
+        }
+
+        private static string CreateJoinStatement(string baseTableName, string baseColumnName, string foreignTableName)
+            => $"JOIN [{foreignTableName}] ON ([{baseTableName}].[{baseColumnName}] = [{foreignTableName}].[Id])";
 
         public T CreateObjectFromDataReader(IDataRecord reader)
         {
@@ -296,26 +299,29 @@
             return o;
         }
 
+        private string CreateSelectStatement(
+            IEnumerable<string> select,
+            string from,
+            string join,
+            IEnumerable<string> where)
+        {
+            var selectSQL = string.Join(", ", select);
+            var joinSQL = string.Join(" ", join);
+            var whereSQL = string.Join(" AND ", where);
+
+            return $"SELECT [{selectSQL}] FROM {from} {joinSQL} WHERE {whereSQL}";
+        }
+
         private DbCommand CreateUpdateByIdCommand(T o)
         {
             // column name list
             var columnNames = GetColumnNameProperties("Id");
 
             // command text
-            var commandTextBuilder = new StringBuilder();
-            commandTextBuilder.AppendFormat("UPDATE [{0}] SET ", TableName);
-            foreach (var columnName in columnNames)
-            {
-                commandTextBuilder.AppendFormat("[{0}] = @{0}", columnName);
+            var set = columnNames.Select(columnName => string.Format("[{0}] = @{0}", columnName)).ToList();
+            var where = new List<string> { "[Id] = @Id" };
 
-                if (columnNames.Last() != columnName)
-                {
-                    commandTextBuilder.Append(", ");
-                }
-            }
-            commandTextBuilder.Append(" WHERE [Id] = @Id");
-
-            var commandText = commandTextBuilder.ToString();
+            var commandText = CreateUpdateStatement(TableName, set, where);
 
             // command
             var command = database.CreateCommand(commandText);
@@ -338,6 +344,18 @@
                 database.DefineParameter(command, columnName, dbType, value);
             }
             return command;
+        }
+
+        private static string CreateUpdateStatement(string table, IEnumerable<string> set, IEnumerable<string> where)
+        {
+            var setSQL = string.Join(", ", set);
+            var whereSQL = string.Join(" AND ", where);
+            return $"UPDATE [{table}] SET {setSQL} WHERE {whereSQL}";
+        }
+
+        private string CreateUpdateStatement(string table, IEnumerable<string> set)
+        {
+            return CreateUpdateStatement(table, set, new List<string> { "1" });
         }
 
         public bool Delete(T o)
