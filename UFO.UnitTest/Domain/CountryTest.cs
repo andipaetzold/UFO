@@ -7,12 +7,11 @@
     public class CountryTest
     {
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void CreateNoIdObjectTest()
         {
             var country = new Country("name");
 
-            var id = country.Id;
+            Assert.IsFalse(country.HasId);
         }
 
         [TestMethod]

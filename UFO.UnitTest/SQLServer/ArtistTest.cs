@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class ArtistTest
@@ -19,14 +18,6 @@
         }
 
         [TestMethod]
-        public void DeleteInvalidTest()
-        {
-            var artist = UnitTestHelper.GetRandomArtist();
-            artist.InsertedInDatabase(-1);
-            Assert.IsFalse(GetDAO().Delete(artist));
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteNullTest()
         {
@@ -34,7 +25,6 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var artistDAO = GetDAO();
@@ -45,9 +35,7 @@
 
             Assert.IsTrue(artistDAO.Delete(artist));
             Assert.IsNull(artistDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = artistDAO.GetById(artist.Id);
+            Assert.IsFalse(artist.HasId);
         }
 
         [TestMethod]
@@ -74,12 +62,6 @@
             var id = artist.Id;
             var artist2 = artistDAO.GetById(id);
             Assert.AreEqual(artist, artist2);
-        }
-
-        private static IArtistDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new ArtistDAO(database);
         }
 
         [TestMethod]
@@ -126,6 +108,12 @@
 
             artist.Name = UnitTestHelper.GetRandomString();
             Assert.IsTrue(artistDAO.Update(artist));
+        }
+
+        private static IArtistDAO GetDAO()
+        {
+            var database = UnitTestHelper.GetUnitTestDatabase();
+            return new ArtistDAO(database);
         }
     }
 }

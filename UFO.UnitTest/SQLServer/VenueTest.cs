@@ -22,7 +22,6 @@
         public void DeleteInvalidTest()
         {
             var venue = UnitTestHelper.GetRandomVenue();
-            venue.InsertedInDatabase(-1);
             Assert.IsFalse(GetDAO().Delete(venue));
         }
 
@@ -34,7 +33,6 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var venueDAO = GetDAO();
@@ -45,9 +43,6 @@
 
             Assert.IsTrue(venueDAO.Delete(venue));
             Assert.IsNull(venueDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = venueDAO.GetById(venue.Id);
         }
 
         [TestMethod]
@@ -104,9 +99,7 @@
         {
             var venue = UnitTestHelper.GetRandomVenue();
             Assert.IsTrue(GetDAO().Insert(venue));
-
-            // ReSharper disable once UnusedVariable
-            var id = venue.Id;
+            Assert.IsTrue(venue.HasId);
         }
 
         [TestMethod]

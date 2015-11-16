@@ -18,13 +18,7 @@
             new CountryDAO(null);
         }
 
-        [TestMethod]
-        public void DeleteInvalidTest()
-        {
-            var country = UnitTestHelper.GetRandomCountry();
-            country.InsertedInDatabase(-1);
-            Assert.IsFalse(GetDAO().Delete(country));
-        }
+      
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +28,6 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var countryDAO = GetDAO();
@@ -45,9 +38,6 @@
 
             Assert.IsTrue(countryDAO.Delete(country));
             Assert.IsNull(countryDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = countryDAO.GetById(country.Id);
         }
 
         [TestMethod]

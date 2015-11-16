@@ -24,16 +24,8 @@
         {
             GetDAO().Delete(null);
         }
-
+        
         [TestMethod]
-        public void DeleteInvalidTest()
-        {
-            var user = UnitTestHelper.GetRandomUser();
-            user.InsertedInDatabase(-1);
-            Assert.IsFalse(GetDAO().Delete(user));
-        }
-        [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var userDAO = GetDAO();
@@ -44,9 +36,6 @@
 
             Assert.IsTrue(userDAO.Delete(user));
             Assert.IsNull(userDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = userDAO.GetById(user.Id);
         }
 
         [TestMethod]
@@ -70,7 +59,7 @@
         }
 
         [TestMethod]
-        public void GetByIdnNullTest()
+        public void GetByIdNullTest()
         {
             Assert.IsNull(GetDAO().GetById(-1));
         }

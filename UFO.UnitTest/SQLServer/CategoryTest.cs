@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class CategoryTest
@@ -26,15 +25,6 @@
         }
 
         [TestMethod]
-        public void DeleteInvalidTest()
-        {
-            var category = UnitTestHelper.GetRandomCategory();
-            category.InsertedInDatabase(-1);
-            Assert.IsFalse(GetDAO().Delete(category));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var categoryDAO = GetDAO();
@@ -45,9 +35,6 @@
 
             Assert.IsTrue(categoryDAO.Delete(category));
             Assert.IsNull(categoryDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = categoryDAO.GetById(category.Id);
         }
 
         [TestMethod]
@@ -74,12 +61,6 @@
             var id = category.Id;
             var category2 = userDAO.GetById(id);
             Assert.AreEqual(category, category2);
-        }
-
-        private static ICategoryDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new CategoryDAO(database);
         }
 
         [TestMethod]
@@ -125,6 +106,12 @@
 
             category.Name = UnitTestHelper.GetRandomString();
             Assert.IsTrue(categoryDAO.Update(category));
+        }
+
+        private static ICategoryDAO GetDAO()
+        {
+            var database = UnitTestHelper.GetUnitTestDatabase();
+            return new CategoryDAO(database);
         }
     }
 }

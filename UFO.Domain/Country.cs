@@ -1,13 +1,15 @@
 ﻿namespace UFO.Domain
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table("Country")]
     public class Country : DatabaseObject
     {
         public Country(int id, string name)
             : this(name)
         {
-            InsertedInDatabase(id);
+            Id = id;
         }
 
         public Country(string name)
@@ -21,6 +23,7 @@
 
         #region Properties
 
+        [Column("Name")]
         [Required]
         [StringLength(128)]
         public string Name { get; set; }

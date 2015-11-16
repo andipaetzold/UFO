@@ -18,14 +18,7 @@
             new PerformanceDAO(null);
         }
 
-        [TestMethod]
-        public void DeleteInvalidTest()
-        {
-            var performance = UnitTestHelper.GetRandomPerformance();
-            performance.InsertedInDatabase(-1);
-            Assert.IsFalse(GetDAO().Delete(performance));
-        }
-
+       
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteNullTest()
@@ -34,7 +27,6 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void DeleteTest()
         {
             var performanceDAO = GetDAO();
@@ -45,9 +37,6 @@
 
             Assert.IsTrue(performanceDAO.Delete(performance));
             Assert.IsNull(performanceDAO.GetById(orgId));
-
-            // ReSharper disable once UnusedVariable
-            var r = performanceDAO.GetById(performance.Id);
         }
 
         [TestMethod]

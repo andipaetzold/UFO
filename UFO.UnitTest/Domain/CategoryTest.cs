@@ -7,12 +7,11 @@
     public class CategoryTest
     {
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void CreateNoIdObjectTest()
         {
             var category = new Category("name");
 
-            var id = category.Id;
+            Assert.IsFalse(category.HasId);
         }
 
         [TestMethod]

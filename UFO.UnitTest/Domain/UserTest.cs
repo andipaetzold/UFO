@@ -7,17 +7,11 @@
     public class UserTest
     {
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void CreateNoIdObjectTest()
         {
             var user = new User("username", "password", "email", false);
 
-            Assert.AreEqual("username", user.Username);
-            Assert.AreEqual("password", user.Password);
-            Assert.AreEqual("email", user.Email);
-            Assert.AreEqual(false, user.IsAdmin);
-
-            var id = user.Id;
+            Assert.IsFalse(user.HasId);
         }
 
         [TestMethod]

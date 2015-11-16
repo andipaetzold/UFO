@@ -16,6 +16,7 @@
             return new Artist(
                 GetRandomString(),
                 GetRandomInsertedCategory(),
+                GetRandomInsertedCountry(),
                 GetRandomString(),
                 GetRandomEmail(),
                 GetRandomString());

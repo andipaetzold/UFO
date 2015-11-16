@@ -1,53 +1,45 @@
 ﻿namespace UFO.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics;
 
     public abstract class DatabaseObject
     {
         #region Fields
 
+        [Range(1, int.MaxValue)]
         private int? id;
 
         #endregion
+        
 
         #region Properties
 
+        public bool HasId => id.HasValue;
+
+        [Key]
+        [Column("Id")]
         public int Id
         {
             get
             {
-                if (id == null)
+                if (id != null)
                 {
-                    throw new DatabaseIdException("No Id is set, because the object hasn't been added to the database.");
+                    return id.Value;
                 }
-                return id.Value;
+                throw new InvalidOperationException("Object hasn't been added to the database, yet.");
             }
+            set { id = value; }
         }
 
         #endregion
 
-        public void DeletedFromDatabase()
+        public void DeleteId()
         {
-            if (id == null)
-            {
-                throw new DatabaseIdException("This object hasn't been added to a database.");
-            }
-
             id = null;
-        }
-
-        public bool HasId() => id.HasValue;
-
-        public void InsertedInDatabase(int insertId)
-        {
-            if (id != null)
-            {
-                throw new DatabaseIdException("This object has already been added to a database.");
-            }
-
-            id = insertId;
         }
 
         public bool TryValidate()

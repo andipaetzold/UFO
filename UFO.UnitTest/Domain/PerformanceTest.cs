@@ -8,21 +8,20 @@
     public class PerformanceTest
     {
         [TestMethod]
-        [ExpectedException(typeof(DatabaseIdException))]
         public void CreateNoIdObjectTest()
         {
             var performance = new Performance(
                 DateTime.Now,
-                new Artist("name", null, null, "email", "videourl"),
+                new Artist("name", null, null, null, "email", "videourl"),
                 new Venue("shortname", "name", null, null));
 
-            var id = performance.Id;
+            Assert.IsFalse(performance.HasId);
         }
 
         [TestMethod]
         public void CreateObjectTest()
         {
-            var artist = new Artist("name", null, null, "email", "videourl");
+            var artist = new Artist("name", null, null, null, "email", "videourl");
             var venue = new Venue("shortname", "name", null, null);
             var performance = new Performance(13, DateTime.Now, artist, venue);
 
