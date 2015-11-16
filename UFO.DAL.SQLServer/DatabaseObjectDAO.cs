@@ -430,13 +430,12 @@
 
         private static string GetColumnNameFromPropertyInfo(PropertyInfo propertyInfo)
         {
-            var columnAttribute = propertyInfo.GetCustomAttribute(typeof(ColumnAttribute)) as ColumnAttribute;
-            if (columnAttribute == null)
+            if (!propertyInfo.IsDefined(typeof(ColumnAttribute)))
             {
                 return null;
             }
-
-            var columnName = columnAttribute.Name;
+            
+            var columnName = ((ColumnAttribute) propertyInfo.GetCustomAttribute(typeof(ColumnAttribute))).Name;
             if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
             {
                 columnName += "_Id";
@@ -463,12 +462,12 @@
             var propertyInfos = new List<PropertyInfo>();
             foreach (var propertyInfo in typeof(T).GetProperties())
             {
-                if (propertyInfo.GetCustomAttribute(typeof(ColumnAttribute)) == null)
+                if (!propertyInfo.IsDefined(typeof(ColumnAttribute)))
                 {
                     continue;
                 }
 
-                if (!excludeKey || propertyInfo.GetCustomAttribute(typeof(KeyAttribute)) == null)
+                if (!excludeKey || !propertyInfo.IsDefined(typeof(KeyAttribute)))
                 {
                     propertyInfos.Add(propertyInfo);
                 }
