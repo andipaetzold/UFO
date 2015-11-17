@@ -10,18 +10,17 @@
         {
         }
 
-        public User(int id, string username, string password, string email, bool isAdmin)
-            : this(username, password, email, isAdmin)
+        public User(int id, string username, string password, string email)
+            : this(username, password, email)
         {
             Id = id;
         }
 
-        public User(string username, string password, string email, bool isAdmin)
+        public User(string username, string password, string email)
         {
             Username = username;
             Password = password;
             Email = email;
-            IsAdmin = isAdmin;
         }
 
         #region Properties
@@ -30,10 +29,7 @@
         [StringLength(128)]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Column("IsAdmin")]
-        [Required]
-        public bool IsAdmin { get; set; }
+        
 
         [Column("Password")]
         [Required]
@@ -54,7 +50,7 @@
 
         public override int GetHashCode()
         {
-            return Username.GetHashCode() ^ Password.GetHashCode() ^ Email.GetHashCode() ^ IsAdmin.GetHashCode();
+            return Username.GetHashCode() ^ Password.GetHashCode() ^ Email.GetHashCode();
         }
     }
 }

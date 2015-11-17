@@ -9,7 +9,7 @@
 
     public static class UnitTestHelper
     {
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new Random();
 
         public static Artist GetRandomArtist()
         {
@@ -20,11 +20,6 @@
                 GetRandomString(),
                 GetRandomEmail(),
                 GetRandomString());
-        }
-
-        public static bool GetRandomBoolean()
-        {
-            return random.Next(0, 2) == 0;
         }
 
         public static Category GetRandomCategory()
@@ -39,12 +34,7 @@
 
         public static DateTime GetRandomDateTime()
         {
-            return DateTime.UtcNow.AddDays(random.Next(90));
-        }
-
-        private static string GetRandomEmail()
-        {
-            return GetRandomString() + "@" + GetRandomString() + ".de";
+            return DateTime.UtcNow.AddDays(Random.Next(90));
         }
 
         public static Artist GetRandomInsertedArtist()
@@ -102,25 +92,30 @@
 
         public static string GetRandomString()
         {
-            var length = 8;
+            const int Length = 8;
 
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+            const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(Chars, Length).Select(s => s[Random.Next(s.Length)]).ToArray());
         }
 
         public static User GetRandomUser()
         {
-            return new User(GetRandomString(), GetRandomString(), GetRandomEmail(), GetRandomBoolean());
+            return new User(GetRandomString(), GetRandomString(), GetRandomEmail());
         }
 
         public static Venue GetRandomVenue()
         {
-            return new Venue(GetRandomString(), GetRandomString(), random.Next(-90, 90), random.Next(-180, 180));
+            return new Venue(GetRandomString(), GetRandomString(), Random.Next(-90, 90), Random.Next(-180, 180));
         }
 
         public static IDatabase GetUnitTestDatabase()
         {
             return new Database(ConfigurationManager.ConnectionStrings["UnitTest"].ConnectionString);
+        }
+
+        private static string GetRandomEmail()
+        {
+            return GetRandomString() + "@" + GetRandomString() + ".de";
         }
     }
 }
