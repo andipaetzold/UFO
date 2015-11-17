@@ -29,7 +29,6 @@
         [StringLength(128)]
         [EmailAddress]
         public string Email { get; set; }
-        
 
         [Column("Password")]
         [Required]
@@ -45,7 +44,12 @@
 
         public override bool Equals(object obj)
         {
-            return obj.GetHashCode() == GetHashCode();
+            var objCasted = obj as User;
+            if (objCasted == null)
+            {
+                return false;
+            }
+            return objCasted.GetHashCode() == GetHashCode();
         }
 
         public override int GetHashCode()

@@ -42,7 +42,12 @@
 
         public override bool Equals(object obj)
         {
-            return obj.GetHashCode() == GetHashCode();
+            var objCasted = obj as Performance;
+            if (objCasted == null)
+            {
+                return false;
+            }
+            return objCasted.GetHashCode() == GetHashCode();
         }
 
         public override int GetHashCode()
