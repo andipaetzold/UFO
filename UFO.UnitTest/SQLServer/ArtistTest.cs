@@ -110,10 +110,6 @@
             Assert.IsTrue(artistDAO.Update(artist));
         }
 
-        private static IArtistDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new ArtistDAO(database);
-        }
+        private static IArtistDAO GetDAO() => DALFactory.CreateArtistDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }

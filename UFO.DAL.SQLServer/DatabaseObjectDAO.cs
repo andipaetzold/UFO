@@ -434,8 +434,8 @@
             {
                 return null;
             }
-            
-            var columnName = ((ColumnAttribute) propertyInfo.GetCustomAttribute(typeof(ColumnAttribute))).Name;
+
+            var columnName = ((ColumnAttribute)propertyInfo.GetCustomAttribute(typeof(ColumnAttribute))).Name;
             if (propertyInfo.PropertyType.IsSubclassOf(typeof(DatabaseObject)))
             {
                 columnName += "_Id";

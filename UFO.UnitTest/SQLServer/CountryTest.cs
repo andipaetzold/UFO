@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class CountryTest
@@ -17,8 +16,6 @@
             // ReSharper disable once ObjectCreationAsStatement
             new CountryDAO(null);
         }
-
-      
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -66,12 +63,6 @@
             Assert.AreEqual(country, country2);
         }
 
-        private static ICountryDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new CountryDAO(database);
-        }
-
         [TestMethod]
         public void InsertDuplicateTest()
         {
@@ -116,5 +107,7 @@
             country.Name = UnitTestHelper.GetRandomString();
             Assert.IsTrue(countryDAO.Update(country));
         }
+
+        private static ICountryDAO GetDAO() => DALFactory.CreateCountryDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }

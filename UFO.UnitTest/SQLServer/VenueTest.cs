@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class VenueTest
@@ -71,12 +70,6 @@
             Assert.AreEqual(venue, venue2);
         }
 
-        private static IVenueDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new VenueDAO(database);
-        }
-
         [TestMethod]
         public void InsertDuplicateTest()
         {
@@ -120,5 +113,7 @@
             venue.Name = UnitTestHelper.GetRandomString();
             Assert.IsTrue(venueDAO.Update(venue));
         }
+
+        private static IVenueDAO GetDAO() => DALFactory.CreateVenueDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }

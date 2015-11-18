@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class UserTest
@@ -24,7 +23,7 @@
         {
             GetDAO().Delete(null);
         }
-        
+
         [TestMethod]
         public void DeleteTest()
         {
@@ -62,12 +61,6 @@
         public void GetByIdNullTest()
         {
             Assert.IsNull(GetDAO().GetById(-1));
-        }
-
-        private static IUserDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new UserDAO(database);
         }
 
         [TestMethod]
@@ -117,5 +110,7 @@
             user.Username = UnitTestHelper.GetRandomString();
             Assert.IsTrue(userDAO.Update(user));
         }
+
+        private static IUserDAO GetDAO() => DALFactory.CreateUserDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }

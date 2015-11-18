@@ -4,7 +4,6 @@
     using System.Configuration;
     using System.Linq;
     using UFO.DAL.Common;
-    using UFO.DAL.SQLServer;
     using UFO.Domain;
 
     public static class UnitTestHelper
@@ -40,7 +39,7 @@
         public static Artist GetRandomInsertedArtist()
         {
             var artist = GetRandomArtist();
-            new ArtistDAO(GetUnitTestDatabase()).Insert(artist);
+            DALFactory.CreateArtistDAO(GetUnitTestDatabase()).Insert(artist);
 
             return artist;
         }
@@ -48,7 +47,7 @@
         public static Category GetRandomInsertedCategory()
         {
             var category = GetRandomCategory();
-            new CategoryDAO(GetUnitTestDatabase()).Insert(category);
+            DALFactory.CreateCategoryDAO(GetUnitTestDatabase()).Insert(category);
 
             return category;
         }
@@ -56,7 +55,7 @@
         public static Country GetRandomInsertedCountry()
         {
             var country = GetRandomCountry();
-            new CountryDAO(GetUnitTestDatabase()).Insert(country);
+            DALFactory.CreateCountryDAO(GetUnitTestDatabase()).Insert(country);
 
             return country;
         }
@@ -64,7 +63,7 @@
         public static Performance GetRandomInsertedPerformance()
         {
             var performance = GetRandomPerformance();
-            new PerformanceDAO(GetUnitTestDatabase()).Insert(performance);
+            DALFactory.CreatePerformanceDAO(GetUnitTestDatabase()).Insert(performance);
 
             return performance;
         }
@@ -72,7 +71,7 @@
         public static User GetRandomInsertedUser()
         {
             var user = GetRandomUser();
-            new UserDAO(GetUnitTestDatabase()).Insert(user);
+            DALFactory.CreateUserDAO(GetUnitTestDatabase()).Insert(user);
 
             return user;
         }
@@ -80,7 +79,7 @@
         public static Venue GetRandomInsertedVenue()
         {
             var venue = GetRandomVenue();
-            new VenueDAO(GetUnitTestDatabase()).Insert(venue);
+            DALFactory.CreateVenueDAO(GetUnitTestDatabase()).Insert(venue);
 
             return venue;
         }
@@ -110,7 +109,8 @@
 
         public static IDatabase GetUnitTestDatabase()
         {
-            return new Database(ConfigurationManager.ConnectionStrings["UnitTest"].ConnectionString);
+            var connectionString = ConfigurationManager.ConnectionStrings["UnitTest"].ConnectionString;
+            return DALFactory.CreateDatabase(connectionString);
         }
 
         private static string GetRandomEmail()

@@ -5,7 +5,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UFO.DAL.Common;
     using UFO.DAL.SQLServer;
-    using UFO.Domain;
 
     [TestClass]
     public class PerformanceTest
@@ -18,7 +17,6 @@
             new PerformanceDAO(null);
         }
 
-       
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteNullTest()
@@ -64,12 +62,6 @@
             var performance2 = performanceDAO.GetById(id);
 
             Assert.AreEqual(performance, performance2);
-        }
-
-        private static IPerformanceDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new PerformanceDAO(database);
         }
 
         [TestMethod]
@@ -118,5 +110,7 @@
             performance.DateTime = UnitTestHelper.GetRandomDateTime();
             Assert.IsTrue(performanceDAO.Update(performance));
         }
+
+        private static IPerformanceDAO GetDAO() => DALFactory.CreatePerformanceDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }

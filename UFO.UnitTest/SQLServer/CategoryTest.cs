@@ -108,10 +108,6 @@
             Assert.IsTrue(categoryDAO.Update(category));
         }
 
-        private static ICategoryDAO GetDAO()
-        {
-            var database = UnitTestHelper.GetUnitTestDatabase();
-            return new CategoryDAO(database);
-        }
+        private static ICategoryDAO GetDAO() => DALFactory.CreateCategoryDAO(UnitTestHelper.GetUnitTestDatabase());
     }
 }
