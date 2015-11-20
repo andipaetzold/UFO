@@ -40,6 +40,10 @@
         [TestMethod]
         public void SelectAllTest()
         {
+            GetDAO().Insert(UnitTestHelper.GetRandomCountry());
+            GetDAO().Insert(UnitTestHelper.GetRandomCountry());
+            GetDAO().Insert(UnitTestHelper.GetRandomCountry());
+
             var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }

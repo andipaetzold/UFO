@@ -53,6 +53,10 @@
         [TestMethod]
         public void SelectAllTest()
         {
+            GetDAO().Insert(UnitTestHelper.GetRandomUser());
+            GetDAO().Insert(UnitTestHelper.GetRandomUser());
+            GetDAO().Insert(UnitTestHelper.GetRandomUser());
+
             var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }

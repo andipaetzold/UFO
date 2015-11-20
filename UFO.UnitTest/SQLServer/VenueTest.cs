@@ -47,6 +47,10 @@
         [TestMethod]
         public void SelectAllTest()
         {
+            GetDAO().Insert(UnitTestHelper.GetRandomVenue());
+            GetDAO().Insert(UnitTestHelper.GetRandomVenue());
+            GetDAO().Insert(UnitTestHelper.GetRandomVenue());
+
             var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
