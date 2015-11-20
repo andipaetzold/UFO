@@ -18,7 +18,8 @@
                 GetRandomInsertedCountry(),
                 GetRandomString(),
                 GetRandomEmail(),
-                GetRandomString());
+                GetRandomString(),
+                GetRandomBoolean());
         }
 
         public static Category GetRandomCategory()
@@ -95,6 +96,11 @@
 
             const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(Chars, Length).Select(s => s[Random.Next(s.Length)]).ToArray());
+        }
+
+        public static bool GetRandomBoolean()
+        {
+            return Random.NextDouble() > 0.5;
         }
 
         public static User GetRandomUser()

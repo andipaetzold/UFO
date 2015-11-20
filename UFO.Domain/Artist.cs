@@ -13,8 +13,9 @@
             Country country,
             string image,
             string email,
-            string videoUrl)
-            : this(name, category, country, image, email, videoUrl)
+            string videoUrl,
+            bool isDeleted)
+            : this(name, category, country, image, email, videoUrl, isDeleted)
         {
             Id = id;
         }
@@ -23,7 +24,14 @@
         {
         }
 
-        public Artist(string name, Category category, Country country, string image, string email, string videoUrl)
+        public Artist(
+            string name,
+            Category category,
+            Country country,
+            string image,
+            string email,
+            string videoUrl,
+            bool isDeleted)
         {
             Name = name;
             Category = category;
@@ -31,6 +39,7 @@
             Image = image;
             Email = email;
             VideoUrl = videoUrl;
+            IsDeleted = isDeleted;
         }
 
         #region Properties
@@ -51,6 +60,10 @@
         [Column("Image")]
         [StringLength(128)]
         public string Image { get; set; }
+
+        [Column("IsDeleted")]
+        [Required]
+        public bool IsDeleted { get; set; }
 
         [Column("Name")]
         [Required]
