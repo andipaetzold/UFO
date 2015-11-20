@@ -5,10 +5,14 @@
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Diagnostics;
+    using System.Transactions;
     using UFO.DAL.Common;
 
     public class Database : IDatabase
     {
+        [ThreadStatic]
+        private static DbConnection sharedConnection;
+
         #region Fields
 
         private readonly string connectionString;
@@ -54,23 +58,21 @@
                 throw new ArgumentNullException(nameof(command));
             }
 
-            // execute and get reader
             DbConnection connection = null;
             try
             {
                 connection = GetOpenConnection();
                 command.Connection = connection;
 
-                return command.ExecuteReader(CommandBehavior.CloseConnection);
+                var beahvior = Transaction.Current == null ? CommandBehavior.CloseConnection : CommandBehavior.Default;
+
+                return command.ExecuteReader();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
+                ReleaseConnection(connection);
                 return null;
-            }
-            finally
-            {
-                // ReleaseConnection(connection);
             }
         }
 
@@ -169,6 +171,28 @@
 
         private DbConnection GetOpenConnection()
         {
+            var currentTransaction = Transaction.Current;
+
+            if (currentTransaction == null)
+            {
+                return CreateOpenConnection();
+            }
+            if (sharedConnection != null)
+            {
+                return sharedConnection;
+            }
+            sharedConnection = CreateOpenConnection();
+            currentTransaction.TransactionCompleted += (s, e) =>
+                {
+                    sharedConnection.Close();
+                    sharedConnection = null;
+                };
+
+            return sharedConnection;
+        }
+
+        private DbConnection CreateOpenConnection()
+        {
             var connection = new SqlConnection(connectionString);
             connection.Open();
             return connection;
@@ -176,7 +200,10 @@
 
         private void ReleaseConnection(DbConnection connection)
         {
-            connection?.Close();
+            if (Transaction.Current == null)
+            {
+                connection?.Close();
+            }
         }
     }
 }
