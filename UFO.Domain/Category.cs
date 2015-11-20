@@ -32,17 +32,29 @@
 
         public override bool Equals(object obj)
         {
-            var objCasted = obj as Category;
-            if (objCasted == null)
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return objCasted.GetHashCode() == GetHashCode();
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Category)obj);
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return Name?.GetHashCode() ?? 0;
+        }
+
+        protected bool Equals(Category other)
+        {
+            return string.Equals(Name, other.Name);
         }
     }
 }

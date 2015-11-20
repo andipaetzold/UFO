@@ -44,17 +44,36 @@
 
         public override bool Equals(object obj)
         {
-            var objCasted = obj as User;
-            if (objCasted == null)
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return objCasted.GetHashCode() == GetHashCode();
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((User)obj);
         }
 
         public override int GetHashCode()
         {
-            return Username.GetHashCode() ^ Password.GetHashCode() ^ Email.GetHashCode();
+            unchecked
+            {
+                var hashCode = Email?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Username?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
+
+        protected bool Equals(User other)
+        {
+            return string.Equals(Email, other.Email) && string.Equals(Password, other.Password)
+                   && string.Equals(Username, other.Username);
         }
     }
 }

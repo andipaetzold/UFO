@@ -7,6 +7,12 @@
     [Table("Performance")]
     public class Performance : DatabaseObject
     {
+        #region Fields
+
+        private DateTime dateTime;
+
+        #endregion
+
         public Performance()
         {
         }
@@ -32,7 +38,11 @@
 
         [Column("DateTime")]
         [Required]
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime
+        {
+            get { return dateTime; }
+            set { dateTime = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second); }
+        }
 
         [Column("Venue")]
         [Required]
@@ -42,18 +52,35 @@
 
         public override bool Equals(object obj)
         {
-            var objCasted = obj as Performance;
-            if (objCasted == null)
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return objCasted.GetHashCode() == GetHashCode();
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Performance)obj);
         }
 
         public override int GetHashCode()
         {
-            // TODO: DateTime
-            return Artist.GetHashCode() ^ Venue.GetHashCode();
+            unchecked
+            {
+                var hashCode = Artist?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ DateTime.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Venue?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
+
+        protected bool Equals(Performance other)
+        {
+            return Equals(Artist, other.Artist) && DateTime.Equals(other.DateTime) && Equals(Venue, other.Venue);
         }
     }
 }

@@ -78,18 +78,42 @@
 
         public override bool Equals(object obj)
         {
-            var objCasted = obj as Artist;
-            if (objCasted == null)
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return objCasted.GetHashCode() == GetHashCode();
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Artist)obj);
         }
 
         public override int GetHashCode()
         {
-            return (Name?.GetHashCode() ?? 0) ^ (Category?.GetHashCode() ?? 0) ^ (Country?.GetHashCode() ?? 0)
-                   ^ (Image?.GetHashCode() ?? 0) ^ (Email?.GetHashCode() ?? 0) ^ (VideoUrl?.GetHashCode() ?? 0);
+            unchecked
+            {
+                var hashCode = Category?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (Country?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Email?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Image?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ IsDeleted.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (VideoUrl?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
+
+        protected bool Equals(Artist other)
+        {
+            return Equals(Category, other.Category) && Equals(Country, other.Country)
+                   && string.Equals(Email, other.Email) && string.Equals(Image, other.Image)
+                   && IsDeleted == other.IsDeleted && string.Equals(Name, other.Name)
+                   && string.Equals(VideoUrl, other.VideoUrl);
         }
     }
 }

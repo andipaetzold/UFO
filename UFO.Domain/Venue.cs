@@ -48,17 +48,37 @@
 
         public override bool Equals(object obj)
         {
-            var objCasted = obj as Venue;
-            if (objCasted == null)
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return objCasted.GetHashCode() == GetHashCode();
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Venue)obj);
         }
 
         public override int GetHashCode()
         {
-            return ShortName.GetHashCode() ^ Name.GetHashCode() ^ Latitude.GetHashCode() ^ Longitude.GetHashCode();
+            unchecked
+            {
+                var hashCode = Latitude.GetHashCode();
+                hashCode = (hashCode * 397) ^ Longitude.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ShortName?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
+
+        protected bool Equals(Venue other)
+        {
+            return Latitude == other.Latitude && Longitude == other.Longitude && string.Equals(Name, other.Name)
+                   && string.Equals(ShortName, other.ShortName);
         }
     }
 }
