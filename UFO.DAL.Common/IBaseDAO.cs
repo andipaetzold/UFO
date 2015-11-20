@@ -6,9 +6,9 @@
     {
         bool Delete(T o);
 
-        ICollection<T> GetAll();
+        ICollection<T> SelectAll();
 
-        T GetById(int id);
+        T SelectById(int id);
 
         bool Insert(T o);
 

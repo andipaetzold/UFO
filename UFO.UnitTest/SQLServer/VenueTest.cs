@@ -41,24 +41,24 @@
             var orgId = venue.Id;
 
             Assert.IsTrue(venueDAO.Delete(venue));
-            Assert.IsNull(venueDAO.GetById(orgId));
+            Assert.IsNull(venueDAO.SelectById(orgId));
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public void SelectByIdTest()
         {
             var venueDAO = GetDAO();
 
@@ -66,7 +66,7 @@
             Assert.IsTrue(venueDAO.Insert(venue));
 
             var id = venue.Id;
-            var venue2 = venueDAO.GetById(id);
+            var venue2 = venueDAO.SelectById(id);
             Assert.AreEqual(venue, venue2);
         }
 

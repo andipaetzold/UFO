@@ -34,7 +34,7 @@
             var orgId = user.Id;
 
             Assert.IsTrue(userDAO.Delete(user));
-            Assert.IsNull(userDAO.GetById(orgId));
+            Assert.IsNull(userDAO.SelectById(orgId));
         }
 
         [TestMethod]
@@ -46,21 +46,21 @@
             Assert.IsTrue(userDAO.Insert(user));
 
             var id = user.Id;
-            var user2 = userDAO.GetById(id);
+            var user2 = userDAO.SelectById(id);
             Assert.AreEqual(user, user2);
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]

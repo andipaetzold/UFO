@@ -34,24 +34,24 @@
             var orgId = country.Id;
 
             Assert.IsTrue(countryDAO.Delete(country));
-            Assert.IsNull(countryDAO.GetById(orgId));
+            Assert.IsNull(countryDAO.SelectById(orgId));
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public void SelectByIdTest()
         {
             var countryDAO = GetDAO();
 
@@ -59,7 +59,7 @@
             Assert.IsTrue(countryDAO.Insert(country));
 
             var id = country.Id;
-            var country2 = countryDAO.GetById(id);
+            var country2 = countryDAO.SelectById(id);
             Assert.AreEqual(country, country2);
         }
 

@@ -34,25 +34,25 @@
             var orgId = artist.Id;
 
             Assert.IsTrue(artistDAO.Delete(artist));
-            Assert.IsNull(artistDAO.GetById(orgId));
+            Assert.IsNull(artistDAO.SelectById(orgId));
             Assert.IsFalse(artist.HasId);
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public void SelectByIdTest()
         {
             var artistDAO = GetDAO();
 
@@ -60,7 +60,7 @@
             Assert.IsTrue(artistDAO.Insert(artist));
 
             var id = artist.Id;
-            var artist2 = artistDAO.GetById(id);
+            var artist2 = artistDAO.SelectById(id);
             Assert.AreEqual(artist, artist2);
         }
 

@@ -34,24 +34,24 @@
             var orgId = category.Id;
 
             Assert.IsTrue(categoryDAO.Delete(category));
-            Assert.IsNull(categoryDAO.GetById(orgId));
+            Assert.IsNull(categoryDAO.SelectById(orgId));
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public void SelectByIdTest()
         {
             var userDAO = GetDAO();
 
@@ -59,7 +59,7 @@
             Assert.IsTrue(userDAO.Insert(category));
 
             var id = category.Id;
-            var category2 = userDAO.GetById(id);
+            var category2 = userDAO.SelectById(id);
             Assert.AreEqual(category, category2);
         }
 

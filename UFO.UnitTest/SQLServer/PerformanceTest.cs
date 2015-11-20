@@ -34,24 +34,24 @@
             var orgId = performance.Id;
 
             Assert.IsTrue(performanceDAO.Delete(performance));
-            Assert.IsNull(performanceDAO.GetById(orgId));
+            Assert.IsNull(performanceDAO.SelectById(orgId));
         }
 
         [TestMethod]
-        public void GetAllTest()
+        public void SelectAllTest()
         {
-            var result = GetDAO().GetAll();
+            var result = GetDAO().SelectAll();
             Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
-        public void GetByIdNullTest()
+        public void SelectByIdNullTest()
         {
-            Assert.IsNull(GetDAO().GetById(-1));
+            Assert.IsNull(GetDAO().SelectById(-1));
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public void SelectByIdTest()
         {
             var performanceDAO = GetDAO();
 
@@ -59,7 +59,7 @@
             Assert.IsTrue(performanceDAO.Insert(performance));
 
             var id = performance.Id;
-            var performance2 = performanceDAO.GetById(id);
+            var performance2 = performanceDAO.SelectById(id);
 
             Assert.AreEqual(performance, performance2);
         }

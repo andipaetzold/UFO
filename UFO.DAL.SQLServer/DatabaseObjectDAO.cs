@@ -26,7 +26,7 @@
             };
     }
 
-    public class DatabaseObjectDAO<T>
+    public class DatabaseObjectDAO<T> : IBaseDAO<T>
         where T : DatabaseObject, new()
     {
         #region Fields
@@ -49,6 +49,118 @@
         #region Properties
 
         public static string TableName => ((TableAttribute)typeof(T).GetCustomAttribute(typeof(TableAttribute))).Name;
+
+        #endregion
+
+        #region IBaseDAO<T> Members
+
+        public bool Delete(T o)
+        {
+            if (o == null)
+            {
+                throw new ArgumentNullException(nameof(o));
+            }
+            if (!o.HasId)
+            {
+                return false;
+            }
+
+            // delete
+            using (var command = CreateDeleteByIdCommand(o.Id))
+            {
+                if (database.ExecuteNonQuery(command) == 1)
+                {
+                    o.DeleteId();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public ICollection<T> SelectAll()
+        {
+            using (var command = CreateSelectAllCommand())
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    IList<T> result = new List<T>();
+                    while (reader.Read())
+                    {
+                        result.Add(CreateObjectFromDataReader(reader));
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public T SelectById(int id)
+        {
+            if (id <= 0)
+            {
+                return null;
+            }
+
+            using (var command = CreateSelectByIdCommand(id))
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    return reader.Read() ? CreateObjectFromDataReader(reader) : null;
+                }
+            }
+        }
+
+        public bool Insert(T o)
+        {
+            // check parameter
+            if (o == null)
+            {
+                throw new ArgumentNullException(nameof(o));
+            }
+            if (o.HasId)
+            {
+                return false;
+            }
+            if (!o.TryValidate())
+            {
+                return false;
+            }
+
+            // insert
+            using (var command = CreateInsertCommand(o))
+            {
+                var id = database.ExecuteScalar(command) as int?;
+
+                if (id.HasValue)
+                {
+                    o.Id = id.Value;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool Update(T o)
+        {
+            // check parameter
+            if (o == null)
+            {
+                throw new ArgumentNullException(nameof(o));
+            }
+            if (!o.HasId)
+            {
+                return false;
+            }
+            if (!o.TryValidate())
+            {
+                return false;
+            }
+
+            // update
+            using (var command = CreateUpdateByIdCommand(o))
+            {
+                return database.ExecuteNonQuery(command) == 1;
+            }
+        }
 
         #endregion
 
@@ -150,114 +262,6 @@
             return o;
         }
 
-        public bool Delete(T o)
-        {
-            if (o == null)
-            {
-                throw new ArgumentNullException(nameof(o));
-            }
-            if (!o.HasId)
-            {
-                return false;
-            }
-
-            // delete
-            using (var command = CreateDeleteByIdCommand(o.Id))
-            {
-                if (database.ExecuteNonQuery(command) == 1)
-                {
-                    o.DeleteId();
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        public ICollection<T> GetAll()
-        {
-            using (var command = CreateGetAllCommand())
-            {
-                using (var reader = database.ExecuteReader(command))
-                {
-                    IList<T> result = new List<T>();
-                    while (reader.Read())
-                    {
-                        result.Add(CreateObjectFromDataReader(reader));
-                    }
-                    return result;
-                }
-            }
-        }
-
-        public T GetById(int id)
-        {
-            if (id <= 0)
-            {
-                return null;
-            }
-
-            using (var command = CreateGetByIdCommand(id))
-            {
-                using (var reader = database.ExecuteReader(command))
-                {
-                    return reader.Read() ? CreateObjectFromDataReader(reader) : null;
-                }
-            }
-        }
-
-        public bool Insert(T o)
-        {
-            // check parameter
-            if (o == null)
-            {
-                throw new ArgumentNullException(nameof(o));
-            }
-            if (o.HasId)
-            {
-                return false;
-            }
-            if (!o.TryValidate())
-            {
-                return false;
-            }
-
-            // insert
-            using (var command = CreateInsertCommand(o))
-            {
-                var id = database.ExecuteScalar(command) as int?;
-
-                if (id.HasValue)
-                {
-                    o.Id = id.Value;
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        public bool Update(T o)
-        {
-            // check parameter
-            if (o == null)
-            {
-                throw new ArgumentNullException(nameof(o));
-            }
-            if (!o.HasId)
-            {
-                return false;
-            }
-            if (!o.TryValidate())
-            {
-                return false;
-            }
-
-            // update
-            using (var command = CreateUpdateByIdCommand(o))
-            {
-                return database.ExecuteNonQuery(command) == 1;
-            }
-        }
-
         public Tuple<DbType, object> GetTypeValueFromProperty(T o, PropertyInfo propertyInfo)
         {
             DbType dbType;
@@ -298,7 +302,7 @@
             return $"DELETE FROM [{table}] WHERE {whereSQL};";
         }
 
-        private DbCommand CreateGetAllCommand()
+        private DbCommand CreateSelectAllCommand()
         {
             List<string> joins;
             var columnList = CreateColumnList(out joins);
@@ -311,7 +315,7 @@
             return database.CreateCommand(commandText);
         }
 
-        private DbCommand CreateGetByIdCommand(int id)
+        private DbCommand CreateSelectByIdCommand(int id)
         {
             List<string> joins;
             var columnList = CreateColumnList(out joins);
