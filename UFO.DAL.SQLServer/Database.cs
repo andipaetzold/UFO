@@ -66,7 +66,7 @@
 
                 var beahvior = Transaction.Current == null ? CommandBehavior.CloseConnection : CommandBehavior.Default;
 
-                return command.ExecuteReader();
+                return command.ExecuteReader(beahvior);
             }
             catch (Exception e)
             {
