@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.DAL.SQLServer", "UFO.DA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.UnitTest", "UFO.UnitTest\UFO.UnitTest.csproj", "{9EBD4346-C34E-4880-9E76-ADD48FA4CCA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Commander", "UFO.Commander\UFO.Commander.csproj", "{379E8CA1-66DB-499E-B84D-D0D3261C415C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Server", "UFO.Server\UFO.Server.csproj", "{437E043F-CC72-4B6C-9AB8-A452BCCDBE1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{9EBD4346-C34E-4880-9E76-ADD48FA4CCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBD4346-C34E-4880-9E76-ADD48FA4CCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBD4346-C34E-4880-9E76-ADD48FA4CCA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{379E8CA1-66DB-499E-B84D-D0D3261C415C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379E8CA1-66DB-499E-B84D-D0D3261C415C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379E8CA1-66DB-499E-B84D-D0D3261C415C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{379E8CA1-66DB-499E-B84D-D0D3261C415C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{437E043F-CC72-4B6C-9AB8-A452BCCDBE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{437E043F-CC72-4B6C-9AB8-A452BCCDBE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437E043F-CC72-4B6C-9AB8-A452BCCDBE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{437E043F-CC72-4B6C-9AB8-A452BCCDBE1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

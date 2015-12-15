@@ -2,8 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using PropertyChanged;
 
     [Table("Category")]
+    [ImplementPropertyChanged]
     public class Category : DatabaseObject
     {
         public Category(int id, string name)

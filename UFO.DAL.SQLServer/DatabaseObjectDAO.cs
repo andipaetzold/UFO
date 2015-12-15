@@ -285,6 +285,27 @@
             return new Tuple<DbType, object>(dbType, value);
         }
 
+        protected ICollection<T> SelectByCondition(IEnumerable<Tuple<string, string, object>> conditions)
+        {
+            if (conditions == null)
+            {
+                throw new ArgumentNullException(nameof(conditions));
+            }
+
+            using (var command = CreateSelectByConditionCommand(conditions))
+            {
+                using (var reader = database.ExecuteReader(command))
+                {
+                    IList<T> result = new List<T>();
+                    while (reader.Read())
+                    {
+                        result.Add(CreateObjectFromDataReader(reader));
+                    }
+                    return result;
+                }
+            }
+        }
+
         private DbCommand CreateDeleteByIdCommand(object id)
         {
             // command text
@@ -317,18 +338,51 @@
 
         private DbCommand CreateSelectByIdCommand(int id)
         {
+            return CreateSelectByConditionCommand(new[] { new Tuple<string, string, object>("Id", "=", id) });
+        }
+
+        private DbCommand CreateSelectByConditionCommand(IEnumerable<Tuple<string, string, object>> conditions)
+        {
             List<string> joins;
             var columnList = CreateColumnList(out joins);
 
+            // where
+            var where = new List<string>();
+            var parameterList = new List<Tuple<string, DbType, object>>();
+            foreach (var condition in conditions)
+            {
+                var randKey = Guid.NewGuid().ToString("N");
+
+                // get dbtype
+                var dbType = GetDbTypeFromPropertyName(condition.Item1);
+                parameterList.Add(new Tuple<string, DbType, object>(randKey, dbType, condition.Item3));
+
+                where.Add($"[{TableName}].[{condition.Item1}] = @{randKey}");
+            }
+
             // command text
             var select = columnList.Select(column => $"[{column.Item1}].[{column.Item2}] as [{column.Item3}]").ToList();
-            var where = new[] { $"[{TableName}].[Id] = @Id" };
             var commandText = CreateSelectStatement(select, TableName, joins, where);
 
             // command
             var command = database.CreateCommand(commandText);
-            database.DefineParameter(command, "Id", DbType.Int32, id);
+            foreach (var parameter in parameterList)
+            {
+                database.DefineParameter(command, parameter.Item1, parameter.Item2, parameter.Item3);
+            }
+
             return command;
+        }
+
+        private DbType GetDbTypeFromPropertyName(string name)
+        {
+            var propertyType = typeof(T).GetProperty(name)?.PropertyType;
+            if (propertyType == null)
+            {
+                return default(DbType);
+            }
+            var dbType = DatabaseObjectDAO.DbTypeDictionary?[propertyType];
+            return dbType ?? default(DbType);
         }
 
         private DbCommand CreateInsertCommand(T o)

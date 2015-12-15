@@ -2,8 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using PropertyChanged;
 
     [Table("Artist")]
+    [ImplementPropertyChanged]
     public class Artist : DatabaseObject
     {
         public Artist(

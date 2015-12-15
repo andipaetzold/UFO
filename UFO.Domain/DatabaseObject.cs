@@ -2,11 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using PropertyChanged;
 
-    public abstract class DatabaseObject
+    [ImplementPropertyChanged]
+    public abstract class DatabaseObject : IDataErrorInfo,
+                                           INotifyPropertyChanged
     {
         #region Fields
 
@@ -14,10 +20,10 @@
         private int? id;
 
         #endregion
-        
 
         #region Properties
 
+        [DependsOn(nameof(Id))]
         public bool HasId => id.HasValue;
 
         [Key]
@@ -37,6 +43,20 @@
 
         #endregion
 
+        #region IDataErrorInfo Members
+
+        public string this[string porpertyName]
+            => ValidateProperty(GetType().GetProperty(porpertyName).GetValue(this, null), porpertyName);
+
+        public string Error => string.Empty;
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        
+
+        #endregion
+
         public void DeleteId()
         {
             id = null;
@@ -52,6 +72,30 @@
                 Debug.WriteLine(results);
             }
             return valid;
+        }
+
+        protected string ValidateProperty(object value, string propertyName)
+        {
+            var info = GetType().GetProperty(propertyName);
+            IEnumerable<string> errors =
+                (info.GetCustomAttributes(true)
+                     .OfType<ValidationAttribute>()
+                     .Where(va => !va.IsValid(value))
+                     .Select(va => va.FormatErrorMessage(string.Empty))).ToList();
+
+            if (errors.Any())
+            {
+                Debug.WriteLine(errors.First());
+                return errors.First();
+            }
+            return null;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

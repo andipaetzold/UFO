@@ -1,0 +1,90 @@
+﻿<Window x:Class="UFO.Commander.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:UFO.Commander.ViewModels"
+        xmlns:v="clr-namespace:UFO.Commander.Views"
+        xmlns:commander="clr-namespace:UFO.Commander"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:MainViewModel}"
+        Title="UFO Commander" Height="600" Width="800">
+    <DockPanel>
+        <TabControl>
+            <TabItem Header="Artists">
+                <DataGrid AutoGenerateColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
+                          CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Artists}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
+                                                Binding="{Binding HasId, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                        <DataGridTextColumn Header="Name" IsReadOnly="False"
+                                            Binding="{Binding Name, ValidatesOnDataErrors=True}" />
+
+                        <DataGridComboBoxColumn Header="Category" SelectedItemBinding="{Binding Category}"
+                                                DisplayMemberPath="Name">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding DataContext.Categories, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding DataContext.Categories, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
+                        <DataGridComboBoxColumn Header="Country" SelectedItemBinding="{Binding Country}"
+                                                DisplayMemberPath="Name">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding DataContext.Countries, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding DataContext.Countries, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
+                        <!-- TODO: Image -->
+
+                        <DataGridTextColumn Header="Email" IsReadOnly="False"
+                                            Binding="{Binding Email, ValidatesOnDataErrors=True}" />
+                        <DataGridTextColumn Header="VideoUrl" IsReadOnly="False"
+                                            Binding="{Binding VideoUrl, ValidatesOnDataErrors=True}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Venues">
+                <DataGrid AutoGenerateColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
+                          CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Venues}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
+                                                Binding="{Binding HasId, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+
+                        <DataGridTextColumn Header="Short Name"
+                                            Binding="{Binding ShortName, ValidatesOnDataErrors=True}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name, ValidatesOnDataErrors=True}" />
+
+                        <!-- TODO: UpDownColumn -->
+                        <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude, ValidatesOnDataErrors=True}" />
+                        <DataGridTextColumn Header="Longitude"
+                                            Binding="{Binding Longitude, ValidatesOnDataErrors=True}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="DayProgram">
+                <DataGrid x:Name="DayProgram" />
+
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+
+</Window>
