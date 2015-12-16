@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using UFO.Commander.Collections;
     using UFO.Domain;
     using UFO.Server;
@@ -19,15 +20,13 @@
             Artists = new DatabaseSyncObservableCollection<Artist>(server.ArtistServer);
             Categories = new DatabaseSyncObservableCollection<Category>(server.CategoryServer);
             Countries = new DatabaseSyncObservableCollection<Country>(server.CountryServer);
-            Performances = new DatabaseSyncObservableCollection<Performance>(server.PerformanceServer);
             Venues = new DatabaseSyncObservableCollection<Venue>(server.VenueServer);
 
-            TimeList = new List<DateTime>();
-            var day = new DateTime(2015, 7, 25);
-            for (var i = 14; i <= 23; ++i)
-            {
-                TimeList.Add(day.AddHours(i));
-            }
+            var performances = server.PerformanceServer.GetAll().ToList();
+            DayProgram =
+                VenueProgram.Create(
+                    performances.Where(p => p.DateTime.Date == new DateTime(2015, 7, 25)).ToList(),
+                    Venues);
         }
 
         #region Properties
@@ -35,8 +34,7 @@
         public DatabaseSyncObservableCollection<Artist> Artists { get; }
         public DatabaseSyncObservableCollection<Category> Categories { get; }
         public DatabaseSyncObservableCollection<Country> Countries { get; }
-        public DatabaseSyncObservableCollection<Performance> Performances { get; set; }
-        public List<DateTime> TimeList { get; }
+        public List<VenueProgram> DayProgram { get; }
         public DatabaseSyncObservableCollection<Venue> Venues { get; }
 
         #endregion

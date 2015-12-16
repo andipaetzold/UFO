@@ -30,7 +30,7 @@
         {
             if (server.UserServer.CheckLoginData(Username, Password))
             {
-                new MainView { DataContext = new MainViewModel() }.Show();
+                new MainView().Show();
                 RaiseRequestClose();
             }
             else
