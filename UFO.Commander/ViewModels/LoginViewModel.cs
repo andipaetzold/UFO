@@ -2,7 +2,6 @@
 {
     using System.Windows;
     using System.Windows.Input;
-    using UFO.Commander.Commands.Login;
     using UFO.Commander.Views;
     using UFO.Server;
 
@@ -16,7 +15,7 @@
 
         public LoginViewModel()
         {
-            LoginCommand = new LoginCommand(this);
+            LoginCommand = new LambdaCommand(Login);
         }
 
         #region Properties

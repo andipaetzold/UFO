@@ -75,8 +75,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Collections\DatabaseSyncObservableCollection.cs" />
-    <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Commands\Login\LoginCommand.cs" />
     <Compile Include="ViewModels\Interfaces\IRequestCloseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
