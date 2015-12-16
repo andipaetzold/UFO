@@ -1,5 +1,8 @@
 ﻿namespace UFO.Server
 {
+    using System.Configuration;
+    using UFO.DAL.Common;
+
     public class Server
     {
         #region Properties
@@ -12,5 +15,11 @@
         public VenueServer VenueServer { get; } = new VenueServer();
 
         #endregion
+
+        internal static IDatabase GetDatabase()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+            return DALFactory.CreateDatabase(connectionString);
+        }
     }
 }

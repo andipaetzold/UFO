@@ -26,6 +26,8 @@
 
             ItemChanged += SyncChangedItem;
             CollectionChanged += SyncChangedCollection;
+
+            RegisterList(Items);
         }
 
         public event EventHandler<ItemChangedEventArgs> ItemChanged;

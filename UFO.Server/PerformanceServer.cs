@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Linq;
     using UFO.DAL.Common;
     using UFO.Domain;
@@ -24,16 +23,13 @@
             return GetDAO().SelectByVenueAndDateTime(venue, dateTime).FirstOrDefault();
         }
 
-        protected IPerformanceDAO GetDAO()
+        public IEnumerable<Performance> GetByArtist(Artist artist)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
-            var database = DALFactory.CreateDatabase(connectionString);
-            return DALFactory.CreatePerformanceDAO(database);
+            return GetDAO().SelectUpcomingPerformancesByArtist(artist);
         }
 
-        protected override IBaseDAO<Performance> GetDatabaseObjectDAO()
-        {
-            return GetDAO();
-        }
+        protected IPerformanceDAO GetDAO() => DALFactory.CreatePerformanceDAO(Server.GetDatabase());
+
+        protected override IBaseDAO<Performance> GetDatabaseObjectDAO() => GetDAO();
     }
 }

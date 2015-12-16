@@ -1,6 +1,5 @@
 ﻿namespace UFO.Server
 {
-    using System.Configuration;
     using UFO.DAL.Common;
     using UFO.Domain;
 
@@ -11,16 +10,8 @@
         {
         }
 
-        protected IVenueDAO GetDAO()
-        {
-            var connectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
-            var database = DALFactory.CreateDatabase(connectionString);
-            return DALFactory.CreateVenueDAO(database);
-        }
+        protected IVenueDAO GetDAO() => DALFactory.CreateVenueDAO(Server.GetDatabase());
 
-        protected override IBaseDAO<Venue> GetDatabaseObjectDAO()
-        {
-            return GetDAO();
-        }
+        protected override IBaseDAO<Venue> GetDatabaseObjectDAO() => GetDAO();
     }
 }

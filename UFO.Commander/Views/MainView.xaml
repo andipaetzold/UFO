@@ -160,6 +160,19 @@
                 </DataGrid>
 
             </TabItem>
+
+            <TabItem Header="Artist Notification">
+                <StackPanel Orientation="Vertical" Width="200">
+                    <ListBox x:Name="NotificationListBox" Height="300" ItemsSource="{Binding Artists}"
+                             SelectionMode="Multiple"
+                             DisplayMemberPath="Name" />
+
+                    <Button Command="{Binding SendNotifactionCommand}"
+                            CommandParameter="{Binding ElementName=NotificationListBox, Path=SelectedItems}">
+                        Send Notification
+                    </Button>
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </DockPanel>
 

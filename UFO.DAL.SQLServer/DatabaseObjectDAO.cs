@@ -357,7 +357,7 @@
                 var dbType = GetDbTypeFromPropertyName(condition.Item1);
                 parameterList.Add(new Tuple<string, DbType, object>(randKey, dbType, condition.Item3));
 
-                where.Add($"[{TableName}].[{condition.Item1}] = @{randKey}");
+                where.Add($"[{TableName}].[{condition.Item1}] {condition.Item2} @{randKey}");
             }
 
             // command text
