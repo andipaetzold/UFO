@@ -7,12 +7,6 @@
 
     public class LoginViewModel : ViewModelBase
     {
-        #region Fields
-
-        private readonly Server server = new Server();
-
-        #endregion
-
         public LoginViewModel()
         {
             LoginCommand = new LambdaCommand(Login);
@@ -28,7 +22,7 @@
 
         public void Login()
         {
-            if (server.UserServer.CheckLoginData(Username, Password))
+            if (Server.UserServer.CheckLoginData(Username, Password))
             {
                 new MainView().Show();
                 RaiseRequestClose();

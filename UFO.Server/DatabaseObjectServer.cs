@@ -15,27 +15,15 @@
             throw new NotImplementedException();
         }
 
-        public void Add(T category)
-        {
-            GetDatabaseObjectDAO().Insert(category);
-        }
+        public void Add(T category) => GetDatabaseObjectDAO().Insert(category);
 
-        public void Remove(T o)
-        {
-            GetDatabaseObjectDAO().Delete(o);
-        }
+        public void Remove(T o) => GetDatabaseObjectDAO().Delete(o);
+
+        public IEnumerable<T> GetAll() => GetDatabaseObjectDAO().SelectAll();
+
+        public void Update(T o) => GetDatabaseObjectDAO().Update(o);
 
         #endregion
-
-        public IEnumerable<T> GetAll()
-        {
-            return GetDatabaseObjectDAO().SelectAll();
-        }
-
-        public void Update(T o)
-        {
-            GetDatabaseObjectDAO().Update(o);
-        }
 
         protected abstract IBaseDAO<T> GetDatabaseObjectDAO();
     }

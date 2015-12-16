@@ -15,22 +15,37 @@
         #region Fields
 
         private readonly IBaseServer<T> server;
+        private readonly Func<IEnumerable<T>> updateMethod;
 
         #endregion
 
-        public DatabaseSyncObservableCollection(IBaseServer<T> server)
+        public DatabaseSyncObservableCollection(IBaseServer<T> server, Func<IEnumerable<T>> updateMethod)
         {
             this.server = server;
+            this.updateMethod = updateMethod;
 
-            server.GetAll().ToList().ForEach(Add);
+            PullUpdates();
+        }
 
-            ItemChanged += SyncChangedItem;
-            CollectionChanged += SyncChangedCollection;
-
-            RegisterList(Items);
+        public DatabaseSyncObservableCollection(IBaseServer<T> server)
+            : this(server, server.GetAll)
+        {
         }
 
         public event EventHandler<ItemChangedEventArgs> ItemChanged;
+
+        public void PullUpdates()
+        {
+            ItemChanged -= SyncChangedItem;
+            CollectionChanged -= SyncChangedCollection;
+
+            UnregisterList(Items);
+            updateMethod().ToList().ForEach(Add);
+            RegisterList(Items);
+
+            ItemChanged += SyncChangedItem;
+            CollectionChanged += SyncChangedCollection;
+        }
 
         private void SyncChangedItem(object sender, ItemChangedEventArgs args)
         {

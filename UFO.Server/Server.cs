@@ -3,16 +3,16 @@
     using System.Configuration;
     using UFO.DAL.Common;
 
-    public class Server
+    public static class Server
     {
         #region Properties
 
-        public ArtistServer ArtistServer { get; } = new ArtistServer();
-        public CategoryServer CategoryServer { get; } = new CategoryServer();
-        public CountryServer CountryServer { get; } = new CountryServer();
-        public PerformanceServer PerformanceServer { get; } = new PerformanceServer();
-        public UserServer UserServer { get; } = new UserServer();
-        public VenueServer VenueServer { get; } = new VenueServer();
+        public static ArtistServer ArtistServer { get; } = new ArtistServer();
+        public static CategoryServer CategoryServer { get; } = new CategoryServer();
+        public static CountryServer CountryServer { get; } = new CountryServer();
+        public static PerformanceServer PerformanceServer { get; } = new PerformanceServer();
+        public static UserServer UserServer { get; } = new UserServer();
+        public static VenueServer VenueServer { get; } = new VenueServer();
 
         #endregion
 

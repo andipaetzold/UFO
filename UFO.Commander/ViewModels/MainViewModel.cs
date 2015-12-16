@@ -11,23 +11,17 @@
 
     public class MainViewModel : ViewModelBase
     {
-        #region Fields
-
-        private readonly Server server = new Server();
-
-        #endregion
-
         public MainViewModel()
         {
             SendNotifactionCommand =
-                new LambdaCommand(o => server.ArtistServer.SendNotificationEmail((o as IList)?.Cast<Artist>()));
+                new LambdaCommand(o => Server.ArtistServer.SendNotificationEmail((o as IList)?.Cast<Artist>()));
 
-            Artists = new DatabaseSyncObservableCollection<Artist>(server.ArtistServer);
-            Categories = new DatabaseSyncObservableCollection<Category>(server.CategoryServer);
-            Countries = new DatabaseSyncObservableCollection<Country>(server.CountryServer);
-            Venues = new DatabaseSyncObservableCollection<Venue>(server.VenueServer);
+            Artists = new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
+            Categories = new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
+            Countries = new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
+            Venues = new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
 
-            var performances = server.PerformanceServer.GetAll().ToList();
+            var performances = Server.PerformanceServer.GetAll().ToList();
             DayProgram =
                 VenueProgram.Create(
                     performances.Where(p => p.DateTime.Date == new DateTime(2015, 7, 25)).ToList(),
