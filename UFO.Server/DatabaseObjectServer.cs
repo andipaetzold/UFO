@@ -1,6 +1,5 @@
 ﻿namespace UFO.Server
 {
-    using System;
     using System.Collections.Generic;
     using UFO.DAL.Common;
     using UFO.Domain;
@@ -10,18 +9,15 @@
     {
         #region IBaseServer<T> Members
 
-        public T GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public T GetById(int id) => GetDatabaseObjectDAO().SelectById(id);
 
-        public void Add(T category) => GetDatabaseObjectDAO().Insert(category);
+        public bool Add(T category) => GetDatabaseObjectDAO().Insert(category);
 
         public void Remove(T o) => GetDatabaseObjectDAO().Delete(o);
 
         public IEnumerable<T> GetAll() => GetDatabaseObjectDAO().SelectAll();
 
-        public void Update(T o) => GetDatabaseObjectDAO().Update(o);
+        public bool Update(T o) => GetDatabaseObjectDAO().Update(o);
 
         #endregion
 

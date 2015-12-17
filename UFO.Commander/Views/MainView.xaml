@@ -16,14 +16,14 @@
                         <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
                                                 Binding="{Binding HasId, Mode=OneWay, NotifyOnSourceUpdated=True}" />
                         <DataGridTextColumn Header="Name" IsReadOnly="False"
-                                            Binding="{Binding Name, ValidatesOnDataErrors=True}" />
+                                            Binding="{Binding Name}" />
 
                         <DataGridComboBoxColumn Header="Category" SelectedItemBinding="{Binding Category}"
                                                 DisplayMemberPath="Name">
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding DataContext.Categories, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding DataContext.Categories, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
                             <DataGridComboBoxColumn.EditingElementStyle>
@@ -39,7 +39,7 @@
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding DataContext.Countries, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding DataContext.Countries, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
                             <DataGridComboBoxColumn.EditingElementStyle>
@@ -53,9 +53,9 @@
                         <!-- TODO: Image -->
 
                         <DataGridTextColumn Header="Email" IsReadOnly="False"
-                                            Binding="{Binding Email, ValidatesOnDataErrors=True}" />
+                                            Binding="{Binding Email}" />
                         <DataGridTextColumn Header="VideoUrl" IsReadOnly="False"
-                                            Binding="{Binding VideoUrl, ValidatesOnDataErrors=True}" />
+                                            Binding="{Binding VideoUrl}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -65,16 +65,16 @@
                           CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Venues}">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
-                                                Binding="{Binding HasId, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                                Binding="{Binding HasId, Mode=OneWay}" />
 
                         <DataGridTextColumn Header="Short Name"
-                                            Binding="{Binding ShortName, ValidatesOnDataErrors=True}" />
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name, ValidatesOnDataErrors=True}" />
+                                            Binding="{Binding ShortName}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
 
                         <!-- TODO: UpDownColumn -->
-                        <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude, ValidatesOnDataErrors=True}" />
+                        <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
                         <DataGridTextColumn Header="Longitude"
-                                            Binding="{Binding Longitude, ValidatesOnDataErrors=True}" />
+                                            Binding="{Binding Longitude}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -94,7 +94,7 @@
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
 
@@ -111,7 +111,7 @@
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
 
@@ -128,7 +128,7 @@
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
 
@@ -145,7 +145,7 @@
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}, ValidatesOnDataErrors=True}" />
+                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
 

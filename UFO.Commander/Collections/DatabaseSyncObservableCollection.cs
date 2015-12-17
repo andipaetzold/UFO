@@ -6,6 +6,7 @@
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows;
     using UFO.Domain;
     using UFO.Server;
 
@@ -24,6 +25,9 @@
             this.server = server;
             this.updateMethod = updateMethod;
 
+            ItemChanged += SyncChangedItem;
+            CollectionChanged += SyncChangedCollection;
+
             PullUpdates();
         }
 
@@ -36,15 +40,13 @@
 
         public void PullUpdates()
         {
-            ItemChanged -= SyncChangedItem;
-            CollectionChanged -= SyncChangedCollection;
-
+            // remove old
             UnregisterList(Items);
+            Items.Clear();
+
+            // add new
             updateMethod().ToList().ForEach(Add);
             RegisterList(Items);
-
-            ItemChanged += SyncChangedItem;
-            CollectionChanged += SyncChangedCollection;
         }
 
         private void SyncChangedItem(object sender, ItemChangedEventArgs args)
@@ -53,7 +55,19 @@
             {
                 server.Add(args.Value);
             }
-            server.Update(args.Value);
+
+            if (!server.Update(args.Value))
+            {
+                MessageBox.Show(
+                    "Invalid data. The item will be reset",
+                    "Invalid data.",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                ItemChanged -= SyncChangedItem;
+                args.Value.OverwriteProperties(server.GetById(args.Value.Id));
+                ItemChanged += SyncChangedItem;
+            }
         }
 
         private void SyncChangedCollection(object sender, NotifyCollectionChangedEventArgs args)
@@ -62,17 +76,17 @@
             {
                 case NotifyCollectionChangedAction.Add:
                     RegisterList(args.NewItems?.Cast<T>());
-                    foreach (var oldItem in args.OldItems ?? new List<T>())
+                    foreach (var newItem in args.NewItems ?? new List<T>())
                     {
-                        server.Remove(oldItem as T);
+                        server.Add(newItem as T);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
                     UnregisterList(args.OldItems.Cast<T>());
-                    foreach (var newItem in args.NewItems ?? new List<T>())
+                    foreach (var oldItem in args.OldItems ?? new List<T>())
                     {
-                        server.Add(newItem as T);
+                        server.Remove(oldItem as T);
                     }
                     break;
 

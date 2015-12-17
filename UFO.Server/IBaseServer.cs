@@ -8,11 +8,11 @@
     {
         T GetById(int id);
 
-        void Add(T o);
+        bool Add(T o);
 
         void Remove(T o);
 
-        void Update(T o);
+        bool Update(T o);
 
         IEnumerable<T> GetAll();
     }

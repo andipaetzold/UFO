@@ -53,13 +53,32 @@
         #endregion
 
         #region INotifyPropertyChanged Members
-        
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
         public void DeleteId()
         {
             id = null;
+        }
+
+        public void OverwriteProperties<T>(T o) where T : DatabaseObject
+        {
+            if (GetType() != o.GetType())
+            {
+                throw new Exception();
+            }
+
+            var propertyInfos =
+                GetType()
+                    .GetProperties()
+                    .Where(p => Attribute.IsDefined(p, typeof(ColumnAttribute)))
+                    .Where(p => !Attribute.IsDefined(p, typeof(KeyAttribute)));
+            foreach (var propertyInfo in propertyInfos)
+            {
+                propertyInfo.SetValue(this, propertyInfo.GetValue(o));
+            }
         }
 
         public bool TryValidate()
@@ -90,8 +109,6 @@
             }
             return null;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
