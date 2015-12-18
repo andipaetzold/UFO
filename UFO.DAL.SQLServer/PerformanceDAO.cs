@@ -20,14 +20,18 @@
             return SelectByCondition(new[] { new Tuple<string, string, object>("DateTime", "=", dateTime) });
         }
 
-        public IEnumerable<Performance> SelectByVenueAndDateTime(Venue venue, DateTime dateTime)
+        public IEnumerable<Performance> SelectByVenueAndDate(Venue venue, DateTime dateTime)
         {
+            var from = dateTime.Date;
+            var to = from.AddDays(1);
+
             return
                 SelectByCondition(
                     new[]
                         {
                             new Tuple<string, string, object>("Venue_Id", "=", venue.Id),
-                            new Tuple<string, string, object>("DateTime", "=", dateTime)
+                            new Tuple<string, string, object>("DateTime", ">=", from),
+                            new Tuple<string, string, object>("DateTime", "<", to)
                         });
         }
 

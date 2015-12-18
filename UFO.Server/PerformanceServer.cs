@@ -20,7 +20,7 @@
 
         public Performance GetByVenueAndDateTime(Venue venue, DateTime dateTime)
         {
-            return GetDAO().SelectByVenueAndDateTime(venue, dateTime).FirstOrDefault();
+            return GetDAO().SelectByVenueAndDate(venue, dateTime).FirstOrDefault();
         }
 
         public IEnumerable<Performance> GetByArtist(Artist artist)

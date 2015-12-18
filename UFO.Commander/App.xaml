@@ -32,6 +32,10 @@
             <Setter Property="Margin" Value="2" />
         </Style>
 
+        <Style TargetType="{x:Type DatePicker}">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
         <Style TargetType="{x:Type Label}">
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Margin" Value="2" />

@@ -80,84 +80,193 @@
             </TabItem>
 
             <TabItem Header="DayProgram">
-                <DataGrid x:Name="DayProgram" AutoGenerateColumns="False" CanUserResizeColumns="False"
-                          CanUserSortColumns="False"
-                          CanUserReorderColumns="False" CanUserResizeRows="False" CanUserAddRows="False"
-                          CanUserDeleteRows="False" ItemsSource="{Binding DayProgram}">
-                    <DataGrid.Columns>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <DatePicker SelectedDate="{Binding SelectedDate}" />
+                    </StackPanel>
 
-                        <DataGridTextColumn IsReadOnly="True" Binding="{Binding Venue.ShortName}" />
-                        <DataGridTextColumn Header="Venue" IsReadOnly="True" Binding="{Binding Venue.Name}" />
+                    <DataGrid x:Name="DayProgram" AutoGenerateColumns="False" CanUserResizeColumns="False"
+                              CanUserSortColumns="False"
+                              CanUserReorderColumns="False" CanUserResizeRows="False" CanUserAddRows="False"
+                              CanUserDeleteRows="False" ItemsSource="{Binding DayProgram}">
+                        <DataGrid.Columns>
 
-                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Times[0]}"
-                                                DisplayMemberPath="Name">
-                            <DataGridComboBoxColumn.ElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridTextColumn IsReadOnly="True" Binding="{Binding Venue.ShortName}" />
+                            <DataGridTextColumn Header="Venue" IsReadOnly="True" Binding="{Binding Venue.Name}" />
 
-                            <DataGridComboBoxColumn.EditingElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.EditingElementStyle>
-                        </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Header="2:00 PM" SelectedItemBinding="{Binding Times[14]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
 
-                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Times[14]}"
-                                                DisplayMemberPath="Name">
-                            <DataGridComboBoxColumn.ElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
 
-                            <DataGridComboBoxColumn.EditingElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.EditingElementStyle>
-                        </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Header="3:00 PM" SelectedItemBinding="{Binding Times[15]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
 
-                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Times[15]}"
-                                                DisplayMemberPath="Name">
-                            <DataGridComboBoxColumn.ElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
 
-                            <DataGridComboBoxColumn.EditingElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.EditingElementStyle>
-                        </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Header="4:00 PM" SelectedItemBinding="{Binding Times[16]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
 
-                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Times[16]}"
-                                                DisplayMemberPath="Name">
-                            <DataGridComboBoxColumn.ElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
 
-                            <DataGridComboBoxColumn.EditingElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
-                                </Style>
-                            </DataGridComboBoxColumn.EditingElementStyle>
-                        </DataGridComboBoxColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGridComboBoxColumn Header="5:00 PM" SelectedItemBinding="{Binding Times[17]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="6:00 PM" SelectedItemBinding="{Binding Times[18]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="7:00 PM" SelectedItemBinding="{Binding Times[19]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="8:00 PM" SelectedItemBinding="{Binding Times[20]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="9:00 PM" SelectedItemBinding="{Binding Times[21]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="10:00 PM" SelectedItemBinding="{Binding Times[22]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="11:00 PM" SelectedItemBinding="{Binding Times[23]}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding Path=DataContext.Artists, RelativeSource={RelativeSource AncestorType=v:MainView}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </DockPanel>
 
             </TabItem>
 

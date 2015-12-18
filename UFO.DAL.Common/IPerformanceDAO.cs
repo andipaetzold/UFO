@@ -8,7 +8,7 @@
     {
         IEnumerable<Performance> SelectByDateTime(DateTime dateTime);
 
-        IEnumerable<Performance> SelectByVenueAndDateTime(Venue venue, DateTime dateTime);
+        IEnumerable<Performance> SelectByVenueAndDate(Venue venue, DateTime dateTime);
 
         IEnumerable<Performance> SelectUpcomingPerformancesByArtist(Artist artist);
     }
