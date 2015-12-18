@@ -50,11 +50,19 @@
                             </DataGridComboBoxColumn.EditingElementStyle>
                         </DataGridComboBoxColumn>
 
-                        <!-- TODO: Image -->
+                        <DataGridTextColumn Header="Image Url" Binding="{Binding Image}" />
 
-                        <DataGridTextColumn Header="Email" IsReadOnly="False"
+                        <DataGridTemplateColumn Header="Image" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Image}" MaxWidth="150" MaxHeight="150" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Email"
                                             Binding="{Binding Email}" />
-                        <DataGridTextColumn Header="VideoUrl" IsReadOnly="False"
+                        <DataGridTextColumn Header="Video Url"
                                             Binding="{Binding VideoUrl}" />
                     </DataGrid.Columns>
                 </DataGrid>
