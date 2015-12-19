@@ -1,4 +1,4 @@
-﻿namespace UFO.Server
+﻿namespace UFO.Server.Implementation
 {
     using System;
     using System.Collections.Generic;
@@ -7,23 +7,24 @@
     using System.Threading.Tasks;
     using UFO.DAL.Common;
     using UFO.Domain;
+    using UFO.Server.Interfaces;
 
     public class ArtistServer : DatabaseObjectServer<Artist>,
-                                IBaseServer<Artist>
+                                IBaseServer<Artist>,
+                                IArtistServer
     {
         internal ArtistServer()
         {
         }
 
+        #region IArtistServer Members
+
         public void SendNotificationEmail(IEnumerable<Artist> artists)
         {
-            foreach (var artist in artists ?? new List<Artist>())
-            {
-                if (artist.Email == null)
-                {
-                    continue;
-                }
+            artists = artists ?? new List<Artist>();
 
+            foreach (var artist in artists.Where(artist => artist.Email != null))
+            {
                 Task.Run(
                     () =>
                         {
@@ -58,6 +59,8 @@
                         });
             }
         }
+
+        #endregion
 
         protected IBaseDAO<Artist> GetDAO() => DALFactory.CreateArtistDAO(Server.GetDatabase());
 

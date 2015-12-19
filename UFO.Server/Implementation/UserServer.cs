@@ -1,11 +1,13 @@
-﻿namespace UFO.Server
+﻿namespace UFO.Server.Implementation
 {
     using System.Linq;
     using UFO.DAL.Common;
     using UFO.Domain;
+    using UFO.Server.Interfaces;
 
     public class UserServer : DatabaseObjectServer<User>,
-                              IBaseServer<User>
+                              IBaseServer<User>,
+                              IUserServer
     {
         internal UserServer()
         {

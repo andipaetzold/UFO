@@ -9,6 +9,7 @@
     using System.Windows;
     using UFO.Domain;
     using UFO.Server;
+    using UFO.Server.Interfaces;
 
     public sealed class DatabaseSyncObservableCollection<T> : ObservableCollection<T>
         where T : DatabaseObject

@@ -1,8 +1,9 @@
-﻿namespace UFO.Server
+﻿namespace UFO.Server.Implementation
 {
     using System.Collections.Generic;
     using UFO.DAL.Common;
     using UFO.Domain;
+    using UFO.Server.Interfaces;
 
     public abstract class DatabaseObjectServer<T> : IBaseServer<T>
         where T : DatabaseObject

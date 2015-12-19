@@ -41,16 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArtistServer.cs" />
-    <Compile Include="PerformanceServer.cs" />
-    <Compile Include="UserServer.cs" />
-    <Compile Include="VenueServer.cs" />
-    <Compile Include="CountryServer.cs" />
-    <Compile Include="CategoryServer.cs" />
-    <Compile Include="IBaseServer.cs" />
+    <Compile Include="Implementation\ArtistServer.cs" />
+    <Compile Include="Interfaces\IArtistServer.cs" />
+    <Compile Include="Interfaces\ICategoryServer.cs" />
+    <Compile Include="Interfaces\ICountryServer.cs" />
+    <Compile Include="Interfaces\IPerformanceServer.cs" />
+    <Compile Include="Interfaces\IUserServer.cs" />
+    <Compile Include="Interfaces\IVenueServer.cs" />
+    <Compile Include="Implementation\PerformanceServer.cs" />
+    <Compile Include="Implementation\UserServer.cs" />
+    <Compile Include="Implementation\VenueServer.cs" />
+    <Compile Include="Implementation\CountryServer.cs" />
+    <Compile Include="Implementation\CategoryServer.cs" />
+    <Compile Include="Interfaces\IBaseServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DatabaseObjectServer.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Implementation\DatabaseObjectServer.cs" />
+    <Compile Include="Implementation\Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.DAL.Common\UFO.DAL.Common.csproj">

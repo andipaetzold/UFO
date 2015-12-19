@@ -1,4 +1,4 @@
-﻿namespace UFO.Server
+﻿namespace UFO.Server.Interfaces
 {
     using System.Collections.Generic;
     using UFO.Domain;

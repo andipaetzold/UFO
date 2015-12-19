@@ -64,9 +64,9 @@
                 connection = GetOpenConnection();
                 command.Connection = connection;
 
-                var beahvior = Transaction.Current == null ? CommandBehavior.CloseConnection : CommandBehavior.Default;
+                var behavior = Transaction.Current == null ? CommandBehavior.CloseConnection : CommandBehavior.Default;
 
-                return command.ExecuteReader(beahvior);
+                return command.ExecuteReader(behavior);
             }
             catch (Exception e)
             {

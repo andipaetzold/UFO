@@ -3,12 +3,14 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
     using PropertyChanged;
     using UFO.Commander.Collections;
     using UFO.Domain;
     using UFO.Server;
+    using UFO.Server.Implementation;
 
     [ImplementPropertyChanged]
     public class MainViewModel : ViewModelBase
@@ -16,24 +18,23 @@
         #region Fields
 
         private DateTime selectedDate = DateTime.Today;
+        private int selectedTabIndex;
 
         #endregion
 
         public MainViewModel()
         {
-            Artists = new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
-            Categories = new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
-            Countries = new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
-            Venues = new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
-
             SelectedDateChanged = new LambdaCommand(o => LoadPerformances((DateTime)o));
+            UpdateAllCommand = new LambdaCommand(UpdateAll);
+
+            UpdateAll();
         }
 
         #region Properties
 
-        public DatabaseSyncObservableCollection<Artist> Artists { get; }
-        public DatabaseSyncObservableCollection<Category> Categories { get; }
-        public DatabaseSyncObservableCollection<Country> Countries { get; }
+        public ObservableCollection<Artist> Artists { get; private set; }
+        public ObservableCollection<Category> Categories { get; private set; }
+        public ObservableCollection<Country> Countries { get; private set; }
         public List<VenueProgram> DayProgram { get; private set; }
 
         public DateTime SelectedDate
@@ -48,16 +49,38 @@
 
         public ICommand SelectedDateChanged { get; }
 
+        public int SelectedTabIndex
+        {
+            get { return selectedTabIndex; }
+            set
+            {
+                selectedTabIndex = value;
+
+                UpdateAll();
+            }
+        }
+
         public ICommand SendNotifactionCommand { get; } =
             new LambdaCommand(o => Server.ArtistServer.SendNotificationEmail(((IList)o).Cast<Artist>()));
 
-        public DatabaseSyncObservableCollection<Venue> Venues { get; }
+        public ICommand UpdateAllCommand { get; }
+        public ObservableCollection<Venue> Venues { get; private set; }
 
         #endregion
 
-        private void LoadPerformances(DateTime dateTime)
+        public void UpdateAll()
         {
-            var performances = Server.PerformanceServer.GetAll().ToList();
+            Artists = new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
+            Categories = new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
+            Countries = new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
+            Venues = new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
+
+            LoadPerformances(SelectedDate);
+        }
+
+        private void LoadPerformances(DateTime date)
+        {
+            var performances = Server.PerformanceServer.GetByDate(date).ToList();
             DayProgram = VenueProgram.Create(performances, Venues);
         }
     }

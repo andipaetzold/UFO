@@ -1,10 +1,12 @@
-﻿namespace UFO.Server
+﻿namespace UFO.Server.Implementation
 {
     using UFO.DAL.Common;
     using UFO.Domain;
+    using UFO.Server.Interfaces;
 
     public class CountryServer : DatabaseObjectServer<Country>,
-                                 IBaseServer<Country>
+                                 IBaseServer<Country>,
+                                 ICountryServer
     {
         internal CountryServer()
         {

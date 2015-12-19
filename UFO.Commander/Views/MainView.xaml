@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="UFO Commander" Height="600" Width="800">
     <DockPanel>
-        <TabControl>
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="Artists">
                 <DataGrid AutoGenerateColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
                           CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Artists}">

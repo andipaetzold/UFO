@@ -4,6 +4,7 @@
     using System.Windows.Input;
     using UFO.Commander.Views;
     using UFO.Server;
+    using UFO.Server.Implementation;
 
     public class LoginViewModel : ViewModelBase
     {
