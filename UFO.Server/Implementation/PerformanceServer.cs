@@ -35,7 +35,7 @@
             return GetDAO().SelectByDate(dateTime);
         }
 
-        public IEnumerable<Performance> GetByArtist(Artist artist)
+        public IEnumerable<Performance> GetUpcomingByArtist(Artist artist)
         {
             return GetDAO().SelectUpcomingPerformancesByArtist(artist);
         }

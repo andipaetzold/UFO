@@ -35,8 +35,8 @@
                 SelectByCondition(
                     new[]
                         {
-                            new Tuple<string, string, object>("Artist_ID", "=", artist.Id),
-                            new Tuple<string, string, object>("DateTime", ">", DateTime.Now)
+                            new Tuple<string, string, object>("Artist_Id", "=", artist.Id),
+                            new Tuple<string, string, object>("DateTime", ">=", DateTime.Now.Date)
                         });
         }
 

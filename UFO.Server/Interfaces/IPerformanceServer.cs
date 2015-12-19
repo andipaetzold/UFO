@@ -8,6 +8,6 @@ namespace UFO.Server.Interfaces
     {
         IEnumerable<Performance> GetByDate(DateTime dateTime);
 
-        IEnumerable<Performance> GetByArtist(Artist artist);
+        IEnumerable<Performance> GetUpcomingByArtist(Artist artist);
     }
 }

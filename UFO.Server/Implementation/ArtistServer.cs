@@ -28,7 +28,7 @@
                 Task.Run(
                     () =>
                         {
-                            var performances = Server.PerformanceServer.GetByArtist(artist)?.ToList()
+                            var performances = Server.PerformanceServer.GetUpcomingByArtist(artist)?.ToList()
                                                ?? new List<Performance>();
                             if (performances.Count == 0)
                             {
