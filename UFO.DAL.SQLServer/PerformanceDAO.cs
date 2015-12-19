@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using UFO.DAL.Common;
     using UFO.Domain;
 
@@ -37,6 +38,17 @@
                             new Tuple<string, string, object>("Artist_ID", "=", artist.Id),
                             new Tuple<string, string, object>("DateTime", ">", DateTime.Now)
                         });
+        }
+
+        public Performance SelectByVenueAndDateTime(Venue venue, DateTime dateTime)
+        {
+            return
+                SelectByCondition(
+                    new[]
+                        {
+                            new Tuple<string, string, object>("Venue_ID", "=", venue.Id),
+                            new Tuple<string, string, object>("DateTime", "=", dateTime)
+                        }).FirstOrDefault();
         }
 
         #endregion

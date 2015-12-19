@@ -7,6 +7,7 @@
     using System.Windows.Data;
     using UFO.Commander.Collections;
     using UFO.Commander.ViewModels;
+    using UFO.Domain;
 
     public partial class MainView : Window
     {
@@ -28,20 +29,21 @@
                 var header = DateTime.Today.AddHours(hour).ToString("hh:mm tt", culture) + " - "
                              + DateTime.Today.AddHours(hour + 1).ToString("hh:mm tt", culture);
 
-                var binding = new Binding($"{nameof(VenueProgram.Times)}[{hour}]");
+                var binding = new Binding($"{nameof(VenueProgram.Times)}[{hour}].{nameof(Performance.Artist)}")
+                    {
+                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                    };
 
                 var column = new DataGridComboBoxColumn
                     {
                         Header = header,
                         SelectedItemBinding = binding,
-                        DisplayMemberPath = "Name",
-                        ItemsSource = (DataContext as MainViewModel)?.Artists
+                        DisplayMemberPath = nameof(Artist.Name),
+                        ItemsSource = ((MainViewModel)DataContext).ArtistsWithNull
                     };
 
                 DayProgram.Columns.Add(column);
             }
-
-            DayProgram.GetBindingExpression(ItemsControl.ItemsSourceProperty)?.UpdateTarget();
         }
     }
 }

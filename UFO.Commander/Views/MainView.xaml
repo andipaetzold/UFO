@@ -79,7 +79,6 @@
                                             Binding="{Binding ShortName}" />
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
 
-                        <!-- TODO: UpDownColumn -->
                         <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" />
                         <DataGridTextColumn Header="Longitude"
                                             Binding="{Binding Longitude}" />

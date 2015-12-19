@@ -12,13 +12,13 @@
 
         public T GetById(int id) => GetDatabaseObjectDAO().SelectById(id);
 
-        public bool Add(T category) => GetDatabaseObjectDAO().Insert(category);
+        public virtual bool Add(T category) => GetDatabaseObjectDAO().Insert(category);
 
         public void Remove(T o) => GetDatabaseObjectDAO().Delete(o);
 
         public IEnumerable<T> GetAll() => GetDatabaseObjectDAO().SelectAll();
 
-        public bool Update(T o) => GetDatabaseObjectDAO().Update(o);
+        public virtual bool Update(T o) => GetDatabaseObjectDAO().Update(o);
 
         #endregion
 

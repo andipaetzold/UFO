@@ -7,7 +7,9 @@
     public interface IPerformanceDAO : IBaseDAO<Performance>
     {
         IEnumerable<Performance> SelectByDate(DateTime dateTime);
-        
+
         IEnumerable<Performance> SelectUpcomingPerformancesByArtist(Artist artist);
+
+        Performance SelectByVenueAndDateTime(Venue venue, DateTime dateTime);
     }
 }

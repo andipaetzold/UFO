@@ -9,7 +9,6 @@
     using PropertyChanged;
     using UFO.Commander.Collections;
     using UFO.Domain;
-    using UFO.Server;
     using UFO.Server.Implementation;
 
     [ImplementPropertyChanged]
@@ -33,6 +32,7 @@
         #region Properties
 
         public ObservableCollection<Artist> Artists { get; private set; }
+        public IList<Artist> ArtistsWithNull { get; set; }
         public ObservableCollection<Category> Categories { get; private set; }
         public ObservableCollection<Country> Countries { get; private set; }
         public List<VenueProgram> DayProgram { get; private set; }
@@ -71,6 +71,9 @@
         public void UpdateAll()
         {
             Artists = new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
+            ArtistsWithNull = Artists.ToList();
+            ArtistsWithNull.Insert(0, VenueProgram.NullArtist);
+
             Categories = new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
             Countries = new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
             Venues = new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
@@ -81,7 +84,7 @@
         private void LoadPerformances(DateTime date)
         {
             var performances = Server.PerformanceServer.GetByDate(date).ToList();
-            DayProgram = VenueProgram.Create(performances, Venues);
+            DayProgram = VenueProgram.Create(date, performances, Venues);
         }
     }
 }
