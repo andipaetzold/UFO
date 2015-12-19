@@ -19,8 +19,7 @@
 
         private void CreateDayProgramColumns()
         {
-            return;
-            for (var hour = 0; hour <= 23; ++hour)
+            for (var hour = 13; hour <= 23; ++hour)
             {
                 var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
                 culture.DateTimeFormat.AMDesignator = "AM";
@@ -36,46 +35,13 @@
                         Header = header,
                         SelectedItemBinding = binding,
                         DisplayMemberPath = "Name",
-                        ElementStyle =
-                            new Style(typeof(ComboBox))
-                                {
-                                    Setters =
-                                        {
-                                            new Setter
-                                                {
-                                                    Property = ItemsControl.ItemsSourceProperty,
-                                                    Value =
-                                                        new Binding
-                                                            {
-                                                                Path = new PropertyPath("DataContext.Artists"),
-                                                                RelativeSource = new RelativeSource { AncestorType = typeof(MainViewModel) },
-                                                                ValidatesOnDataErrors = true
-                                                            }
-                                                }
-                                        }
-                                },
-                        EditingElementStyle =
-                            new Style(typeof(ComboBox))
-                                {
-                                    Setters =
-                                        {
-                                            new Setter
-                                                {
-                                                    Property = ItemsControl.ItemsSourceProperty,
-                                                    Value =
-                                                        new Binding
-                                                            {
-                                                                Path = new PropertyPath("DataContext.Artists"),
-                                                                RelativeSource = new RelativeSource { AncestorType = typeof(MainViewModel) },
-                                                                ValidatesOnDataErrors = true
-                                                            }
-                                                }
-                                        }
-                                }
+                        ItemsSource = (DataContext as MainViewModel)?.Artists
                     };
 
                 DayProgram.Columns.Add(column);
             }
+
+            DayProgram.GetBindingExpression(ItemsControl.ItemsSourceProperty)?.UpdateTarget();
         }
     }
 }
