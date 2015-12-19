@@ -19,13 +19,9 @@
 
         public IEnumerable<Performance> GetByDate(DateTime dateTime)
         {
-            return GetDAO().SelectByDateTime(dateTime);
+            return GetDAO().SelectByDate(dateTime);
         }
-
-        public Performance GetByVenueAndDateTime(Venue venue, DateTime dateTime)
-        {
-            return GetDAO().SelectByVenueAndDate(venue, dateTime).FirstOrDefault();
-        }
+        
 
         public IEnumerable<Performance> GetByArtist(Artist artist)
         {
