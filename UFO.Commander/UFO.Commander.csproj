@@ -94,9 +94,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Collections\DatabaseSyncObservableCollection.cs" />
-    <Compile Include="Collections\ObservableHashSet.cs" />
-    <Compile Include="Collections\VenueProgram.cs" />
+    <Compile Include="Util\BindablePasswordBox.cs" />
+    <Compile Include="Util\DatabaseSyncObservableCollection.cs" />
+    <Compile Include="Util\ObservableHashSet.cs" />
+    <Compile Include="Util\VenueProgram.cs" />
     <Compile Include="ViewModels\Interfaces\IRequestCloseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

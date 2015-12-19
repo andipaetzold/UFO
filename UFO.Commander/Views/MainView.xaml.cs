@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using UFO.Commander.Collections;
+    using UFO.Commander.Util;
     using UFO.Commander.ViewModels;
     using UFO.Domain;
 

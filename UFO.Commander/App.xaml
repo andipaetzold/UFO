@@ -32,6 +32,12 @@
             <Setter Property="Margin" Value="2" />
         </Style>
 
+        <Style TargetType="{x:Type PasswordBox}">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
         <Style TargetType="{x:Type DatePicker}">
             <Setter Property="Margin" Value="2" />
         </Style>

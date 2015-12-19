@@ -1,4 +1,4 @@
-﻿namespace UFO.Commander.Collections
+﻿namespace UFO.Commander.Util
 {
     using System;
     using System.Collections.Generic;

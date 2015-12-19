@@ -8,7 +8,7 @@
     using System.Windows;
     using System.Windows.Input;
     using PropertyChanged;
-    using UFO.Commander.Collections;
+    using UFO.Commander.Util;
     using UFO.Domain;
     using UFO.Server.Implementation;
 
