@@ -5,9 +5,6 @@
 
     public sealed class BindablePasswordBox : Decorator
     {
-        /// <summary>
-        ///     The password dependency property.
-        /// </summary>
         public static readonly DependencyProperty PasswordProperty;
 
         #region Fields
