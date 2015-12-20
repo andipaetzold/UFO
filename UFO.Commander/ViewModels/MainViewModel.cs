@@ -24,6 +24,10 @@
 
         public MainViewModel()
         {
+            Artists = new DatabaseSyncObservableCollection<Artist>(
+                Server.ArtistServer,
+                Server.ArtistServer.GetAllButDeletedAsync);
+
             SelectedDateChanged = new RelayCommand<DateTime>(LoadPerformances);
             UpdateAllCommand = new RelayCommand(UpdateAll);
             SendNotifactionCommand =
@@ -31,8 +35,7 @@
                     () =>
                         {
                             Server.ArtistServer.SendNotificationEmailAsync(ChangedArtists)
-                                  .ContinueWith(
-                                      t => Application.Current.Dispatcher.Invoke(delegate { ChangedArtists.Clear(); }));
+                                  .ContinueWith(t => Application.Current.Dispatcher.Invoke(ChangedArtists.Clear));
                         });
 
             UpdateAll();
@@ -40,9 +43,7 @@
 
         #region Properties
 
-        public DatabaseSyncObservableCollection<Artist> Artists { get; } =
-            new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
-
+        public DatabaseSyncObservableCollection<Artist> Artists { get; }
         public ObservableCollection<Artist> ArtistsWithNull { get; } = new ObservableHashSet<Artist>();
 
         public DatabaseSyncObservableCollection<Category> Categories { get; } =
@@ -90,13 +91,13 @@
         {
             Artists.PullUpdates();
 
-            Server.ArtistServer.GetAllAsync().ContinueWith(
+            Server.ArtistServer.GetAllButDeletedAsync().ContinueWith(
                 o =>
                     {
                         var list = o.Result.ToList();
                         list.Insert(0, VenueProgram.NullArtist);
 
-                        ArtistsWithNull.Clear();
+                        Application.Current.Dispatcher.Invoke(ChangedArtists.Clear);
                         list.ForEach(ArtistsWithNull.Add);
                     });
 

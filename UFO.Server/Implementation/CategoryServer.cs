@@ -5,8 +5,7 @@
     using UFO.Server.Interfaces;
 
     public class CategoryServer : DatabaseObjectServer<Category>,
-                                  ICategoryServer,
-                                  ICategoryServerAsync
+                                  ICategoryServer
     {
         internal CategoryServer()
         {

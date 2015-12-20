@@ -8,8 +8,7 @@
     using UFO.Server.Interfaces;
 
     public class PerformanceServer : DatabaseObjectServer<Performance>,
-                                     IPerformanceServer,
-                                     IPerformanceServerAsync
+                                     IPerformanceServer
     {
         internal PerformanceServer()
         {
@@ -49,6 +48,16 @@
         public Task<IEnumerable<Performance>> GetUpcomingByArtistAsync(Artist artist)
         {
             return Task.Run(() => GetUpcomingByArtist(artist));
+        }
+
+        public IEnumerable<Performance> GetByArtist(Artist artist)
+        {
+            return GetDAO().SelectByArtist(artist);
+        }
+
+        public Task<IEnumerable<Performance>> GetByArtistAsync(Artist artist)
+        {
+            return Task.Run(() => GetByArtist(artist));
         }
 
         #endregion

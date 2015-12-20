@@ -5,8 +5,7 @@
     using UFO.Server.Interfaces;
 
     public class VenueServer : DatabaseObjectServer<Venue>,
-                               IVenueServer,
-                               IVenueServerAsync
+                               IVenueServer
     {
         internal VenueServer()
         {

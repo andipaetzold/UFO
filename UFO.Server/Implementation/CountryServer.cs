@@ -5,8 +5,7 @@
     using UFO.Server.Interfaces;
 
     public class CountryServer : DatabaseObjectServer<Country>,
-                                 ICountryServer,
-                                 ICountryServerAsync
+                                 ICountryServer
     {
         internal CountryServer()
         {

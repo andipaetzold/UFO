@@ -10,8 +10,7 @@
     using UFO.Server.Interfaces;
 
     public class ArtistServer : DatabaseObjectServer<Artist>,
-                                IArtistServer,
-                                IArtistServerAsync
+                                IArtistServer
     {
         internal ArtistServer()
         {
@@ -56,18 +55,44 @@
             }
         }
 
-        #endregion
-
-        #region IArtistServerAsync Members
+        public IEnumerable<Artist> GetAllButDeleted()
+        {
+            return GetDAO().SelectAllButDeleted();
+        }
 
         public Task SendNotificationEmailAsync(IEnumerable<Artist> artists)
         {
             return Task.Run(() => SendNotificationEmail(artists));
         }
 
+        public Task<IEnumerable<Artist>> GetAllButDeletedAsync()
+        {
+            return Task.Run(() => GetAllButDeleted());
+        }
+
+        public override void Remove(Artist o)
+        {
+            var allPerformances = Server.PerformanceServer.GetByArtist(o).ToList();
+            if (allPerformances.Count == 0)
+            {
+                base.Remove(o);
+            }
+            else
+            {
+                var upcomingPerformances = Server.PerformanceServer.GetUpcomingByArtist(o).ToList();
+                foreach (var upcomingPerformance in upcomingPerformances)
+                {
+                    Server.PerformanceServer.Remove(upcomingPerformance);
+                }
+
+                o.IsDeleted = true;
+                Update(o);
+            }
+        }
+
         #endregion
 
-        protected IBaseDAO<Artist> GetDAO() => DALFactory.CreateArtistDAO(Server.GetDatabase());
+        protected IArtistDAO GetDAO() => DALFactory.CreateArtistDAO(Server.GetDatabase());
 
         protected override IBaseDAO<Artist> GetDatabaseObjectDAO() => GetDAO();
     }

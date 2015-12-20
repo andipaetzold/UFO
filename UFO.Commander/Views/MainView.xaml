@@ -14,8 +14,6 @@
                 <DataGrid AutoGenerateColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
                           CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Artists}">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
-                                                Binding="{Binding HasId, Mode=OneWay, NotifyOnSourceUpdated=True}" />
                         <DataGridTextColumn Header="Name" IsReadOnly="False"
                                             Binding="{Binding Name}" />
 
@@ -73,9 +71,6 @@
                 <DataGrid AutoGenerateColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
                           CanUserReorderColumns="False" CanUserResizeRows="False" ItemsSource="{Binding Venues}">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="In Database" IsReadOnly="True"
-                                                Binding="{Binding HasId, Mode=OneWay}" />
-
                         <DataGridTextColumn Header="Short Name"
                                             Binding="{Binding ShortName}" />
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" />

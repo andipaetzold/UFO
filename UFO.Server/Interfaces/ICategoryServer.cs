@@ -5,7 +5,4 @@ namespace UFO.Server.Interfaces
     public interface ICategoryServer : IBaseServer<Category>
     {
     }
-    public interface ICategoryServerAsync : IBaseServerAsync<Category>
-    {
-    }
 }

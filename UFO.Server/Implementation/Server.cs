@@ -8,12 +8,12 @@
     {
         #region Properties
 
-        public static IArtistServerAsync ArtistServer { get; } = new ArtistServer();
-        public static ICategoryServerAsync CategoryServer { get; } = new CategoryServer();
-        public static ICountryServerAsync CountryServer { get; } = new CountryServer();
-        public static IPerformanceServerAsync PerformanceServer { get; } = new PerformanceServer();
-        public static IUserServerAsync UserServer { get; } = new UserServer();
-        public static IVenueServerAsync VenueServer { get; } = new VenueServer();
+        public static IArtistServer ArtistServer { get; } = new ArtistServer();
+        public static ICategoryServer CategoryServer { get; } = new CategoryServer();
+        public static ICountryServer CountryServer { get; } = new CountryServer();
+        public static IPerformanceServer PerformanceServer { get; } = new PerformanceServer();
+        public static IUserServer UserServer { get; } = new UserServer();
+        public static IVenueServer VenueServer { get; } = new VenueServer();
 
         #endregion
 

@@ -16,23 +16,21 @@
     {
         #region Fields
 
-        private readonly IBaseServerAsync<T> server;
+        private readonly IBaseServer<T> server;
         private readonly Func<Task<IEnumerable<T>>> updateMethod;
 
         #endregion
 
-        public DatabaseSyncObservableCollection(IBaseServerAsync<T> server, Func<Task<IEnumerable<T>>> updateMethod)
+        public DatabaseSyncObservableCollection(IBaseServer<T> server, Func<Task<IEnumerable<T>>> updateMethod)
         {
             this.server = server;
             this.updateMethod = updateMethod;
 
             ItemChanged += SyncChangedItem;
             CollectionChanged += SyncChangedCollection;
-
-            PullUpdates();
         }
 
-        public DatabaseSyncObservableCollection(IBaseServerAsync<T> server)
+        public DatabaseSyncObservableCollection(IBaseServer<T> server)
             : this(server, server.GetAllAsync)
         {
         }

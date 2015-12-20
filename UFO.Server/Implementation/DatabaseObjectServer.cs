@@ -6,8 +6,7 @@
     using UFO.Domain;
     using UFO.Server.Interfaces;
 
-    public abstract class DatabaseObjectServer<T> : IBaseServer<T>,
-                                                    IBaseServerAsync<T>
+    public abstract class DatabaseObjectServer<T> : IBaseServer<T>
         where T : DatabaseObject
     {
         #region IBaseServer<T> Members
@@ -16,7 +15,7 @@
 
         public virtual bool Add(T category) => GetDatabaseObjectDAO().Insert(category);
 
-        public void Remove(T o) => GetDatabaseObjectDAO().Delete(o);
+        public virtual void Remove(T o) => GetDatabaseObjectDAO().Delete(o);
 
         public IEnumerable<T> GetAll() => GetDatabaseObjectDAO().SelectAll();
 

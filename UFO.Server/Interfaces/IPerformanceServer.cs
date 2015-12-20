@@ -10,11 +10,13 @@ namespace UFO.Server.Interfaces
         IEnumerable<Performance> GetByDate(DateTime dateTime);
 
         IEnumerable<Performance> GetUpcomingByArtist(Artist artist);
-    }
-    public interface IPerformanceServerAsync : IBaseServerAsync<Performance>
-    {
+
         Task<IEnumerable<Performance>> GetByDateAsync(DateTime dateTime);
 
         Task<IEnumerable<Performance>> GetUpcomingByArtistAsync(Artist artist);
+
+        IEnumerable<Performance> GetByArtist(Artist artist);
+
+        Task<IEnumerable<Performance>> GetByArtistAsync(Artist artist);
     }
 }

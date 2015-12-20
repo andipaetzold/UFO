@@ -11,5 +11,7 @@
         IEnumerable<Performance> SelectUpcomingPerformancesByArtist(Artist artist);
 
         Performance SelectByVenueAndDateTime(Venue venue, DateTime dateTime);
+
+        IEnumerable<Performance> SelectByArtist(Artist artist);
     }
 }

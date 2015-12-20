@@ -7,8 +7,7 @@
     using UFO.Server.Interfaces;
 
     public class UserServer : DatabaseObjectServer<User>,
-                              IUserServer,
-                              IUserServerAsync
+                              IUserServer
     {
         internal UserServer()
         {

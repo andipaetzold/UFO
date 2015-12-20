@@ -7,10 +7,11 @@ namespace UFO.Server.Interfaces
     public interface IArtistServer : IBaseServer<Artist>
     {
         void SendNotificationEmail(IEnumerable<Artist> artists);
-    }
 
-    public interface IArtistServerAsync : IBaseServerAsync<Artist>
-    {
+        IEnumerable<Artist> GetAllButDeleted();
         Task SendNotificationEmailAsync(IEnumerable<Artist> artists);
+
+        Task<IEnumerable<Artist>> GetAllButDeletedAsync();
     }
+    
 }

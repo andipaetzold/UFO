@@ -16,11 +16,6 @@
         bool Update(T o);
 
         IEnumerable<T> GetAll();
-    }
-
-    public interface IBaseServerAsync<T>
-        where T : DatabaseObject
-    {
         Task<T> GetByIdAsync(int id);
 
         Task<bool> AddAsync(T o);
@@ -31,4 +26,5 @@
 
         Task<IEnumerable<T>> GetAllAsync();
     }
+    
 }

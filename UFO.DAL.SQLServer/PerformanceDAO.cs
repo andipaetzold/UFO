@@ -51,6 +51,11 @@
                         }).FirstOrDefault();
         }
 
+        public IEnumerable<Performance> SelectByArtist(Artist artist)
+        {
+            return SelectByCondition(new[] { new Tuple<string, string, object>("Artist_Id", "=", artist.Id) });
+        }
+
         #endregion
     }
 }
