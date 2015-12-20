@@ -22,36 +22,49 @@
         {
             artists = artists ?? new List<Artist>();
 
-            foreach (var artist in artists.Where(artist => artist.Email != null))
+            foreach (var artist in artists)
             {
-                var performances = (await Server.PerformanceServer.GetUpcomingByArtistAsync(artist))?.ToList()
-                                   ?? new List<Performance>();
-                if (performances.Count == 0)
+                if (artist.Email == null)
                 {
-                    return;
+                    Console.WriteLine("Couldn't send mail to " + artist.Name);
+                    continue;
                 }
 
-                // create mail
-                var message = "Hello " + artist.Name + Environment.NewLine;
-                message += $"Here are upcoming performances:{Environment.NewLine}";
-
-                foreach (var performance in performances)
+                try
                 {
-                    message += $"{performance.DateTime}: {performance.Venue.Name}{Environment.NewLine}";
-                }
-
-                // mail
-                var mail = new MailMessage("s1310307089@students.fh-hagenberg.at", artist.Email);
-                var client = new SmtpClient
+                    var performances = (await Server.PerformanceServer.GetUpcomingByArtistAsync(artist))?.ToList()
+                                       ?? new List<Performance>();
+                    if (performances.Count == 0)
                     {
-                        Port = 465,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Host = "localhost"
-                    };
-                mail.Subject = "Your Performances";
-                mail.Body = message;
-                client.Send(mail);
+                        return;
+                    }
+
+                    // create mail
+                    var message = "Hello " + artist.Name + Environment.NewLine;
+                    message += $"Here are upcoming performances:{Environment.NewLine}";
+
+                    foreach (var performance in performances)
+                    {
+                        message += $"{performance.DateTime}: {performance.Venue.Name}{Environment.NewLine}";
+                    }
+
+                    // mail
+                    var mail = new MailMessage("s1310307089@students.fh-hagenberg.at", artist.Email);
+                    var client = new SmtpClient
+                        {
+                            Port = 465,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Host = "localhost"
+                        };
+                    mail.Subject = "Your Performances";
+                    mail.Body = message;
+                    client.Send(mail);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Couldn't send mail to " + artist.Name);
+                }
             }
         }
 
