@@ -2,6 +2,7 @@
 {
     using System.Windows;
     using System.Windows.Input;
+    using GalaSoft.MvvmLight.Command;
     using UFO.Commander.Views;
     using UFO.Server.Implementation;
 
@@ -9,7 +10,7 @@
     {
         public LoginViewModel()
         {
-            LoginCommand = new LambdaCommand(Login);
+            LoginCommand = new RelayCommand(Login);
         }
 
         #region Properties

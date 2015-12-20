@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
+    using GalaSoft.MvvmLight.Command;
     using PropertyChanged;
     using UFO.Commander.Util;
     using UFO.Domain;
@@ -23,10 +24,10 @@
 
         public MainViewModel()
         {
-            SelectedDateChanged = new LambdaCommand(o => LoadPerformances((DateTime)o));
-            UpdateAllCommand = new LambdaCommand(UpdateAll);
+            SelectedDateChanged = new RelayCommand<DateTime>(LoadPerformances);
+            UpdateAllCommand = new RelayCommand(UpdateAll);
             SendNotifactionCommand =
-                new LambdaCommand(
+                new RelayCommand(
                     () =>
                         {
                             Server.ArtistServer.SendNotificationEmailAsync(ChangedArtists)
