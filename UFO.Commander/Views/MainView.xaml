@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:UFO.Commander.ViewModels"
         xmlns:v="clr-namespace:UFO.Commander.Views"
+        xmlns:util="clr-namespace:UFO.Commander.Util"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="UFO Commander" Height="600" Width="800">
     <DockPanel>
@@ -111,6 +112,268 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Binding="{Binding Venue.ShortName}" />
                             <DataGridTextColumn Header="Venue" IsReadOnly="True" Binding="{Binding Venue.Name}" />
+
+                            <DataGridComboBoxColumn Header="2:00 PM - 3:00 PM"
+                                                    SelectedItemBinding="{Binding Times[14].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[14].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="3:00 PM - 4:00 PM"
+                                                    SelectedItemBinding="{Binding Times[15].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[15].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+
+                            <DataGridComboBoxColumn Header="4:00 PM - 5:00 PM"
+                                                    SelectedItemBinding="{Binding Times[16].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[16].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="5:00 PM - 6:00 PM"
+                                                    SelectedItemBinding="{Binding Times[17].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[17].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="6:00 PM - 7:00 PM"
+                                                    SelectedItemBinding="{Binding Times[18].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[18].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="7:00 PM - 8:00 PM"
+                                                    SelectedItemBinding="{Binding Times[19].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[19].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="8:00 PM - 9:00 PM"
+                                                    SelectedItemBinding="{Binding Times[20].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[20].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="9:00 PM - 10:00 PM"
+                                                    SelectedItemBinding="{Binding Times[21].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[21].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="10:00 PM - 11:00 PM"
+                                                    SelectedItemBinding="{Binding Times[22].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[22].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn Header="11:00 PM - 12:00 PM"
+                                                    SelectedItemBinding="{Binding Times[23].Artist, UpdateSourceTrigger=PropertyChanged}"
+                                                    DisplayMemberPath="Name">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="ItemsSource"
+                                                Value="{Binding DataContext.ArtistsWithNull, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Resources>
+                                            <util:CategoryToBrushConverter x:Key="CategoryToBrushConverter" />
+                                        </Style.Resources>
+                                        <Setter Property="Background"
+                                                Value="{Binding Times[23].Artist.Category, Converter={StaticResource CategoryToBrushConverter}}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                            </DataGridComboBoxColumn>
+
                         </DataGrid.Columns>
                     </DataGrid>
 

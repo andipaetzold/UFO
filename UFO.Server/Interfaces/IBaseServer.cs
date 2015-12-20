@@ -1,6 +1,7 @@
 ﻿namespace UFO.Server.Interfaces
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using UFO.Domain;
 
     public interface IBaseServer<T>
@@ -15,5 +16,19 @@
         bool Update(T o);
 
         IEnumerable<T> GetAll();
+    }
+
+    public interface IBaseServerAsync<T>
+        where T : DatabaseObject
+    {
+        Task<T> GetByIdAsync(int id);
+
+        Task<bool> AddAsync(T o);
+
+        Task RemoveAsync(T o);
+
+        Task<bool> UpdateAsync(T o);
+
+        Task<IEnumerable<T>> GetAllAsync();
     }
 }

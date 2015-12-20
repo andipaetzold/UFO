@@ -5,4 +5,7 @@ namespace UFO.Server.Interfaces
     public interface IVenueServer : IBaseServer<Venue>
     {
     }
+    public interface IVenueServerAsync : IBaseServerAsync<Venue>
+    {
+    }
 }

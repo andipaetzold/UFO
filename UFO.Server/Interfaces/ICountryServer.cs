@@ -6,4 +6,7 @@ namespace UFO.Server.Interfaces
     public interface ICountryServer : IBaseServer<Country>
     {
     }
+    public interface ICountryServerAsync : IBaseServerAsync<Country>
+    {
+    }
 }

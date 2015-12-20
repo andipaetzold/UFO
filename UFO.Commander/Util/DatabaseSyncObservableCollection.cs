@@ -6,6 +6,7 @@
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using UFO.Domain;
     using UFO.Server.Interfaces;
@@ -15,12 +16,12 @@
     {
         #region Fields
 
-        private readonly IBaseServer<T> server;
-        private readonly Func<IEnumerable<T>> updateMethod;
+        private readonly IBaseServerAsync<T> server;
+        private readonly Func<Task<IEnumerable<T>>> updateMethod;
 
         #endregion
 
-        public DatabaseSyncObservableCollection(IBaseServer<T> server, Func<IEnumerable<T>> updateMethod)
+        public DatabaseSyncObservableCollection(IBaseServerAsync<T> server, Func<Task<IEnumerable<T>>> updateMethod)
         {
             this.server = server;
             this.updateMethod = updateMethod;
@@ -31,32 +32,32 @@
             PullUpdates();
         }
 
-        public DatabaseSyncObservableCollection(IBaseServer<T> server)
-            : this(server, server.GetAll)
+        public DatabaseSyncObservableCollection(IBaseServerAsync<T> server)
+            : this(server, server.GetAllAsync)
         {
         }
 
         public event EventHandler<ItemChangedEventArgs> ItemChanged;
 
-        public void PullUpdates()
+        public async void PullUpdates()
         {
             // remove old
             UnregisterList(Items);
             Items.Clear();
 
             // add new
-            updateMethod().ToList().ForEach(Add);
+            (await updateMethod()).ToList().ForEach(Add);
             RegisterList(Items);
         }
 
-        private void SyncChangedItem(object sender, ItemChangedEventArgs args)
+        private async void SyncChangedItem(object sender, ItemChangedEventArgs args)
         {
             if (!args.Value.HasId)
             {
-                server.Add(args.Value);
+                await server.AddAsync(args.Value);
             }
 
-            if (!server.Update(args.Value))
+            if (!await server.UpdateAsync(args.Value))
             {
                 MessageBox.Show(
                     "Invalid data. The item will be reset",
@@ -65,12 +66,12 @@
                     MessageBoxImage.Error);
 
                 ItemChanged -= SyncChangedItem;
-                args.Value.OverwriteProperties(server.GetById(args.Value.Id));
+                args.Value.OverwriteProperties(await server.GetByIdAsync(args.Value.Id));
                 ItemChanged += SyncChangedItem;
             }
         }
 
-        private void SyncChangedCollection(object sender, NotifyCollectionChangedEventArgs args)
+        private async void SyncChangedCollection(object sender, NotifyCollectionChangedEventArgs args)
         {
             switch (args.Action)
             {
@@ -78,7 +79,7 @@
                     RegisterList(args.NewItems?.Cast<T>());
                     foreach (var newItem in args.NewItems ?? new List<T>())
                     {
-                        server.Add(newItem as T);
+                        await server.AddAsync(newItem as T);
                     }
                     break;
 
@@ -86,7 +87,7 @@
                     UnregisterList(args.OldItems.Cast<T>());
                     foreach (var oldItem in args.OldItems ?? new List<T>())
                     {
-                        server.Remove(oldItem as T);
+                        await server.RemoveAsync(oldItem as T);
                     }
                     break;
 

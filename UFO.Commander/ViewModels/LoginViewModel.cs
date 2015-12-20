@@ -3,7 +3,6 @@
     using System.Windows;
     using System.Windows.Input;
     using UFO.Commander.Views;
-    using UFO.Server;
     using UFO.Server.Implementation;
 
     public class LoginViewModel : ViewModelBase
@@ -21,9 +20,9 @@
 
         #endregion
 
-        public void Login()
+        public async void Login()
         {
-            if (Server.UserServer.CheckLoginData(Username, Password))
+            if (await Server.UserServer.CheckLoginDataAsync(Username, Password))
             {
                 new MainView().Show();
                 RaiseRequestClose();

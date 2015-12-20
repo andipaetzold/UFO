@@ -1,7 +1,6 @@
 ﻿namespace UFO.Commander.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -24,28 +23,36 @@
 
         public MainViewModel()
         {
-            ChangedArtists = new ObservableHashSet<Artist>();
-
             SelectedDateChanged = new LambdaCommand(o => LoadPerformances((DateTime)o));
             UpdateAllCommand = new LambdaCommand(UpdateAll);
-            SendNotifactionCommand = new LambdaCommand(
-                () =>
-                    {
-                        Server.ArtistServer.SendNotificationEmail(ChangedArtists);
-                        ChangedArtists.Clear();
-                    });
+            SendNotifactionCommand =
+                new LambdaCommand(
+                    () =>
+                        {
+                            Server.ArtistServer.SendNotificationEmailAsync(ChangedArtists)
+                                  .ContinueWith(
+                                      t => Application.Current.Dispatcher.Invoke(delegate { ChangedArtists.Clear(); }));
+                        });
 
             UpdateAll();
         }
 
         #region Properties
 
-        public ObservableCollection<Artist> Artists { get; private set; }
-        public IList<Artist> ArtistsWithNull { get; set; }
-        public ObservableCollection<Category> Categories { get; private set; }
-        public ObservableHashSet<Artist> ChangedArtists { get; }
-        public ObservableCollection<Country> Countries { get; private set; }
-        public List<VenueProgram> DayProgram { get; } = new List<VenueProgram>();
+        public DatabaseSyncObservableCollection<Artist> Artists { get; } =
+            new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
+
+        public ObservableCollection<Artist> ArtistsWithNull { get; } = new ObservableHashSet<Artist>();
+
+        public DatabaseSyncObservableCollection<Category> Categories { get; } =
+            new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
+
+        public ObservableHashSet<Artist> ChangedArtists { get; } = new ObservableHashSet<Artist>();
+
+        public DatabaseSyncObservableCollection<Country> Countries { get; } =
+            new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
+
+        public ObservableCollection<VenueProgram> DayProgram { get; } = new ObservableCollection<VenueProgram>();
 
         public DateTime SelectedDate
         {
@@ -72,28 +79,37 @@
 
         public ICommand SendNotifactionCommand { get; }
         public ICommand UpdateAllCommand { get; }
-        public ObservableCollection<Venue> Venues { get; private set; }
+
+        public DatabaseSyncObservableCollection<Venue> Venues { get; } =
+            new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
 
         #endregion
 
         public void UpdateAll()
         {
-            Artists = new DatabaseSyncObservableCollection<Artist>(Server.ArtistServer);
-            ArtistsWithNull = Artists.ToList();
-            ArtistsWithNull.Insert(0, VenueProgram.NullArtist);
+            Artists.PullUpdates();
 
-            Categories = new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
-            Countries = new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
-            Venues = new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
+            Server.ArtistServer.GetAllAsync().ContinueWith(
+                o =>
+                    {
+                        var list = o.Result.ToList();
+                        list.Insert(0, VenueProgram.NullArtist);
 
+                        ArtistsWithNull.Clear();
+                        list.ForEach(ArtistsWithNull.Add);
+                    });
+
+            Categories.PullUpdates();
+            Countries.PullUpdates();
             LoadPerformances(SelectedDate);
+            Venues.PullUpdates();
         }
 
-        private void LoadPerformances(DateTime date)
+        private async void LoadPerformances(DateTime date)
         {
             DayProgram.Clear();
 
-            var performances = Server.PerformanceServer.GetByDate(date).ToList();
+            var performances = (await Server.PerformanceServer.GetByDateAsync(date)).ToList();
             foreach (var venue in Venues)
             {
                 var venueProgram = new VenueProgram { Venue = venue };
@@ -122,7 +138,7 @@
             }
         }
 
-        private void PerformancePropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void PerformancePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var performance = (Performance)sender;
 
@@ -135,8 +151,8 @@
             // push to server
             if (performance.HasId && !performance.Artist.Equals(VenueProgram.NullArtist))
             {
-                var prevPerformance = Server.PerformanceServer.GetById(performance.Id);
-                if (Server.PerformanceServer.Update(performance))
+                var prevPerformance = await Server.PerformanceServer.GetByIdAsync(performance.Id);
+                if (await Server.PerformanceServer.UpdateAsync(performance))
                 {
                     ChangedArtists.Add(prevPerformance.Artist);
                     ChangedArtists.Add(performance.Artist);
@@ -156,14 +172,14 @@
             }
             else if (performance.HasId && performance.Artist.Equals(VenueProgram.NullArtist))
             {
-                var prevPerformance = Server.PerformanceServer.GetById(performance.Id);
+                var prevPerformance = await Server.PerformanceServer.GetByIdAsync(performance.Id);
                 ChangedArtists.Add(prevPerformance.Artist);
 
-                Server.PerformanceServer.Remove(performance);
+                await Server.PerformanceServer.RemoveAsync(performance);
             }
             else if (!performance.Artist.Equals(VenueProgram.NullArtist))
             {
-                if (Server.PerformanceServer.Add(performance))
+                if (await Server.PerformanceServer.AddAsync(performance))
                 {
                     ChangedArtists.Add(performance.Artist);
                 }
