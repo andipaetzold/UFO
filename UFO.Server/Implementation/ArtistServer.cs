@@ -30,25 +30,25 @@
                     continue;
                 }
 
+                var performances = (await Server.PerformanceServer.GetUpcomingByArtistAsync(artist))?.ToList()
+                                   ?? new List<Performance>();
+                if (performances.Count == 0)
+                {
+                    return;
+                }
+
+                // create mail
+                var message = "Hello " + artist.Name + Environment.NewLine;
+                message += $"Here are upcoming performances:{Environment.NewLine}";
+
+                foreach (var performance in performances)
+                {
+                    message += $"{performance.DateTime}: {performance.Venue.Name}{Environment.NewLine}";
+                }
+
+                // mail
                 try
                 {
-                    var performances = (await Server.PerformanceServer.GetUpcomingByArtistAsync(artist))?.ToList()
-                                       ?? new List<Performance>();
-                    if (performances.Count == 0)
-                    {
-                        return;
-                    }
-
-                    // create mail
-                    var message = "Hello " + artist.Name + Environment.NewLine;
-                    message += $"Here are upcoming performances:{Environment.NewLine}";
-
-                    foreach (var performance in performances)
-                    {
-                        message += $"{performance.DateTime}: {performance.Venue.Name}{Environment.NewLine}";
-                    }
-
-                    // mail
                     var mail = new MailMessage("s1310307089@students.fh-hagenberg.at", artist.Email);
                     var client = new SmtpClient
                         {
@@ -61,7 +61,7 @@
                     mail.Body = message;
                     client.Send(mail);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("Couldn't send mail to " + artist.Name);
                 }
