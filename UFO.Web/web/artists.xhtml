@@ -3,10 +3,32 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
 >
-    <ui:define name="title">Artist</ui:define>
+    <ui:define name="title">Artists</ui:define>
 
     <ui:define name="content">
-        Artists overview
+        <p:dataTable value="#{artists.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false" sortMode="multiple">
+            <p:column sortBy="#{artist.name}">
+                <f:facet name="header">Name</f:facet>
+                <p:link value="#{artist.name}" outcome="artist">
+                    <f:param name="id" value="#{artist.id}" />
+                </p:link>
+            </p:column>
+
+            <p:column sortBy="#{artist.category.name}">
+                <f:facet name="header">Category</f:facet>
+                <p:link value="#{artist.category.name}" outcome="artist">
+                    <f:param name="id" value="#{artist.id}" />
+                </p:link>
+            </p:column>
+
+            <p:column sortBy="#{artist.country.name}">
+                <f:facet name="header">Country</f:facet>
+                <p:link value="#{artist.country.name}" outcome="artist">
+                    <f:param name="id" value="#{artist.id}" />
+                </p:link>
+            </p:column>
+        </p:dataTable>
     </ui:define>
 </ui:composition>
