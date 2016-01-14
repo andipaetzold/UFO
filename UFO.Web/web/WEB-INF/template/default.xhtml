@@ -11,6 +11,8 @@
     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
     <h:outputStylesheet library="bootstrap" name="css/bootstrap-theme.min.css" />
     <h:outputStylesheet name="style.css" />
+
+    <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
 </h:head>
 
 <h:body>
@@ -18,18 +20,24 @@
         <div class="container">
             <div class="navbar-header">
                 <p:growl id="message" showDetail="true" />
-                <p:button styleClass="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                     <span class="sr-only">
                         <h:outputText value="Toggle navigation" />
                     </span>
                     <span class="icon-bar" />
                     <span class="icon-bar" />
                     <span class="icon-bar" />
-                </p:button>
-                <h:link class="navbar-brand" href="#" value="Ultimate Festival Organizer" />
+                </button>
+                <h:link class="navbar-brand" value="Ultimate Festival Organizer" outcome="overview" />
             </div>
 
             <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <h:link value="Artists" outcome="artists" />
+                    </li>
+                </ul>
+
                 <h:form class="navbar-form navbar-right">
                     <div class="form-group">
                         <p:inputText label="Username" placeholder="Username" required="true" styleClass="form-control" value="" />
@@ -56,8 +64,5 @@
             <p>© 2016 Andreas Pätzold</p>
         </footer>
     </div>
-
-    <h:outputScript library="jquery" name="jquery-2.2.0.min.js" />
-    <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
 </h:body>
 </html>
