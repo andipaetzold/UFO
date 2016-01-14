@@ -4,12 +4,12 @@ import services.Artist;
 import services.UltimateFestivalOrganizer;
 import services.UltimateFestivalOrganizerSoap;
 
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import java.util.List;
 
-@ManagedBean(name = "artists")
-@ApplicationScoped
+@ManagedBean(name = "artistsBean")
+@RequestScoped
 public class ArtistsBean {
     public List<Artist> getAll() {
         UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();

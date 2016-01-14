@@ -3,9 +3,43 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
 >
-    <ui:define name="title">Artist</ui:define>
+    <ui:define name="title">
+        <h:outputText value="#{artistBean.artist.name}" />
+    </ui:define>
 
     <ui:define name="content">
+        <h:graphicImage value="#{artistBean.artist.image}" rendered="#{not empty artistBean.artist.image}" />
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>Category</th>
+                    <td>
+                        <h:outputText value="#{artistBean.artist.category.name}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>
+                        <h:outputText value="#{artistBean.artist.country.name}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>E-Mail</th>
+                    <td>
+                        <h:outputLink value="mailto:#{artistBean.artist.email}">
+                            <h:outputText value="#{artistBean.artist.email}" />
+                        </h:outputLink>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p:media value="#{artistBean.artist.videoUrl}" rendered="#{not empty artistBean.artist.videoUrl}" player="flash">
+            <f:param name="autoPlay" value="false" />
+        </p:media>
     </ui:define>
 </ui:composition>

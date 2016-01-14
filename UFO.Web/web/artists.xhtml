@@ -8,7 +8,7 @@
     <ui:define name="title">Artists</ui:define>
 
     <ui:define name="content">
-        <p:dataTable value="#{artists.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false" sortMode="multiple">
+        <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false" sortMode="multiple">
             <p:column sortBy="#{artist.name}">
                 <f:facet name="header">Name</f:facet>
                 <p:link value="#{artist.name}" outcome="artist">
