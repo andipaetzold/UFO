@@ -8,9 +8,9 @@
 <h:head>
     <title>Ultimate Festival Organizer - <ui:insert name="title" /></title>
 
-    <link rel="stylesheet" type="text/css" href="style/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="style/bootstrap/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap-theme.min.css" />
+    <h:outputStylesheet name="style.css" />
 </h:head>
 
 <h:body>
@@ -57,7 +57,7 @@
         </footer>
     </div>
 
-    <script src="style/jquery/jquery-2.2.0.min.js"></script>
-    <script src="style/bootstrap/js/bootstrap.min.js"></script>
+    <h:outputScript library="jquery" name="jquery-2.2.0.min.js" />
+    <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
 </h:body>
 </html>
