@@ -37,7 +37,7 @@ public class ArtistBean {
         UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
         artist = ufo.getArtistById(id);
 
-        if (artist.isIsDeleted()) {
+        if (artist != null && artist.isIsDeleted()) {
             artist = null;
         }
     }
