@@ -18,5 +18,9 @@ namespace UFO.Server.Interfaces
         IEnumerable<Performance> GetByArtist(Artist artist);
 
         Task<IEnumerable<Performance>> GetByArtistAsync(Artist artist);
+
+        IEnumerable<DateTime> GetDatesWithPerformances();
+
+        Task<IEnumerable<DateTime>> GetDatesWithPerformancesAsync();
     }
 }

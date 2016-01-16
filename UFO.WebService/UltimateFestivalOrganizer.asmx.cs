@@ -45,6 +45,12 @@ namespace UFO.WebService
         }
 
         [WebMethod]
+        public List<DateTime> GetDatesWithPerformances()
+        {
+            return Implementation_Server.PerformanceServer.GetDatesWithPerformances().ToList();
+        }
+
+        [WebMethod]
         public List<Performance> GetAllPerformances()
         {
             return Implementation_Server.PerformanceServer.GetAll().ToList();

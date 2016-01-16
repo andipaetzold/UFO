@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using UFO.DAL.Common;
     using UFO.Domain;
@@ -36,10 +37,6 @@
             return GetDAO().SelectUpcomingPerformancesByArtist(artist);
         }
 
-        #endregion
-
-        #region IPerformanceServerAsync Members
-
         public Task<IEnumerable<Performance>> GetByDateAsync(DateTime dateTime)
         {
             return Task.Run(() => GetByDate(dateTime));
@@ -58,6 +55,16 @@
         public Task<IEnumerable<Performance>> GetByArtistAsync(Artist artist)
         {
             return Task.Run(() => GetByArtist(artist));
+        }
+
+        public IEnumerable<DateTime> GetDatesWithPerformances()
+        {
+            return GetAll().Select(p => p.DateTime.Date).Distinct();
+        }
+
+        public Task<IEnumerable<DateTime>> GetDatesWithPerformancesAsync()
+        {
+            return Task.Run(() => GetDatesWithPerformances());
         }
 
         #endregion
