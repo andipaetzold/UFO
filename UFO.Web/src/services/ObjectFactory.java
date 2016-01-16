@@ -270,6 +270,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetDatesWithPerformances }
+     * 
+     */
+    public GetDatesWithPerformances createGetDatesWithPerformances() {
+        return new GetDatesWithPerformances();
+    }
+
+    /**
+     * Create an instance of {@link GetDatesWithPerformancesResponse }
+     * 
+     */
+    public GetDatesWithPerformancesResponse createGetDatesWithPerformancesResponse() {
+        return new GetDatesWithPerformancesResponse();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfDateTime }
+     * 
+     */
+    public ArrayOfDateTime createArrayOfDateTime() {
+        return new ArrayOfDateTime();
+    }
+
+    /**
      * Create an instance of {@link GetArtistById }
      * 
      */

@@ -133,6 +133,21 @@
           </s:extension>
         </s:complexContent>
       </s:complexType>
+      <s:element name="GetDatesWithPerformances">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDatesWithPerformancesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDatesWithPerformancesResult" type="tns:ArrayOfDateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDateTime">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="dateTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="GetAllPerformances">
         <s:complexType />
       </s:element>
@@ -292,6 +307,12 @@
   <wsdl:message name="GetPerformanceByIdSoapOut">
     <wsdl:part name="parameters" element="tns:GetPerformanceByIdResponse" />
   </wsdl:message>
+  <wsdl:message name="GetDatesWithPerformancesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDatesWithPerformances" />
+  </wsdl:message>
+  <wsdl:message name="GetDatesWithPerformancesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDatesWithPerformancesResponse" />
+  </wsdl:message>
   <wsdl:message name="GetAllPerformancesSoapIn">
     <wsdl:part name="parameters" element="tns:GetAllPerformances" />
   </wsdl:message>
@@ -366,6 +387,10 @@
     <wsdl:operation name="GetPerformanceById">
       <wsdl:input message="tns:GetPerformanceByIdSoapIn" />
       <wsdl:output message="tns:GetPerformanceByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDatesWithPerformances">
+      <wsdl:input message="tns:GetDatesWithPerformancesSoapIn" />
+      <wsdl:output message="tns:GetDatesWithPerformancesSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetAllPerformances">
       <wsdl:input message="tns:GetAllPerformancesSoapIn" />
@@ -444,6 +469,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetPerformanceById">
       <soap:operation soapAction="http://andipaetzold.de/GetPerformanceById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDatesWithPerformances">
+      <soap:operation soapAction="http://andipaetzold.de/GetDatesWithPerformances" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -573,6 +607,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetPerformanceById">
       <soap12:operation soapAction="http://andipaetzold.de/GetPerformanceById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDatesWithPerformances">
+      <soap12:operation soapAction="http://andipaetzold.de/GetDatesWithPerformances" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

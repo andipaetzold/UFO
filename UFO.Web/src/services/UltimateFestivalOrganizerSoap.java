@@ -97,6 +97,17 @@ public interface UltimateFestivalOrganizerSoap {
     /**
      * 
      * @return
+     *     returns services.ArrayOfDateTime
+     */
+    @WebMethod(operationName = "GetDatesWithPerformances", action = "http://andipaetzold.de/GetDatesWithPerformances")
+    @WebResult(name = "GetDatesWithPerformancesResult", targetNamespace = "http://andipaetzold.de/")
+    @RequestWrapper(localName = "GetDatesWithPerformances", targetNamespace = "http://andipaetzold.de/", className = "services.GetDatesWithPerformances")
+    @ResponseWrapper(localName = "GetDatesWithPerformancesResponse", targetNamespace = "http://andipaetzold.de/", className = "services.GetDatesWithPerformancesResponse")
+    public ArrayOfDateTime getDatesWithPerformances();
+
+    /**
+     * 
+     * @return
      *     returns services.ArrayOfPerformance
      */
     @WebMethod(operationName = "GetAllPerformances", action = "http://andipaetzold.de/GetAllPerformances")
