@@ -13,7 +13,7 @@
         #{performancesBean.today}
         <h:form>
             <p:selectOneMenu value="#{performancesBean.selectedDate}">
-                <f:ajax listener="#{performancesBean.onSelectedDateChange}" />
+                <p:ajax listener="#{performancesBean.onSelectedDateChange}" />
                 <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true" />
                 <f:selectItems value="#{performancesBean.dates}" />
             </p:selectOneMenu>
