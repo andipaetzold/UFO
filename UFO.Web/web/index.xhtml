@@ -3,10 +3,20 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
 >
-    <ui:define name="title">Index</ui:define>
+    <ui:define name="title">
+        Overview
+    </ui:define>
 
     <ui:define name="content">
-        This is the index page
+        #{performancesBean.today}
+        <h:form>
+            <p:selectOneMenu value="#{performancesBean.selectedDate}">
+                <f:ajax listener="#{performancesBean.onSelectedDateChange}" />
+                <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{performancesBean.dates}" />
+            </p:selectOneMenu>
+        </h:form>
     </ui:define>
 </ui:composition>
