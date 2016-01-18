@@ -1,6 +1,5 @@
 package beans;
 
-import services.Artist;
 import services.Performance;
 import services.UltimateFestivalOrganizer;
 import services.UltimateFestivalOrganizerSoap;

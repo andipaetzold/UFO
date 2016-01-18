@@ -275,6 +275,21 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="CheckLogin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckLoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckLoginResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetCountryByIdSoapIn">
@@ -367,6 +382,12 @@
   <wsdl:message name="GetPerformancesByArtistSoapOut">
     <wsdl:part name="parameters" element="tns:GetPerformancesByArtistResponse" />
   </wsdl:message>
+  <wsdl:message name="CheckLoginSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckLogin" />
+  </wsdl:message>
+  <wsdl:message name="CheckLoginSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckLoginResponse" />
+  </wsdl:message>
   <wsdl:portType name="UltimateFestivalOrganizerSoap">
     <wsdl:operation name="GetCountryById">
       <wsdl:input message="tns:GetCountryByIdSoapIn" />
@@ -427,6 +448,10 @@
     <wsdl:operation name="GetPerformancesByArtist">
       <wsdl:input message="tns:GetPerformancesByArtistSoapIn" />
       <wsdl:output message="tns:GetPerformancesByArtistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckLogin">
+      <wsdl:input message="tns:CheckLoginSoapIn" />
+      <wsdl:output message="tns:CheckLoginSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="UltimateFestivalOrganizerSoap" type="tns:UltimateFestivalOrganizerSoap">
@@ -566,6 +591,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CheckLogin">
+      <soap:operation soapAction="http://andipaetzold.de/CheckLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="UltimateFestivalOrganizerSoap12" type="tns:UltimateFestivalOrganizerSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -697,6 +731,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetPerformancesByArtist">
       <soap12:operation soapAction="http://andipaetzold.de/GetPerformancesByArtist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckLogin">
+      <soap12:operation soapAction="http://andipaetzold.de/CheckLogin" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

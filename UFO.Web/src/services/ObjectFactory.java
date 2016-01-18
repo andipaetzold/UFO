@@ -86,6 +86,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CheckLoginResponse }
+     * 
+     */
+    public CheckLoginResponse createCheckLoginResponse() {
+        return new CheckLoginResponse();
+    }
+
+    /**
      * Create an instance of {@link GetAllPerformancesResponse }
      * 
      */
@@ -355,6 +363,14 @@ public class ObjectFactory {
      */
     public Country createCountry() {
         return new Country();
+    }
+
+    /**
+     * Create an instance of {@link CheckLogin }
+     * 
+     */
+    public CheckLogin createCheckLogin() {
+        return new CheckLogin();
     }
 
 }

@@ -213,4 +213,21 @@ public interface UltimateFestivalOrganizerSoap {
         @WebParam(name = "artist", targetNamespace = "http://andipaetzold.de/")
         Artist artist);
 
+    /**
+     * 
+     * @param password
+     * @param username
+     * @return
+     *     returns boolean
+     */
+    @WebMethod(operationName = "CheckLogin", action = "http://andipaetzold.de/CheckLogin")
+    @WebResult(name = "CheckLoginResult", targetNamespace = "http://andipaetzold.de/")
+    @RequestWrapper(localName = "CheckLogin", targetNamespace = "http://andipaetzold.de/", className = "services.CheckLogin")
+    @ResponseWrapper(localName = "CheckLoginResponse", targetNamespace = "http://andipaetzold.de/", className = "services.CheckLoginResponse")
+    public boolean checkLogin(
+        @WebParam(name = "username", targetNamespace = "http://andipaetzold.de/")
+        String username,
+        @WebParam(name = "password", targetNamespace = "http://andipaetzold.de/")
+        String password);
+
 }

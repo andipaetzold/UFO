@@ -103,5 +103,11 @@ namespace UFO.WebService
         {
             return Implementation_Server.PerformanceServer.GetByArtist(artist).ToList();
         }
+
+        [WebMethod]
+        public bool CheckLogin(string username, string password)
+        {
+            return Implementation_Server.UserServer.CheckLoginData(username, password);
+        }
     }
 }
