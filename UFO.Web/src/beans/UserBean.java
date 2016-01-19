@@ -13,7 +13,6 @@ public class UserBean {
     private String password;
     private boolean loggedIn = false;
 
-
     public void login() {
         UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
         UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();

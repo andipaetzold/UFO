@@ -16,8 +16,7 @@ public class WebServiceAvailableCheck implements PhaseListener {
     public void beforePhase(PhaseEvent phaseEvent) {
         try {
             new UltimateFestivalOrganizer();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, "error");
         }

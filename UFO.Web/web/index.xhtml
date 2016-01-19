@@ -4,7 +4,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:bf="http://bootsfaces.net/ui"
 >
     <ui:define name="title">
         Overview
@@ -13,9 +12,9 @@
     <ui:define name="content">
         <h:form>
             <p:selectOneMenu value="#{performancesBean.selectedDate}">
-                <p:ajax listener="#{performancesBean.onSelectedDateChange}" update="table" />
-                <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true" />
-                <f:selectItems value="#{performancesBean.dates}" />
+                <p:ajax listener="#{performancesBean.onSelectedDateChange}" update="table"/>
+                <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true"/>
+                <f:selectItems value="#{performancesBean.dates}"/>
             </p:selectOneMenu>
         </h:form>
 

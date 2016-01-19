@@ -1,6 +1,5 @@
 package beans;
 
-import org.primefaces.context.RequestContext;
 import services.Artist;
 import services.UltimateFestivalOrganizer;
 import services.UltimateFestivalOrganizerSoap;
@@ -8,8 +7,6 @@ import services.UltimateFestivalOrganizerSoap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

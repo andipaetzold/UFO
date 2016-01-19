@@ -2,51 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:bf="http://bootsfaces.net/ui">
 <h:head>
-    <title>Ultimate Festival Organizer - <ui:insert name="title" /></title>
+    <title>Ultimate Festival Organizer - <ui:insert name="title"/></title>
 
-    <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
+    <h:outputScript library="bootstrap" name="js/bootstrap.min.js"/>
 </h:head>
 
 <h:body>
     <bf:navBar brand="Ultimate Festival Organizer" inverse="true" fixed="true">
-        <p:growl id="message" showDetail="true" />
+        <p:growl id="message" showDetail="true"/>
         <bf:navbarLinks>
-            <bf:navLink outcome="overview" value="Performances" />
-            <bf:navLink outcome="artists" value="Artists" />
-            <bf:navLink outcome="venues" value="Venues" />
+            <bf:navLink outcome="overview" value="Performances"/>
+            <bf:navLink outcome="artists" value="Artists"/>
+            <bf:navLink outcome="venues" value="Venues"/>
         </bf:navbarLinks>
 
         <h:form styleClass="navbar-form navbar-right" rendered="#{!userBean.loggedIn}">
             <div class="form-group">
-                <bf:inputText label="Username" placeholder="Username" required="true" value="#{userBean.username}" />
+                <bf:inputText label="Username" placeholder="Username" required="true" value="#{userBean.username}"/>
             </div>
 
             <div class="form-group">
-                <bf:inputSecret label="Password" placeholder="Password" required="true" value="#{userBean.password}" />
+                <bf:inputSecret label="Password" placeholder="Password" required="true" value="#{userBean.password}"/>
             </div>
 
             <div class="form-group">
-                <bf:commandButton icon="chevron-right" iconAlign="right" look="success" value="Login" update="message" action="#{userBean.login}" />
+                <bf:commandButton icon="chevron-right" iconAlign="right" look="success" value="Login" update="message"
+                                  action="#{userBean.login}"/>
             </div>
         </h:form>
 
         <h:form styleClass="navbar-form navbar-right" rendered="#{userBean.loggedIn}">
-            <bf:commandButton look="danger" value="Logout" update="message" action="#{userBean.logout}" />
+            <bf:commandButton look="danger" value="Logout" update="message" action="#{userBean.logout}"/>
         </h:form>
     </bf:navBar>
 
     <bf:container>
         <h1>
-            <ui:insert name="title" />
+            <ui:insert name="title"/>
         </h1>
 
-        <ui:insert name="content" />
+        <ui:insert name="content"/>
 
-        <hr />
+        <hr/>
 
         <footer>
             <p>© 2016 Andreas Pätzold</p>
