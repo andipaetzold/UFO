@@ -6,6 +6,14 @@
       xmlns:bf="http://bootsfaces.net/ui">
 <h:head>
     <title>Ultimate Festival Organizer - <ui:insert name="title"/></title>
+
+    <script type="text/javascript">
+        var originalPrimeFacesCw = PrimeFaces.cw;
+        PrimeFaces.cw = function (name, id, options, resource) {
+            resource = resource || name.toLowerCase();
+            originalPrimeFacesCw.apply(this, [name, id, options, resource]);
+        };
+    </script>
 </h:head>
 
 <h:body>
