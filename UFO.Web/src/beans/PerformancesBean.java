@@ -8,6 +8,7 @@ import services.Venue;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -27,6 +28,8 @@ public class PerformancesBean {
     private List<Integer> times;
     private List<Venue> venues;
     private Map<Integer, Map<Integer, Performance>> performances = new HashMap<>();
+
+    private Performance performance;
 
     @PostConstruct
     public void init() {
@@ -115,5 +118,21 @@ public class PerformancesBean {
 
     public Map<Integer, Map<Integer, Performance>> getPerformances() {
         return performances;
+    }
+
+    public void updateDialog() {
+        Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (!requestParams.containsKey("id")) {
+            return;
+        }
+        int id = Integer.valueOf(requestParams.get("id"));
+
+        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
+        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+        performance = ufo.getPerformanceById(id);
+    }
+
+    public Performance getPerformance() {
+        return performance;
     }
 }
