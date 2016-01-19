@@ -16,24 +16,22 @@
                 <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true"/>
                 <f:selectItems value="#{performancesBean.dates}"/>
             </p:selectOneMenu>
-        </h:form>
 
-        <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto" id="table">
-            <p:column headerText="Venue" styleClass="ui-widget-header">
-                #{venue.name}
-            </p:column>
+            <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto" id="table">
+                <p:column headerText="Venue" styleClass="ui-widget-header">
+                    #{venue.name}
+                </p:column>
 
-            <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00">
-                <h:form>
+                <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00">
                     <p:commandLink value="#{performancesBean.performances[venue.id][time].artist.name}"
                                    actionListener="#{performancesBean.updateDialog}"
                                    oncomplete="PF('performanceWidget').show()"
                                    update="performanceDialog">
                         <f:param name="id" value="#{performancesBean.performances[venue.id][time].id}"/>
                     </p:commandLink>
-                </h:form>
-            </p:columns>
-        </p:dataTable>
+                </p:columns>
+            </p:dataTable>
+        </h:form>
 
         <p:dialog id="performanceDialog"
                   widgetVar="performanceWidget"

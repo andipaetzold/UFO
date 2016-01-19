@@ -8,44 +8,41 @@
     <ui:define name="title">Artists</ui:define>
 
     <ui:define name="content">
-        <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false"
-                     sortMode="multiple">
-            <p:column sortBy="#{artist.name}">
-                <f:facet name="header">Name</f:facet>
-                <h:form>
+        <h:form>
+            <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15"
+                         paginatorAlwaysVisible="false"
+                         sortMode="multiple">
+                <p:column sortBy="#{artist.name}">
+                    <f:facet name="header">Name</f:facet>
                     <p:commandLink value="#{artist.name}"
                                    actionListener="#{artistsBean.updateDialog}"
                                    oncomplete="PF('artistWidget').show()"
                                    update="artistDialog">
                         <f:param name="id" value="#{artist.id}"/>
                     </p:commandLink>
-                </h:form>
-            </p:column>
+                </p:column>
 
-            <p:column sortBy="#{artist.category.name}">
-                <f:facet name="header">Category</f:facet>
-                <h:form>
+                <p:column sortBy="#{artist.category.name}">
+                    <f:facet name="header">Category</f:facet>
                     <p:commandLink value="#{artist.category.name}"
                                    actionListener="#{artistsBean.updateDialog}"
                                    oncomplete="PF('artistWidget').show()"
                                    update="artistDialog">
                         <f:param name="id" value="#{artist.id}"/>
                     </p:commandLink>
-                </h:form>
-            </p:column>
+                </p:column>
 
-            <p:column sortBy="#{artist.country.name}">
-                <f:facet name="header">Country</f:facet>
-                <h:form>
+                <p:column sortBy="#{artist.country.name}">
+                    <f:facet name="header">Country</f:facet>
                     <p:commandLink value="#{artist.country.name}"
                                    actionListener="#{artistsBean.updateDialog}"
                                    oncomplete="PF('artistWidget').show()"
                                    update="artistDialog">
                         <f:param name="id" value="#{artist.id}"/>
                     </p:commandLink>
-                </h:form>
-            </p:column>
-        </p:dataTable>
+                </p:column>
+            </p:dataTable>
+        </h:form>
 
         <p:dialog id="artistDialog"
                   widgetVar="artistWidget"
