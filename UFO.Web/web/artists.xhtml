@@ -4,31 +4,84 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
->
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:define name="title">Artists</ui:define>
 
     <ui:define name="content">
-        <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false" sortMode="multiple">
+        <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15" paginatorAlwaysVisible="false"
+                     sortMode="multiple">
             <p:column sortBy="#{artist.name}">
                 <f:facet name="header">Name</f:facet>
-                <p:link value="#{artist.name}" outcome="artist">
-                    <f:param name="id" value="#{artist.id}" />
-                </p:link>
+                <h:form>
+                    <p:commandLink value="#{artist.name}"
+                                   actionListener="#{artistsBean.updateDialog}"
+                                   oncomplete="PF('artistWidget').show()"
+                                   update="artistDialog">
+                        <f:param name="id" value="#{artist.id}"/>
+                    </p:commandLink>
+                </h:form>
             </p:column>
 
             <p:column sortBy="#{artist.category.name}">
                 <f:facet name="header">Category</f:facet>
-                <p:link value="#{artist.category.name}" outcome="artist">
-                    <f:param name="id" value="#{artist.id}" />
-                </p:link>
+                <h:form>
+                    <p:commandLink value="#{artist.category.name}"
+                                   actionListener="#{artistsBean.updateDialog}"
+                                   oncomplete="PF('artistWidget').show()"
+                                   update="artistDialog">
+                        <f:param name="id" value="#{artist.id}"/>
+                    </p:commandLink>
+                </h:form>
             </p:column>
 
             <p:column sortBy="#{artist.country.name}">
                 <f:facet name="header">Country</f:facet>
-                <p:link value="#{artist.country.name}" outcome="artist">
-                    <f:param name="id" value="#{artist.id}" />
-                </p:link>
+                <h:form>
+                    <p:commandLink value="#{artist.country.name}"
+                                   actionListener="#{artistsBean.updateDialog}"
+                                   oncomplete="PF('artistWidget').show()"
+                                   update="artistDialog">
+                        <f:param name="id" value="#{artist.id}"/>
+                    </p:commandLink>
+                </h:form>
             </p:column>
         </p:dataTable>
+
+        <p:dialog id="artistDialog"
+                  widgetVar="artistWidget"
+                  modal="true"
+                  resizable="false"
+                  draggable="false"
+                  fitViewport="true"
+                  response="true"
+                  closeOnEscape="true"
+                  header="#{artistsBean.artist.name}">
+            <p:panelGrid columns="2">
+                <c:if test="#{not empty artistsBean.artist.image}">
+                    <f:facet name="header">
+                        <h:graphicImage value="#{artistsBean.artist.image}"/>
+                    </f:facet>
+                </c:if>
+
+                <h:outputText value="Category"/>
+                <h:outputText value="#{artistsBean.artist.category.name}"/>
+
+                <h:outputText value="Country"/>
+                <h:outputText value="#{artistsBean.artist.country.name}"/>
+
+                <h:outputText value="E-Mail"/>
+                <h:outputLink value="mailto:#{artistsBean.artist.email}">
+                    <h:outputText value="#{artistsBean.artist.email}"/>
+                </h:outputLink>
+            </p:panelGrid>
+
+            <c:if test="#{not empty artistsBean.artist.videoUrl}">
+                <f:facet name="footer">
+                    <p:media value="#{artistsBean.artist.videoUrl}" player="flash">
+                        <f:param name="autoPlay" value="false"/>
+                    </p:media>
+                </f:facet>
+            </c:if>
+        </p:dialog>
     </ui:define>
 </ui:composition>
