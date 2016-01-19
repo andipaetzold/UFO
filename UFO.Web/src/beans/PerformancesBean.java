@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,7 +27,7 @@ public class PerformancesBean {
 
     private List<Integer> times;
     private List<Venue> venues;
-    private Map<Integer, Map<Integer, Performance>> performances;
+    private Map<Integer, Map<Integer, Performance>> performances = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -46,9 +48,28 @@ public class PerformancesBean {
         venues = ufo.getAllVenues().getVenue();
 
         // performances
-        performances = new HashMap<>();
-        
-        List<Performance> allPerformances = ufo.getAllPerformances().getPerformance();
+        reloadPerformances();
+    }
+
+    private void reloadPerformances() {
+        performances.clear();
+
+        if (selectedDate == null) {
+            return;
+        }
+
+        XMLGregorianCalendar date = null;
+        try {
+            GregorianCalendar c = new GregorianCalendar();
+            c.setTime(selectedDate);
+            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        } catch (DatatypeConfigurationException e) {
+        }
+
+        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
+        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+
+        List<Performance> allPerformances = ufo.getPerformancesByDate(date).getPerformance();
         for (Performance p : allPerformances) {
             int venueId = p.getVenue().getId();
             int hour = p.getDateTime().getHour();
@@ -82,7 +103,7 @@ public class PerformancesBean {
     }
 
     public void onSelectedDateChange() {
-        System.out.println(this.selectedDate);
+        reloadPerformances();
     }
 
     public List<Integer> getTimes() {

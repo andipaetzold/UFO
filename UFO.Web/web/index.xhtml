@@ -13,18 +13,18 @@
     <ui:define name="content">
         <h:form>
             <p:selectOneMenu value="#{performancesBean.selectedDate}">
-                <p:ajax listener="#{performancesBean.onSelectedDateChange}" />
+                <p:ajax listener="#{performancesBean.onSelectedDateChange}" update="table" />
                 <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true" />
                 <f:selectItems value="#{performancesBean.dates}" />
             </p:selectOneMenu>
         </h:form>
 
-        <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto">
+        <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto" id="table">
             <p:column headerText="Venue" styleClass="ui-widget-header">
                 #{venue.name}
             </p:column>
 
-            <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}">
+            <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00">
                 #{performancesBean.performances[venue.id][time].artist.name}
             </p:columns>
         </p:dataTable>
