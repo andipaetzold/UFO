@@ -22,5 +22,15 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.0.M1" level="application_server_libraries" />
     <orderEntry type="library" name="Mojarra-2.2.1" level="project" />
     <orderEntry type="library" name="PrimeFaces-5.2" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/BootsFaces-OSP-0.8.0-dist-default.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="primefaces-bootstrap" level="project" />
   </component>
 </module>
