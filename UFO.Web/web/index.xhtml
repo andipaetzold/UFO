@@ -4,13 +4,13 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:bf="http://bootsfaces.net/ui"
 >
     <ui:define name="title">
         Overview
     </ui:define>
 
     <ui:define name="content">
-        #{performancesBean.today}
         <h:form>
             <p:selectOneMenu value="#{performancesBean.selectedDate}">
                 <p:ajax listener="#{performancesBean.onSelectedDateChange}" />
@@ -18,5 +18,16 @@
                 <f:selectItems value="#{performancesBean.dates}" />
             </p:selectOneMenu>
         </h:form>
+
+        <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto">
+            <p:column headerText="Venue" styleClass="ui-widget-header">
+                #{venue.name}
+            </p:column>
+
+            <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}">
+                #{performancesBean.performances[venue.id][time].artist.name}
+            </p:columns>
+        </p:dataTable>
+
     </ui:define>
 </ui:composition>
