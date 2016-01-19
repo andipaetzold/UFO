@@ -9,7 +9,9 @@
 
     <ui:define name="content">
         <h:form>
-            <p:dataTable value="#{venuesBean.all}" var="venue">
+            <p:dataTable value="#{venuesBean.all}"
+                         var="venue"
+                         tableStyle="width: auto">
                 <p:column>
                     <f:facet name="header">Short Name</f:facet>
                     <p:commandLink value="#{venue.shortName}"
