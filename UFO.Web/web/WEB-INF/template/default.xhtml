@@ -27,11 +27,19 @@
 
         <h:form styleClass="navbar-form navbar-right" rendered="#{!userBean.loggedIn}">
             <div class="form-group">
-                <bf:inputText label="Username" placeholder="Username" required="true" value="#{userBean.username}"/>
+                <bf:inputText label="Username"
+                              placeholder="Username"
+                              required="true"
+                              requiredMessage="Please enter a username."
+                              value="#{userBean.username}"/>
             </div>
 
             <div class="form-group">
-                <bf:inputSecret label="Password" placeholder="Password" required="true" value="#{userBean.password}"/>
+                <bf:inputSecret label="Password"
+                                placeholder="Password"
+                                required="true"
+                                requiredMessage="Please enter a password."
+                                value="#{userBean.password}"/>
             </div>
 
             <div class="form-group">

@@ -3,8 +3,10 @@ package beans;
 import services.UltimateFestivalOrganizer;
 import services.UltimateFestivalOrganizerSoap;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "userBean")
 @SessionScoped
@@ -18,6 +20,12 @@ public class UserBean {
         UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
 
         loggedIn = ufo.checkLogin(username, password);
+
+        if (!loggedIn) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid username or password.");
+            facesContext.addMessage(null, facesMessage);
+        }
     }
 
     public void logout() {
@@ -25,7 +33,7 @@ public class UserBean {
     }
 
     public String getUsername() {
-        return username;
+        return "";
     }
 
     public void setUsername(String username) {
@@ -33,7 +41,7 @@ public class UserBean {
     }
 
     public String getPassword() {
-        return password;
+        return "";
     }
 
     public void setPassword(String password) {
