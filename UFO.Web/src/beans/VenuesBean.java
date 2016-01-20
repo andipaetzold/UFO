@@ -17,8 +17,8 @@ import java.util.Map;
 public class VenuesBean {
     private Venue venue;
 
-    private List<Venue> venues = new ArrayList<>();
-    private List<Venue> filteredVenues = new ArrayList<>();
+    private List<Venue> venues;
+    private List<Venue> filteredVenues;
 
     @PostConstruct
     public void init() {

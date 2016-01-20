@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +14,11 @@ import java.util.Map;
 public class ArtistsBean {
     private Artist artist;
 
-    private List<Artist> artists = new ArrayList<>();
-    private List<Artist> filteredArtists = new ArrayList<>();
+    private List<Artist> artists;
+    private List<Artist> filteredArtists;
 
-    private List<Category> categories = new ArrayList<>();
-    private List<Country> countries = new ArrayList<>();
+    private List<Category> categories;
+    private List<Country> countries;
 
     @PostConstruct
     public void init() {
