@@ -4,22 +4,28 @@ import services.UltimateFestivalOrganizer;
 import services.UltimateFestivalOrganizerSoap;
 import services.Venue;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @ManagedBean(name = "venuesBean")
-@RequestScoped
+@ViewScoped
 public class VenuesBean {
     private Venue venue;
 
-    public List<Venue> getAll() {
+    private List<Venue> venues = new ArrayList<>();
+    private List<Venue> filteredVenues = new ArrayList<>();
+
+    @PostConstruct
+    public void init() {
         UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
         UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
 
-        return ufo.getAllVenues().getVenue();
+        venues = ufo.getAllVenues().getVenue();
     }
 
     public void updateDialog() {
@@ -36,5 +42,17 @@ public class VenuesBean {
 
     public Venue getVenue() {
         return venue;
+    }
+
+    public List<Venue> getVenues() {
+        return venues;
+    }
+
+    public List<Venue> getFilteredVenues() {
+        return filteredVenues;
+    }
+
+    public void setFilteredVenues(List<Venue> filteredVenues) {
+        this.filteredVenues = filteredVenues;
     }
 }

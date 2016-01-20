@@ -9,43 +9,51 @@
 
     <ui:define name="content">
         <h:form>
-            <p:dataTable value="#{venuesBean.all}"
+            <p:dataTable value="#{venuesBean.venues}"
                          var="venue"
-                         tableStyle="width: auto">
-                <p:column>
+                         paginator="true"
+                         rows="15"
+                         paginatorAlwaysVisible="false"
+                         emptyMessage="No artists found with given criteria"
+                         filteredValue="#{venuesBean.filteredVenues}">
+                <p:column filterBy="#{venue.shortName}" filterMatchMode="contains" sortBy="#{venue.shortName}">
                     <f:facet name="header">Short Name</f:facet>
-                    <p:commandLink value="#{venue.shortName}"
-                                   actionListener="#{venuesBean.updateDialog}"
-                                   oncomplete="PF('venueWidget').show()"
-                                   update="venueDialog">
-                        <f:param name="id" value="#{venue.id}"/>
-                    </p:commandLink>
+                    <h:outputText value="#{venue.shortName}"/>
+                </p:column>
+
+                <p:column filterBy="#{venue.name}" filterMatchMode="contains" sortBy="#{venue.name}">
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{venue.name}"/>
                 </p:column>
 
                 <p:column>
-                    <f:facet name="header">Name</f:facet>
-                    <p:commandLink value="#{venue.name}"
-                                   actionListener="#{venuesBean.updateDialog}"
-                                   oncomplete="PF('venueWidget').show()"
-                                   update="venueDialog">
+                    <f:facet name="header">Map</f:facet>
+
+                    <p:commandButton value="Map"
+                                     actionListener="#{venuesBean.updateDialog}"
+                                     oncomplete="PF('mapWidget').show()"
+                                     update="mapDialog"
+                                     rendered="#{(not empty venue.latitude) and (not empty venue.longitude)}"
+                                     icon="ui-icon-extlink">
                         <f:param name="id" value="#{venue.id}"/>
-                    </p:commandLink>
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
 
-        <p:dialog id="venueDialog"
-                  widgetVar="venueWidget"
+        <p:dialog id="mapDialog"
+                  widgetVar="mapWidget"
                   modal="true"
                   resizable="false"
                   draggable="false"
                   fitViewport="true"
                   response="true"
                   closeOnEscape="true"
-                  header="#{venuesBean.venue.shortName} - #{venuesBean.venue.name}">
+                  dynamic="true"
+                  header="#{venuesBean.venue.shortName} - #{venuesBean.venue.name} - Map">
             <p:gmap type="satellite"
                     center="#{venuesBean.venue.latitude}, #{venuesBean.venue.longitude}"
-                    style="width:640px; height:480px"
+                    style="width:960px; height:540px"
                     zoom="15"/>
         </p:dialog>
 
