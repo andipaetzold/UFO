@@ -43,13 +43,17 @@
             </div>
 
             <div class="form-group">
-                <bf:commandButton icon="chevron-right" iconAlign="right" look="success" value="Login" update="message"
+                <bf:commandButton icon="chevron-right"
+                                  iconAlign="right"
+                                  look="success"
+                                  value="Login"
+                                  update="message"
                                   action="#{userBean.login}"/>
             </div>
         </h:form>
 
         <h:form styleClass="navbar-form navbar-right" rendered="#{userBean.loggedIn}">
-            <bf:commandButton look="danger" value="Logout" update="message" action="#{userBean.logout}"/>
+            <bf:commandButton look="danger" value="Logout" action="#{userBean.logout}"/>
         </h:form>
     </bf:navBar>
 
