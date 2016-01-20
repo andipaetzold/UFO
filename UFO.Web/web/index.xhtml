@@ -4,7 +4,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
     <ui:define name="title">
         Overview
     </ui:define>
@@ -13,22 +14,35 @@
         <h:form>
             <p:selectOneMenu value="#{performancesBean.selectedDate}">
                 <p:ajax listener="#{performancesBean.onSelectedDateChange}" update="table"/>
-                <f:selectItem itemLabel="Select Date" itemValue="#{null}" noSelectionOption="true"/>
                 <f:selectItems value="#{performancesBean.dates}"/>
             </p:selectOneMenu>
 
-            <p:dataTable value="#{performancesBean.venues}" var="venue" tableStyle="width: auto" id="table">
+            <p:dataTable value="#{performancesBean.venues}" var="venue" id="table" stickyHeader="true">>
                 <p:column headerText="Venue" styleClass="ui-widget-header">
                     #{venue.name}
                 </p:column>
 
                 <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00">
-                    <p:commandLink value="#{performancesBean.performances[venue.id][time].artist.name}"
-                                   actionListener="#{performancesBean.updateDialog}"
-                                   oncomplete="PF('performanceWidget').show()"
-                                   update="performanceDialog">
-                        <f:param name="id" value="#{performancesBean.performances[venue.id][time].id}"/>
-                    </p:commandLink>
+                    <c:if test="#{!userBean.loggedIn}">
+                        <p:commandLink value="#{performancesBean.performances[venue.id][time].artist.name}"
+                                       actionListener="#{performancesBean.updateDialog}"
+                                       oncomplete="PF('performanceWidget').show()"
+                                       update="performanceDialog">
+                            <f:param name="id" value="#{performancesBean.performances[venue.id][time].id}"/>
+                        </p:commandLink>
+                    </c:if>
+
+                    <c:if test="#{userBean.loggedIn}">
+                        <p:selectOneMenu value="#{performancesBean.performances[venue.id][time].artist.id}"
+                                         id="selectMenu">
+                            <p:ajax listener="#{performancesBean.onSelectedArtistChange(venue.id, time)}"
+                                    update="selectMenu message"/>
+
+                            <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true"/>
+                            <f:selectItems value="#{performancesBean.artists}" var="artist" itemValue="#{artist.id}"
+                                           itemLabel="#{artist.name}"/>
+                        </p:selectOneMenu>
+                    </c:if>
                 </p:columns>
             </p:dataTable>
         </h:form>
@@ -41,43 +55,44 @@
                   fitViewport="true"
                   response="true"
                   closeOnEscape="true">
+
             <p:panelGrid columns="2" layout="grid">
-                <c:if test="#{not empty performancesBean.performance.artist.image}">
+                <c:if test="#{not empty performancesBean.dialogPerformance.artist.image}">
                     <f:facet name="header">
-                        <h:graphicImage value="#{performancesBean.performance.artist.image}"/>
+                        <h:graphicImage value="#{performancesBean.dialogPerformance.artist.image}"/>
                     </f:facet>
                 </c:if>
 
                 <h:outputText value="Date"/>
                 <h:outputText
-                        value="#{performancesBean.performance.dateTime.day}.#{performancesBean.performance.dateTime.month}.#{performancesBean.performance.dateTime.year}"/>
+                        value="#{performancesBean.dialogPerformance.dateTime.day}.#{performancesBean.dialogPerformance.dateTime.month}.#{performancesBean.dialogPerformance.dateTime.year}"/>
 
                 <h:outputText value="Time"/>
-                <h:outputText value="#{performancesBean.performance.dateTime.hour}:00"/>
+                <h:outputText value="#{performancesBean.dialogPerformance.dateTime.hour}:00"/>
 
                 <h:outputText value="Artist"/>
-                <h:outputText value="#{performancesBean.performance.artist.name}"/>
+                <h:outputText value="#{performancesBean.dialogPerformance.artist.name}"/>
 
                 <h:outputText value="Category"/>
-                <h:outputText value="#{performancesBean.performance.artist.category.name}"/>
+                <h:outputText value="#{performancesBean.dialogPerformance.artist.category.name}"/>
 
                 <h:outputText value="Country"/>
-                <h:outputText value="#{performancesBean.performance.artist.country.name}"/>
+                <h:outputText value="#{performancesBean.dialogPerformance.artist.country.name}"/>
 
                 <h:outputText value="E-Mail"/>
-                <h:outputLink value="mailto:#{performancesBean.performance.artist.email}">
-                    <h:outputText value="#{performancesBean.performance.artist.email}"/>
+                <h:outputLink value="mailto:#{performancesBean.dialogPerformance.artist.email}">
+                    <h:outputText value="#{performancesBean.dialogPerformance.artist.email}"/>
                 </h:outputLink>
 
                 <h:outputText value="Venue"/>
                 <h:outputText
-                        value="#{performancesBean.performance.venue.shortName} - #{performancesBean.performance.venue.name}"/>
+                        value="#{performancesBean.dialogPerformance.venue.shortName} - #{performancesBean.dialogPerformance.venue.name}"/>
 
 
-                <c:if test="#{(not empty performancesBean.performance.venue.latitude) and (not empty performancesBean.performance.venue.longitude)}">
+                <c:if test="#{(not empty performancesBean.dialogPerformance.venue.latitude) and (not empty performancesBean.dialogPerformance.venue.longitude)}">
                     <f:facet name="footer">
                         <p:gmap type="satellite"
-                                center="#{performancesBean.performance.venue.latitude}, #{performancesBean.performance.venue.longitude}"
+                                center="#{performancesBean.dialogPerformance.venue.latitude}, #{performancesBean.dialogPerformance.venue.longitude}"
                                 style="width:400px; height:250px"
                                 zoom="15"/>
                     </f:facet>

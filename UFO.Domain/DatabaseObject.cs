@@ -24,7 +24,7 @@
         #region Properties
 
         [DependsOn(nameof(Id))]
-        public bool HasId => id.HasValue;
+        public bool HasId => id.HasValue && id > 0;
 
         [Key]
         [Column("Id")]
@@ -32,7 +32,7 @@
         {
             get
             {
-                if (id != null)
+                if (id.HasValue && id > 0)
                 {
                     return id.Value;
                 }

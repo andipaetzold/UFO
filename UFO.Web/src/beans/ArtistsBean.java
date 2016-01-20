@@ -1,9 +1,5 @@
 package beans;
 
-import services.Artist;
-import services.UltimateFestivalOrganizer;
-import services.UltimateFestivalOrganizerSoap;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;

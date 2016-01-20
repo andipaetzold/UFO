@@ -109,5 +109,23 @@ namespace UFO.WebService
         {
             return Implementation_Server.UserServer.CheckLoginData(username, password);
         }
+
+        [WebMethod]
+        public void DeletePerformance(Performance performance)
+        {
+            Implementation_Server.PerformanceServer.Remove(performance);
+        }
+
+        [WebMethod]
+        public bool UpdatePerformance(Performance performance)
+        {
+            return Implementation_Server.PerformanceServer.Update(performance);
+        }
+
+        [WebMethod]
+        public bool AddPerformance(Performance performance)
+        {
+            return Implementation_Server.PerformanceServer.Add(performance);
+        }
     }
 }

@@ -230,4 +230,43 @@ public interface UltimateFestivalOrganizerSoap {
         @WebParam(name = "password", targetNamespace = "http://andipaetzold.de/")
         String password);
 
+    /**
+     * 
+     * @param performance
+     */
+    @WebMethod(operationName = "DeletePerformance", action = "http://andipaetzold.de/DeletePerformance")
+    @RequestWrapper(localName = "DeletePerformance", targetNamespace = "http://andipaetzold.de/", className = "services.DeletePerformance")
+    @ResponseWrapper(localName = "DeletePerformanceResponse", targetNamespace = "http://andipaetzold.de/", className = "services.DeletePerformanceResponse")
+    public void deletePerformance(
+        @WebParam(name = "performance", targetNamespace = "http://andipaetzold.de/")
+        Performance performance);
+
+    /**
+     * 
+     * @param performance
+     * @return
+     *     returns boolean
+     */
+    @WebMethod(operationName = "UpdatePerformance", action = "http://andipaetzold.de/UpdatePerformance")
+    @WebResult(name = "UpdatePerformanceResult", targetNamespace = "http://andipaetzold.de/")
+    @RequestWrapper(localName = "UpdatePerformance", targetNamespace = "http://andipaetzold.de/", className = "services.UpdatePerformance")
+    @ResponseWrapper(localName = "UpdatePerformanceResponse", targetNamespace = "http://andipaetzold.de/", className = "services.UpdatePerformanceResponse")
+    public boolean updatePerformance(
+        @WebParam(name = "performance", targetNamespace = "http://andipaetzold.de/")
+        Performance performance);
+
+    /**
+     * 
+     * @param performance
+     * @return
+     *     returns boolean
+     */
+    @WebMethod(operationName = "AddPerformance", action = "http://andipaetzold.de/AddPerformance")
+    @WebResult(name = "AddPerformanceResult", targetNamespace = "http://andipaetzold.de/")
+    @RequestWrapper(localName = "AddPerformance", targetNamespace = "http://andipaetzold.de/", className = "services.AddPerformance")
+    @ResponseWrapper(localName = "AddPerformanceResponse", targetNamespace = "http://andipaetzold.de/", className = "services.AddPerformanceResponse")
+    public boolean addPerformance(
+        @WebParam(name = "performance", targetNamespace = "http://andipaetzold.de/")
+        Performance performance);
+
 }

@@ -94,6 +94,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeletePerformanceResponse }
+     * 
+     */
+    public DeletePerformanceResponse createDeletePerformanceResponse() {
+        return new DeletePerformanceResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdatePerformanceResponse }
+     * 
+     */
+    public UpdatePerformanceResponse createUpdatePerformanceResponse() {
+        return new UpdatePerformanceResponse();
+    }
+
+    /**
      * Create an instance of {@link GetAllPerformancesResponse }
      * 
      */
@@ -163,6 +179,14 @@ public class ObjectFactory {
      */
     public GetPerformancesByDateResponse createGetPerformancesByDateResponse() {
         return new GetPerformancesByDateResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdatePerformance }
+     * 
+     */
+    public UpdatePerformance createUpdatePerformance() {
+        return new UpdatePerformance();
     }
 
     /**
@@ -278,6 +302,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddPerformanceResponse }
+     * 
+     */
+    public AddPerformanceResponse createAddPerformanceResponse() {
+        return new AddPerformanceResponse();
+    }
+
+    /**
      * Create an instance of {@link GetDatesWithPerformances }
      * 
      */
@@ -350,6 +382,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeletePerformance }
+     * 
+     */
+    public DeletePerformance createDeletePerformance() {
+        return new DeletePerformance();
+    }
+
+    /**
      * Create an instance of {@link GetCountryByIdResponse }
      * 
      */
@@ -371,6 +411,14 @@ public class ObjectFactory {
      */
     public CheckLogin createCheckLogin() {
         return new CheckLogin();
+    }
+
+    /**
+     * Create an instance of {@link AddPerformance }
+     * 
+     */
+    public AddPerformance createAddPerformance() {
+        return new AddPerformance();
     }
 
 }

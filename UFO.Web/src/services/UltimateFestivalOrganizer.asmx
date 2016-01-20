@@ -290,6 +290,44 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="DeletePerformance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="performance" type="tns:Performance" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeletePerformanceResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdatePerformance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="performance" type="tns:Performance" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePerformanceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdatePerformanceResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPerformance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="performance" type="tns:Performance" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPerformanceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddPerformanceResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetCountryByIdSoapIn">
@@ -388,6 +426,24 @@
   <wsdl:message name="CheckLoginSoapOut">
     <wsdl:part name="parameters" element="tns:CheckLoginResponse" />
   </wsdl:message>
+  <wsdl:message name="DeletePerformanceSoapIn">
+    <wsdl:part name="parameters" element="tns:DeletePerformance" />
+  </wsdl:message>
+  <wsdl:message name="DeletePerformanceSoapOut">
+    <wsdl:part name="parameters" element="tns:DeletePerformanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePerformanceSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePerformance" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePerformanceSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePerformanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddPerformanceSoapIn">
+    <wsdl:part name="parameters" element="tns:AddPerformance" />
+  </wsdl:message>
+  <wsdl:message name="AddPerformanceSoapOut">
+    <wsdl:part name="parameters" element="tns:AddPerformanceResponse" />
+  </wsdl:message>
   <wsdl:portType name="UltimateFestivalOrganizerSoap">
     <wsdl:operation name="GetCountryById">
       <wsdl:input message="tns:GetCountryByIdSoapIn" />
@@ -452,6 +508,18 @@
     <wsdl:operation name="CheckLogin">
       <wsdl:input message="tns:CheckLoginSoapIn" />
       <wsdl:output message="tns:CheckLoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeletePerformance">
+      <wsdl:input message="tns:DeletePerformanceSoapIn" />
+      <wsdl:output message="tns:DeletePerformanceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerformance">
+      <wsdl:input message="tns:UpdatePerformanceSoapIn" />
+      <wsdl:output message="tns:UpdatePerformanceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPerformance">
+      <wsdl:input message="tns:AddPerformanceSoapIn" />
+      <wsdl:output message="tns:AddPerformanceSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="UltimateFestivalOrganizerSoap" type="tns:UltimateFestivalOrganizerSoap">
@@ -600,6 +668,33 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeletePerformance">
+      <soap:operation soapAction="http://andipaetzold.de/DeletePerformance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerformance">
+      <soap:operation soapAction="http://andipaetzold.de/UpdatePerformance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPerformance">
+      <soap:operation soapAction="http://andipaetzold.de/AddPerformance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="UltimateFestivalOrganizerSoap12" type="tns:UltimateFestivalOrganizerSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -740,6 +835,33 @@
     </wsdl:operation>
     <wsdl:operation name="CheckLogin">
       <soap12:operation soapAction="http://andipaetzold.de/CheckLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletePerformance">
+      <soap12:operation soapAction="http://andipaetzold.de/DeletePerformance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerformance">
+      <soap12:operation soapAction="http://andipaetzold.de/UpdatePerformance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPerformance">
+      <soap12:operation soapAction="http://andipaetzold.de/AddPerformance" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
