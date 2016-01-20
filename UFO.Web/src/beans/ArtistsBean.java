@@ -1,13 +1,17 @@
 package beans;
 
+import services.Artist;
+import services.UltimateFestivalOrganizer;
+import services.UltimateFestivalOrganizerSoap;
+
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Map;
 
 @ManagedBean(name = "artistsBean")
-@RequestScoped
+@SessionScoped
 public class ArtistsBean {
     private Artist artist;
 

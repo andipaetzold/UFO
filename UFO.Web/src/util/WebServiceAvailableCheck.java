@@ -1,5 +1,7 @@
 package util;
 
+import services.UltimateFestivalOrganizer;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;

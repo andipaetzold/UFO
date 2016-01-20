@@ -17,7 +17,7 @@
                 <f:selectItems value="#{performancesBean.dates}"/>
             </p:selectOneMenu>
 
-            <p:dataTable value="#{performancesBean.venues}" var="venue" id="table" stickyHeader="true">>
+            <p:dataTable value="#{performancesBean.venues}" var="venue" id="table" stickyHeader="true">
                 <p:column headerText="Venue" styleClass="ui-widget-header">
                     #{venue.name}
                 </p:column>
