@@ -1,25 +1,34 @@
 package beans;
 
-import services.Artist;
-import services.UltimateFestivalOrganizer;
-import services.UltimateFestivalOrganizerSoap;
+import services.*;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @ManagedBean(name = "artistsBean")
-@SessionScoped
+@ViewScoped
 public class ArtistsBean {
     private Artist artist;
 
-    public List<Artist> getAll() {
+    private List<Artist> artists = new ArrayList<>();
+    private List<Artist> filteredArtists = new ArrayList<>();
+
+    private List<Category> categories = new ArrayList<>();
+    private List<Country> countries = new ArrayList<>();
+
+    @PostConstruct
+    public void init() {
         UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
         UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
 
-        return ufo.getAllButDeletedArtists().getArtist();
+        artists = ufo.getAllButDeletedArtists().getArtist();
+        categories = ufo.getAllCategories().getCategory();
+        countries = ufo.getAllCountries().getCountry();
     }
 
     public void updateDialog() {
@@ -34,7 +43,28 @@ public class ArtistsBean {
         artist = ufo.getArtistById(id);
     }
 
+
+    public List<Artist> getArtists() {
+        return artists;
+    }
+
     public Artist getArtist() {
         return artist;
+    }
+
+    public List<Artist> getFilteredArtists() {
+        return filteredArtists;
+    }
+
+    public void setFilteredArtists(List<Artist> filteredArtists) {
+        this.filteredArtists = filteredArtists;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public List<Country> getCountries() {
+        return countries;
     }
 }

@@ -9,30 +9,53 @@
 
     <ui:define name="content">
         <h:form>
-            <p:dataTable value="#{artistsBean.all}" var="artist" paginator="true" rows="15"
+            <p:dataTable value="#{artistsBean.artists}"
+                         var="artist"
+                         paginator="true"
+                         rows="15"
                          paginatorAlwaysVisible="false"
-                         sortMode="multiple">
+                         emptyMessage="No artists found with given criteria"
+                         filteredValue="#{artistsBean.filteredArtists}"
+                         widgetVar="table">
                 <p:column>
                     <f:facet name="header"></f:facet>
                     <h:graphicImage value="#{artist.image}" rendered="#{not empty artist.image}" width="100%"/>
                 </p:column>
 
-                <p:column sortBy="#{artist.name}">
+                <p:column filterBy="#{artist.name}" sortBy="#{artist.name}">
                     <f:facet name="header">Name</f:facet>
                     <h:outputText value="#{artist.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{artist.category.name}">
+                <p:column filterBy="#{artist.category.id}" sortBy="#{artist.category.name}">
                     <f:facet name="header">Category</f:facet>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('table').filter()">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{artistsBean.categories}"
+                                           var="category"
+                                           itemLabel="#{category.name}"
+                                           itemValue="#{category.id}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
                     <h:outputText value="#{artist.category.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{artist.country.name}">
+                <p:column filterBy="#{artist.country.id}" sortBy="#{artist.country.name}">
                     <f:facet name="header">Country</f:facet>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('table').filter()">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{artistsBean.countries}"
+                                           var="country"
+                                           itemLabel="#{country.name}"
+                                           itemValue="#{country.id}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
                     <h:outputText value="#{artist.country.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{artist.email}">
+                <p:column>
                     <f:facet name="header">E-Mail</f:facet>
                     <h:outputLink value="mailto:#{artist.email}">
                         <h:outputText value="#{artist.email}"/>
