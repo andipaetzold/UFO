@@ -5,7 +5,8 @@ import services.*;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -17,19 +18,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ManagedBean(name = "performancesBean")
-@RequestScoped
+@ViewScoped
 public class PerformancesBean {
     private List<Date> dates = new ArrayList<>();
     private Date selectedDate = null;
     private DateFormat format = new SimpleDateFormat("dd.MM.yyy");
 
     private List<Integer> times;
+    private List<Artist> artists;
     private List<Venue> venues;
     private Map<Integer, Map<Integer, Performance>> performances = new HashMap<>();
 
     private Performance dialogPerformance;
 
-    private List<Artist> artists;
+    private boolean editMode;
+
+    @ManagedProperty(value = "#{userBean}")
+    private UserBean userBean;
 
     @PostConstruct
     public void init() {
@@ -41,7 +46,9 @@ public class PerformancesBean {
         dates.addAll(gregDates.stream().map(date -> date.toGregorianCalendar().getTime()).collect(Collectors.toList()));
 
         // set selected date
-        selectedDate = dates.get(0);
+        if (dates.size() > 0) {
+            selectedDate = dates.get(0);
+        }
 
         // times to display
         times = new ArrayList<>();
@@ -49,17 +56,18 @@ public class PerformancesBean {
             times.add(t % 24);
         }
 
-        // venues
-        venues = ufo.getAllVenues().getVenue();
-
-        // performances
-        reloadPerformances();
-
-        // artists
-        artists = ufo.getAllButDeletedArtists().getArtist();
+        // artists / venues / performances
+        reload();
     }
 
-    private void reloadPerformances() {
+    private void reload() {
+        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
+        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+
+        venues = ufo.getAllVenues().getVenue();
+        artists = ufo.getAllButDeletedArtists().getArtist();
+
+        // Performances
         performances.clear();
 
         if (selectedDate == null) {
@@ -88,9 +96,6 @@ public class PerformancesBean {
         }
 
         // fill with existing
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-
         List<Performance> allPerformances = ufo.getPerformancesByDate(dateToGregorian(selectedDate)).getPerformance();
         for (Performance p : allPerformances) {
             int venueId = p.getVenue().getId();
@@ -121,7 +126,7 @@ public class PerformancesBean {
     }
 
     public void onSelectedDateChange() {
-        reloadPerformances();
+        reload();
     }
 
     public List<Integer> getTimes() {
@@ -157,6 +162,12 @@ public class PerformancesBean {
     }
 
     public void onSelectedArtistChange(int viewId, int time) {
+        // check login
+        if (!userBean.getLoggedIn()) {
+            return;
+        }
+
+        // execute action
         Performance p = performances.get(viewId).get(time);
 
         UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
@@ -184,7 +195,7 @@ public class PerformancesBean {
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved", "Data was saved on the server.");
         } else {
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "The selected artist was invalid. The item will be reset.");
-            reloadPerformances();
+            reload();
         }
         facesContext.addMessage(null, facesMessage);
     }
@@ -197,5 +208,28 @@ public class PerformancesBean {
         } catch (DatatypeConfigurationException e) {
         }
         return null;
+    }
+
+    public boolean isEditMode() {
+        if (userBean.getLoggedIn()) {
+            return editMode;
+        } else {
+            return false;
+        }
+    }
+
+    public void setEditMode(boolean editMode) {
+        if (userBean.getLoggedIn()) {
+            this.editMode = editMode;
+        } else {
+            this.editMode = false;
+        }
+    }
+
+    public void setUserBean(UserBean userBean) {
+        this.userBean = userBean;
+    }
+
+    public void onSelectedModeChange() {
     }
 }

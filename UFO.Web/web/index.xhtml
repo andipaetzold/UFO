@@ -5,6 +5,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:bf="http://bootsfaces.net/ui"
 >
     <ui:define name="title">
         Overview
@@ -12,37 +13,45 @@
 
     <ui:define name="content">
         <h:form>
-            <p:selectOneMenu value="#{performancesBean.selectedDate}">
-                <p:ajax listener="#{performancesBean.onSelectedDateChange}" update="table"/>
-                <f:selectItems value="#{performancesBean.dates}"/>
-            </p:selectOneMenu>
+            <bf:panelGrid columns="6,6">
+                <p:selectOneMenu label="Date" value="#{performancesBean.selectedDate}" update="table">
+                    <f:selectItems value="#{performancesBean.dates}"/>
+                    <p:ajax listener="#{performancesBean.onSelectedDateChange}"/>
+                </p:selectOneMenu>
+
+                <p:selectOneMenu label="Mode"
+                                 value="#{performancesBean.editMode}"
+                                 rendered="#{userBean.loggedIn}">
+                    <f:selectItem itemValue="#{false}" itemLabel="View"/>
+                    <f:selectItem itemValue="#{true}" itemLabel="Edit"/>
+                    <p:ajax listener="#{performancesBean.onSelectedModeChange}" update="table"/>
+                </p:selectOneMenu>
+            </bf:panelGrid>
 
             <p:dataTable value="#{performancesBean.venues}" var="venue" id="table" stickyHeader="true">
-                <p:column headerText="Venue" styleClass="ui-widget-header">
+                <p:column headerText="Venue" styleClass="ui-widget-header" footerText="Venue">
                     #{venue.name}
                 </p:column>
 
-                <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00">
-                    <c:if test="#{!userBean.loggedIn}">
-                        <p:commandLink value="#{performancesBean.performances[venue.id][time].artist.name}"
-                                       actionListener="#{performancesBean.updateDialog}"
-                                       oncomplete="PF('performanceWidget').show()"
-                                       update="performanceDialog">
-                            <f:param name="id" value="#{performancesBean.performances[venue.id][time].id}"/>
-                        </p:commandLink>
-                    </c:if>
+                <p:columns value="#{performancesBean.times}" var="time" headerText="#{time}:00" footerText="#{time}:00">
+                    <p:commandLink value="#{performancesBean.performances[venue.id][time].artist.name}"
+                                   actionListener="#{performancesBean.updateDialog}"
+                                   oncomplete="PF('performanceWidget').show()"
+                                   update="performanceDialog"
+                                   rendered="#{!performancesBean.editMode}">
+                        <f:param name="id" value="#{performancesBean.performances[venue.id][time].id}"/>
+                    </p:commandLink>
 
-                    <c:if test="#{userBean.loggedIn}">
-                        <p:selectOneMenu value="#{performancesBean.performances[venue.id][time].artist.id}"
-                                         id="selectMenu">
-                            <p:ajax listener="#{performancesBean.onSelectedArtistChange(venue.id, time)}"
-                                    update="selectMenu message"/>
+                    <p:selectOneMenu value="#{performancesBean.performances[venue.id][time].artist.id}"
+                                     id="selectMenu"
+                                     rendered="#{performancesBean.editMode}">
+                        <p:ajax listener="#{performancesBean.onSelectedArtistChange(venue.id, time)}"
+                                update="selectMenu message"/>
 
-                            <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true"/>
-                            <f:selectItems value="#{performancesBean.artists}" var="artist" itemValue="#{artist.id}"
-                                           itemLabel="#{artist.name}"/>
-                        </p:selectOneMenu>
-                    </c:if>
+                        <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true"/>
+                        <f:selectItems value="#{performancesBean.artists}" var="artist" itemValue="#{artist.id}"
+                                       itemLabel="#{artist.name}"/>
+                    </p:selectOneMenu>
                 </p:columns>
             </p:dataTable>
         </h:form>
@@ -55,7 +64,6 @@
                   fitViewport="true"
                   response="true"
                   closeOnEscape="true">
-
             <p:panelGrid columns="2" layout="grid">
                 <c:if test="#{not empty performancesBean.dialogPerformance.artist.image}">
                     <f:facet name="header">
