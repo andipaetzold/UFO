@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @ViewScoped
 public class PerformancesBean {
     private List<Date> dates = new ArrayList<>();
-    private Date selectedDate = null;
     private DateFormat format = new SimpleDateFormat("dd.MM.yyy");
 
     private List<Integer> times;
@@ -31,10 +30,11 @@ public class PerformancesBean {
 
     private Performance dialogPerformance;
 
-    private boolean editMode;
-
     @ManagedProperty(value = "#{userBean}")
     private UserBean userBean;
+
+    @ManagedProperty(value = "#{performancesSessionBean}")
+    private PerformancesSessionBean performancesSessionBean;
 
     @PostConstruct
     public void init() {
@@ -47,11 +47,6 @@ public class PerformancesBean {
             if (d.getYear() >= Calendar.getInstance().get(Calendar.YEAR)) {
                 dates.add(d.toGregorianCalendar().getTime());
             }
-        }
-
-        // set selected date
-        if (dates.size() > 0) {
-            selectedDate = dates.get(0);
         }
 
         // times to display
@@ -74,7 +69,7 @@ public class PerformancesBean {
         // Performances
         performances.clear();
 
-        if (selectedDate == null) {
+        if (performancesSessionBean.getSelectedDate() == null) {
             return;
         }
 
@@ -87,7 +82,7 @@ public class PerformancesBean {
                 p.setVenue(v);
 
                 Calendar c = new GregorianCalendar();
-                c.setTime(selectedDate);
+                c.setTime(performancesSessionBean.getSelectedDate());
                 c.add(Calendar.HOUR_OF_DAY, hour);
                 p.setDateTime(dateToGregorian(c.getTime()));
 
@@ -100,7 +95,7 @@ public class PerformancesBean {
         }
 
         // fill with existing
-        List<Performance> allPerformances = ufo.getPerformancesByDate(dateToGregorian(selectedDate)).getPerformance();
+        List<Performance> allPerformances = ufo.getPerformancesByDate(dateToGregorian(performancesSessionBean.getSelectedDate())).getPerformance();
         for (Performance p : allPerformances) {
             int venueId = p.getVenue().getId();
             int hour = p.getDateTime().getHour();
@@ -114,14 +109,14 @@ public class PerformancesBean {
     }
 
     public String getSelectedDate() {
-        return (selectedDate == null) ? "" : format.format(selectedDate);
+        return (performancesSessionBean.getSelectedDate() == null) ? "" : format.format(performancesSessionBean.getSelectedDate());
     }
 
     public void setSelectedDate(String selectedDate) {
         try {
-            this.selectedDate = format.parse(selectedDate);
+            performancesSessionBean.setSelectedDate(format.parse(selectedDate));
         } catch (ParseException e) {
-            this.selectedDate = null;
+            performancesSessionBean.setSelectedDate(null);
         }
     }
 
@@ -212,7 +207,7 @@ public class PerformancesBean {
 
     public boolean isEditMode() {
         if (userBean.getLoggedIn()) {
-            return editMode;
+            return performancesSessionBean.isEditMode();
         } else {
             return false;
         }
@@ -220,13 +215,17 @@ public class PerformancesBean {
 
     public void setEditMode(boolean editMode) {
         if (userBean.getLoggedIn()) {
-            this.editMode = editMode;
+            performancesSessionBean.setEditMode(editMode);
         } else {
-            this.editMode = false;
+            performancesSessionBean.setEditMode(false);
         }
     }
 
     public void setUserBean(UserBean userBean) {
         this.userBean = userBean;
+    }
+
+    public void setPerformancesSessionBean(PerformancesSessionBean performancesSessionBean) {
+        this.performancesSessionBean = performancesSessionBean;
     }
 }
