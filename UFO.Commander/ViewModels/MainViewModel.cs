@@ -1,6 +1,7 @@
 ﻿namespace UFO.Commander.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -54,6 +55,7 @@
         public DatabaseSyncObservableCollection<Country> Countries { get; } =
             new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
 
+        public IList<DateTime> Dates { get; } = new ObservableHashSet<DateTime>();
         public ObservableCollection<VenueProgram> DayProgram { get; } = new ObservableCollection<VenueProgram>();
 
         public DateTime SelectedDate
@@ -61,6 +63,12 @@
             get { return selectedDate; }
             set
             {
+                UpdateDates();
+                if (!Dates.Contains(value))
+                {
+                    Dates.Add(value);
+                }
+
                 LoadPerformances(value);
                 selectedDate = value;
             }
@@ -87,6 +95,21 @@
 
         #endregion
 
+        public void UpdateDates()
+        {
+            var datesWithPerformance = Server.PerformanceServer.GetDatesWithPerformances().ToList();
+
+            foreach (var date in datesWithPerformance)
+            {
+                Dates.Add(date);
+            }
+
+            foreach (var date in Dates.ToList().Where(date => !datesWithPerformance.Contains(date)))
+            {
+                Dates.Remove(date);
+            }
+        }
+
         public void UpdateAll()
         {
             Artists.PullUpdates();
@@ -105,6 +128,8 @@
             Countries.PullUpdates();
             LoadPerformances(SelectedDate);
             Venues.PullUpdates();
+
+            UpdateDates();
         }
 
         private async void LoadPerformances(DateTime date)

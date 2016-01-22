@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:UFO.Commander.ViewModels"
         xmlns:v="clr-namespace:UFO.Commander.Views"
         xmlns:util="clr-namespace:UFO.Commander.Util"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="UFO Commander" Height="600" Width="800">
     <DockPanel>
@@ -83,9 +84,19 @@
             </TabItem>
 
             <TabItem Header="Day Program">
+                <TabItem.Resources>
+                    <CollectionViewSource x:Key="SortedDates" Source="{Binding Dates}">
+                        <CollectionViewSource.SortDescriptions>
+                            <componentModel:SortDescription PropertyName="Date" />
+                        </CollectionViewSource.SortDescriptions>
+                    </CollectionViewSource>
+                </TabItem.Resources>
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <DatePicker SelectedDate="{Binding SelectedDate}" />
+                        <ComboBox SelectedValue="{Binding SelectedDate}"
+                                  ItemsSource="{Binding Source={StaticResource SortedDates}}"
+                                  ItemStringFormat="{}{0:dd.MM.yyyy}" />
                     </StackPanel>
 
                     <Grid DockPanel.Dock="Right">
