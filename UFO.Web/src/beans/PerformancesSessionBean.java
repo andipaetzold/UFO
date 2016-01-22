@@ -1,7 +1,6 @@
 package beans;
 
-import services.UltimateFestivalOrganizer;
-import services.UltimateFestivalOrganizerSoap;
+import util.UFOService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,12 +24,9 @@ public class PerformancesSessionBean {
 
     @PostConstruct
     public void init() {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-
         // load dates
         List<Date> dates = new ArrayList<>();
-        List<XMLGregorianCalendar> gregDates = ufo.getDatesWithPerformances().getDateTime();
+        List<XMLGregorianCalendar> gregDates = UFOService.getInstance().getDatesWithPerformances().getDateTime();
         for (XMLGregorianCalendar d : gregDates) {
             if (d.getYear() >= Calendar.getInstance().get(Calendar.YEAR)) {
                 dates.add(d.toGregorianCalendar().getTime());

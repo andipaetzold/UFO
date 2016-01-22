@@ -1,6 +1,10 @@
 package beans;
 
-import services.*;
+import services.Artist;
+import services.Performance;
+import services.UltimateFestivalOrganizerSoap;
+import services.Venue;
+import util.UFOService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -38,11 +42,8 @@ public class PerformancesBean {
 
     @PostConstruct
     public void init() {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-
         // load dates
-        List<XMLGregorianCalendar> gregDates = ufo.getDatesWithPerformances().getDateTime();
+        List<XMLGregorianCalendar> gregDates = UFOService.getInstance().getDatesWithPerformances().getDateTime();
         for (XMLGregorianCalendar d : gregDates) {
             if (d.getYear() >= Calendar.getInstance().get(Calendar.YEAR)) {
                 dates.add(d.toGregorianCalendar().getTime());
@@ -60,8 +61,7 @@ public class PerformancesBean {
     }
 
     private void reload() {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+        UltimateFestivalOrganizerSoap ufo = UFOService.getInstance();
 
         venues = ufo.getAllVenues().getVenue();
         artists = ufo.getAllButDeletedArtists().getArtist();
@@ -143,9 +143,7 @@ public class PerformancesBean {
         }
         int id = Integer.valueOf(requestParams.get("id"));
 
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-        dialogPerformance = ufo.getPerformanceById(id);
+        dialogPerformance = UFOService.getInstance().getPerformanceById(id);
     }
 
     public Performance getDialogPerformance() {
@@ -165,8 +163,7 @@ public class PerformancesBean {
         // execute action
         Performance p = performances.get(viewId).get(time);
 
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+        UltimateFestivalOrganizerSoap ufo = UFOService.getInstance();
 
         if (p.getId() == 0 && p.getArtist().getId() == 0) {
             return;

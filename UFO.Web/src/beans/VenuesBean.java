@@ -1,14 +1,12 @@
 package beans;
 
-import services.UltimateFestivalOrganizer;
-import services.UltimateFestivalOrganizerSoap;
 import services.Venue;
+import util.UFOService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +20,7 @@ public class VenuesBean {
 
     @PostConstruct
     public void init() {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-
-        venues = ufo.getAllVenues().getVenue();
+        venues = UFOService.getInstance().getAllVenues().getVenue();
     }
 
     public void updateDialog() {
@@ -35,9 +30,7 @@ public class VenuesBean {
         }
         int id = Integer.valueOf(requestParams.get("id"));
 
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-        venue = ufo.getVenueById(id);
+        venue = UFOService.getInstance().getVenueById(id);
     }
 
     public Venue getVenue() {

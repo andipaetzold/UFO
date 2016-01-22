@@ -1,7 +1,6 @@
 package beans;
 
-import services.UltimateFestivalOrganizer;
-import services.UltimateFestivalOrganizerSoap;
+import util.UFOService;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,10 +18,7 @@ public class UserBean {
     private boolean loggedIn = false;
 
     public void login() throws IOException {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-
-        loggedIn = ufo.checkLogin(username, password);
+        loggedIn = UFOService.getInstance().checkLogin(username, password);
 
         if (!loggedIn) {
             FacesContext facesContext = FacesContext.getCurrentInstance();

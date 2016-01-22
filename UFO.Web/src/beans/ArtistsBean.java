@@ -1,6 +1,10 @@
 package beans;
 
-import services.*;
+import services.Artist;
+import services.Category;
+import services.Country;
+import services.UltimateFestivalOrganizerSoap;
+import util.UFOService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -22,8 +26,7 @@ public class ArtistsBean {
 
     @PostConstruct
     public void init() {
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
+        UltimateFestivalOrganizerSoap ufo = UFOService.getInstance();
 
         artists = ufo.getAllButDeletedArtists().getArtist();
         categories = ufo.getAllCategories().getCategory();
@@ -37,9 +40,7 @@ public class ArtistsBean {
         }
         int id = Integer.valueOf(requestParams.get("id"));
 
-        UltimateFestivalOrganizer service = new UltimateFestivalOrganizer();
-        UltimateFestivalOrganizerSoap ufo = service.getUltimateFestivalOrganizerSoap();
-        artist = ufo.getArtistById(id);
+        artist = UFOService.getInstance().getArtistById(id);
     }
 
 

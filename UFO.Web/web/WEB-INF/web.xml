@@ -20,4 +20,9 @@
         <error-code>404</error-code>
         <location>/error.xhtml</location>
     </error-page>
+    
+    <context-param>
+        <param-name>WsdlLocation</param-name>
+        <param-value>http://localhost:13643/UltimateFestivalOrganizer.asmx?wsdl</param-value>
+    </context-param>
 </web-app>
