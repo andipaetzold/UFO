@@ -30,7 +30,7 @@
                 <p:column filterBy="#{artist.category.id}" filterMatchMode="exact" sortBy="#{artist.category.name}">
                     <f:facet name="header">Category</f:facet>
                     <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('table').filter()">
+                        <p:selectOneMenu onchange="PF('table').filter()" style="width: 100%">
                             <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
                             <f:selectItems value="#{artistsBean.categories}"
                                            var="category"
@@ -44,7 +44,7 @@
                 <p:column filterBy="#{artist.country.id}" filterMatchMode="exact" sortBy="#{artist.country.name}">
                     <f:facet name="header">Country</f:facet>
                     <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('table').filter()">
+                        <p:selectOneMenu onchange="PF('table').filter()" style="width: 100%">
                             <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
                             <f:selectItems value="#{artistsBean.countries}"
                                            var="country"
