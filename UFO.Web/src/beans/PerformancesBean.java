@@ -43,7 +43,11 @@ public class PerformancesBean {
 
         // load dates
         List<XMLGregorianCalendar> gregDates = ufo.getDatesWithPerformances().getDateTime();
-        dates.addAll(gregDates.stream().map(date -> date.toGregorianCalendar().getTime()).collect(Collectors.toList()));
+        for (XMLGregorianCalendar d : gregDates) {
+            if (d.getYear() >= Calendar.getInstance().get(Calendar.YEAR)) {
+                dates.add(d.toGregorianCalendar().getTime());
+            }
+        }
 
         // set selected date
         if (dates.size() > 0) {
@@ -107,10 +111,6 @@ public class PerformancesBean {
 
     public List<String> getDates() {
         return dates.stream().map(date -> format.format(date)).collect(Collectors.toList());
-    }
-
-    public Date getToday() {
-        return new Date();
     }
 
     public String getSelectedDate() {
@@ -228,8 +228,5 @@ public class PerformancesBean {
 
     public void setUserBean(UserBean userBean) {
         this.userBean = userBean;
-    }
-
-    public void onSelectedModeChange() {
     }
 }
