@@ -94,14 +94,15 @@
                   widgetVar="performanceWidget"
                   modal="true"
                   resizable="false"
-                  draggable="false"
                   fitViewport="true"
+                  draggable="true"
                   response="true"
                   closeOnEscape="true">
             <p:panelGrid columns="2" layout="grid">
                 <c:if test="#{not empty performancesBean.dialogPerformance.artist.image}">
                     <f:facet name="header">
-                        <h:graphicImage value="#{performancesBean.dialogPerformance.artist.image}"/>
+                        <p:graphicImage value="#{performancesBean.dialogPerformance.artist.image}"
+                                        style="max-width: 100%; max-height: 250px"/>
                     </f:facet>
                 </c:if>
 
