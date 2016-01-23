@@ -99,18 +99,6 @@
                                   ItemStringFormat="{}{0:dd.MM.yyyy}" />
                     </StackPanel>
 
-                    <Grid DockPanel.Dock="Right">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Button Grid.Row="0" Command="{Binding SendNotifactionCommand}">Send notifications</Button>
-                        <ListBox Grid.Row="1" ItemsSource="{Binding ChangedArtists}" DisplayMemberPath="Name"
-                                 SelectionMode="Single" />
-
-                    </Grid>
-
                     <DataGrid x:Name="DayProgram" AutoGenerateColumns="False" CanUserResizeColumns="False"
                               CanUserSortColumns="False"
                               CanUserReorderColumns="False" CanUserResizeRows="False" CanUserAddRows="False"
@@ -385,6 +373,18 @@
 
                 </DockPanel>
 
+            </TabItem>
+
+            <TabItem Header="Notification">
+                <DockPanel Width="300">
+                    <Button DockPanel.Dock="Top" Command="{Binding SendNotifactionCommand}"
+                            CommandParameter="{Binding ElementName=NotificationArtists, Path=SelectedItems}">
+                        Send notifications
+                    </Button>
+
+                    <ListBox ItemsSource="{Binding Artists}" SelectionMode="Multiple" Name="NotificationArtists"
+                             DisplayMemberPath="Name" />
+                </DockPanel>
             </TabItem>
         </TabControl>
     </DockPanel>

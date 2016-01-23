@@ -1,6 +1,7 @@
 ﻿namespace UFO.Commander.ViewModels
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -32,12 +33,8 @@
             SelectedDateChanged = new RelayCommand<DateTime>(LoadPerformances);
             UpdateAllCommand = new RelayCommand(UpdateAll);
             SendNotifactionCommand =
-                new RelayCommand(
-                    () =>
-                        {
-                            Server.ArtistServer.SendNotificationEmailAsync(ChangedArtists)
-                                  .ContinueWith(t => Application.Current.Dispatcher.Invoke(ChangedArtists.Clear));
-                        });
+                new RelayCommand<object>(
+                    param => Server.ArtistServer.SendNotificationEmailAsync(((IList)param).Cast<Artist>()));
 
             UpdateAll();
         }
@@ -49,8 +46,6 @@
 
         public DatabaseSyncObservableCollection<Category> Categories { get; } =
             new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
-
-        public ObservableHashSet<Artist> ChangedArtists { get; } = new ObservableHashSet<Artist>();
 
         public DatabaseSyncObservableCollection<Country> Countries { get; } =
             new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
@@ -119,8 +114,6 @@
                     {
                         var list = o.Result.ToList();
                         list.Insert(0, VenueProgram.NullArtist);
-
-                        Application.Current.Dispatcher.Invoke(ChangedArtists.Clear);
                         list.ForEach(ArtistsWithNull.Add);
                     });
 
@@ -179,12 +172,7 @@
             if (performance.HasId && !performance.Artist.Equals(VenueProgram.NullArtist))
             {
                 var prevPerformance = await Server.PerformanceServer.GetByIdAsync(performance.Id);
-                if (await Server.PerformanceServer.UpdateAsync(performance))
-                {
-                    ChangedArtists.Add(prevPerformance.Artist);
-                    ChangedArtists.Add(performance.Artist);
-                }
-                else
+                if (!await Server.PerformanceServer.UpdateAsync(performance))
                 {
                     performance.PropertyChanged -= PerformancePropertyChanged;
                     performance.Artist = prevPerformance.Artist;
@@ -199,18 +187,11 @@
             }
             else if (performance.HasId && performance.Artist.Equals(VenueProgram.NullArtist))
             {
-                var prevPerformance = await Server.PerformanceServer.GetByIdAsync(performance.Id);
-                ChangedArtists.Add(prevPerformance.Artist);
-
                 await Server.PerformanceServer.RemoveAsync(performance);
             }
             else if (!performance.Artist.Equals(VenueProgram.NullArtist))
             {
-                if (await Server.PerformanceServer.AddAsync(performance))
-                {
-                    ChangedArtists.Add(performance.Artist);
-                }
-                else
+                if (!await Server.PerformanceServer.AddAsync(performance))
                 {
                     performance.PropertyChanged -= PerformancePropertyChanged;
                     performance.Artist = VenueProgram.NullArtist;
