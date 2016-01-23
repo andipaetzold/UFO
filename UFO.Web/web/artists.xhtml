@@ -19,7 +19,9 @@
                          widgetVar="table">
                 <p:column>
                     <f:facet name="header"></f:facet>
-                    <h:graphicImage value="#{artist.image}" rendered="#{not empty artist.image}" width="100%"/>
+                    <p:graphicImage value="#{artist.image}"
+                                    rendered="#{not empty artist.image}"
+                                    style="max-width: 100%; max-height: 200px"/>
                 </p:column>
 
                 <p:column filterBy="#{artist.name}" filterMatchMode="contains" sortBy="#{artist.name}">
