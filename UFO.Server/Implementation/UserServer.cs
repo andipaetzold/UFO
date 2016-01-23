@@ -1,6 +1,8 @@
 ﻿namespace UFO.Server.Implementation
 {
     using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Threading.Tasks;
     using UFO.DAL.Common;
     using UFO.Domain;
@@ -17,12 +19,17 @@
 
         public bool CheckLoginData(string username, string password)
         {
-            return GetDAO().SelectByUsernameAndPassword(username, password).Count() == 1;
+            HashAlgorithm algorithm = MD5.Create();
+            var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            var sb = new StringBuilder();
+            foreach (var b in hash)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+
+            return GetDAO().SelectByUsernameAndPassword(username, sb.ToString()).Count() == 1;
         }
-
-        #endregion
-
-        #region IUserServerAsync Members
 
         public Task<bool> CheckLoginDataAsync(string username, string password)
         {
