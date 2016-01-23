@@ -1,9 +1,6 @@
 package beans;
 
-import services.Artist;
-import services.Performance;
-import services.UltimateFestivalOrganizerSoap;
-import services.Venue;
+import services.*;
 import util.UFOService;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +31,12 @@ public class PerformancesBean {
 
     private Performance dialogPerformance;
 
+    private int selectedCategoryId;
+    private List<Category> categories;
+
+    private int selectedCountryId;
+    private List<Country> countries;
+
     @ManagedProperty(value = "#{userBean}")
     private UserBean userBean;
 
@@ -58,6 +61,10 @@ public class PerformancesBean {
 
         // artists / venues / performances
         reload();
+
+        // category / country
+        categories = UFOService.getInstance().getAllCategories().getCategory();
+        countries = UFOService.getInstance().getAllCountries().getCountry();
     }
 
     private void reload() {
@@ -224,5 +231,29 @@ public class PerformancesBean {
 
     public void setPerformancesSessionBean(PerformancesSessionBean performancesSessionBean) {
         this.performancesSessionBean = performancesSessionBean;
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public int getSelectedCategoryId() {
+        return selectedCategoryId;
+    }
+
+    public void setSelectedCategoryId(int selectedCategoryId) {
+        this.selectedCategoryId = selectedCategoryId;
+    }
+
+    public int getSelectedCountryId() {
+        return selectedCountryId;
+    }
+
+    public void setSelectedCountryId(int selectedCountryId) {
+        this.selectedCountryId = selectedCountryId;
     }
 }
