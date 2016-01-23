@@ -12,8 +12,9 @@
             <p:dataTable value="#{artistsBean.artists}"
                          var="artist"
                          paginator="true"
-                         rows="15"
-                         paginatorAlwaysVisible="false"
+                         rows="10"
+                         rowsPerPageTemplate="5,10,15,20,30,50,100"
+                         paginatorAlwaysVisible="true"
                          emptyMessage="No artists found with given criteria"
                          filteredValue="#{artistsBean.filteredArtists}"
                          widgetVar="table">
