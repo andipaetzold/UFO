@@ -49,9 +49,18 @@
             </c:if>
             <br/>
 
-            <p:dataTable value="#{performancesBean.venues}" var="venue" id="table" stickyHeader="true">
-                <p:column headerText="Venue" styleClass="ui-widget-header" footerText="Venue">
-                    #{venue.name}
+            <p:dataTable value="#{performancesBean.venues}"
+                         var="venue"
+                         id="table"
+                         stickyHeader="true">
+                <p:column headerText="Venue"
+                          styleClass="ui-widget-header"
+                          footerText="Venue"
+                          style="text-align: center"
+                          width="150">
+                    <h:outputText value="#{venue.shortName}"/>
+                    <br/>
+                    <h:outputText value="#{venue.name}"/>
                 </p:column>
 
                 <p:columns value="#{performancesBean.times}"
