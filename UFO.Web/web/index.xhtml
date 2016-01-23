@@ -134,10 +134,11 @@
 
                 <c:if test="#{(not empty performancesBean.dialogPerformance.venue.latitude) and (not empty performancesBean.dialogPerformance.venue.longitude)}">
                     <f:facet name="footer">
-                        <p:gmap type="satellite"
+                        <p:gmap type="HYBRID"
                                 center="#{performancesBean.dialogPerformance.venue.latitude}, #{performancesBean.dialogPerformance.venue.longitude}"
                                 style="width:400px; height:250px"
-                                zoom="15"/>
+                                zoom="15"
+                                model="#{venuesBean.mapModel}"/>
                     </f:facet>
                 </c:if>
             </p:panelGrid>

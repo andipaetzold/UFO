@@ -1,5 +1,9 @@
 package beans;
 
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 import services.Venue;
 import util.UFOService;
 
@@ -14,6 +18,7 @@ import java.util.Map;
 @ViewScoped
 public class VenuesBean {
     private Venue venue;
+    private MapModel mapModel;
 
     private List<Venue> venues;
     private List<Venue> filteredVenues;
@@ -21,6 +26,11 @@ public class VenuesBean {
     @PostConstruct
     public void init() {
         venues = UFOService.getInstance().getAllVenues().getVenue();
+
+        mapModel = new DefaultMapModel();
+        for (Venue venue : venues) {
+            mapModel.addOverlay(new Marker(new LatLng(venue.getLatitude().doubleValue(), venue.getLongitude().doubleValue()), venue.getName()));
+        }
     }
 
     public void updateDialog() {
@@ -47,5 +57,9 @@ public class VenuesBean {
 
     public void setFilteredVenues(List<Venue> filteredVenues) {
         this.filteredVenues = filteredVenues;
+    }
+
+    public MapModel getMapModel() {
+        return mapModel;
     }
 }
