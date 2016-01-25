@@ -63,9 +63,16 @@
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
 
-                ItemChanged -= SyncChangedItem;
-                args.Value.OverwriteProperties(await server.GetByIdAsync(args.Value.Id));
-                ItemChanged += SyncChangedItem;
+                if (args.Value.HasId)
+                {
+                    ItemChanged -= SyncChangedItem;
+                    args.Value.OverwriteProperties(await server.GetByIdAsync(args.Value.Id));
+                    ItemChanged += SyncChangedItem;
+                }
+                else
+                {
+                    PullUpdates();
+                }
             }
         }
 
