@@ -28,7 +28,39 @@
         {
             Artists = new DatabaseSyncObservableCollection<Artist>(
                 Server.ArtistServer,
-                Server.ArtistServer.GetAllButDeletedAsync);
+                () =>
+                    {
+                        return
+                            Server.ArtistServer.GetAllButDeletedAsync()
+                                  .ContinueWith(t => { return (IEnumerable<Artist>)t.Result.OrderBy(o => o.Name); });
+                    });
+
+            Categories = new DatabaseSyncObservableCollection<Category>(
+                Server.CategoryServer,
+                () =>
+                    {
+                        return
+                            Server.CategoryServer.GetAllAsync()
+                                  .ContinueWith(t => { return (IEnumerable<Category>)t.Result.OrderBy(o => o.Name); });
+                    });
+
+            Countries = new DatabaseSyncObservableCollection<Country>(
+                Server.CountryServer,
+                () =>
+                    {
+                        return
+                            Server.CountryServer.GetAllAsync()
+                                  .ContinueWith(t => { return (IEnumerable<Country>)t.Result.OrderBy(o => o.Name); });
+                    });
+
+            Venues = new DatabaseSyncObservableCollection<Venue>(
+                Server.VenueServer,
+                () =>
+                    {
+                        return
+                            Server.VenueServer.GetAllAsync()
+                                  .ContinueWith(t => { return (IEnumerable<Venue>)t.Result.OrderBy(o => o.ShortName); });
+                    });
 
             SelectedDateChanged = new RelayCommand<DateTime>(LoadPerformances);
             UpdateAllCommand = new RelayCommand(UpdateAll);
@@ -43,13 +75,8 @@
 
         public DatabaseSyncObservableCollection<Artist> Artists { get; }
         public ObservableCollection<Artist> ArtistsWithNull { get; } = new ObservableHashSet<Artist>();
-
-        public DatabaseSyncObservableCollection<Category> Categories { get; } =
-            new DatabaseSyncObservableCollection<Category>(Server.CategoryServer);
-
-        public DatabaseSyncObservableCollection<Country> Countries { get; } =
-            new DatabaseSyncObservableCollection<Country>(Server.CountryServer);
-
+        public DatabaseSyncObservableCollection<Category> Categories { get; }
+        public DatabaseSyncObservableCollection<Country> Countries { get; }
         public IList<DateTime> Dates { get; } = new ObservableHashSet<DateTime>();
         public ObservableCollection<VenueProgram> DayProgram { get; } = new ObservableCollection<VenueProgram>();
 
@@ -84,9 +111,7 @@
 
         public ICommand SendNotifactionCommand { get; }
         public ICommand UpdateAllCommand { get; }
-
-        public DatabaseSyncObservableCollection<Venue> Venues { get; } =
-            new DatabaseSyncObservableCollection<Venue>(Server.VenueServer);
+        public DatabaseSyncObservableCollection<Venue> Venues { get; }
 
         #endregion
 

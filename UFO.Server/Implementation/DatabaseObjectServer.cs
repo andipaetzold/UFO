@@ -21,10 +21,6 @@
 
         public virtual bool Update(T o) => GetDatabaseObjectDAO().Update(o);
 
-        #endregion
-
-        #region IBaseServerAsync<T> Members
-
         public Task<T> GetByIdAsync(int id)
         {
             return Task.Run(() => GetById(id));
