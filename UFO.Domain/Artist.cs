@@ -56,7 +56,7 @@
 
         [Column("Email")]
         [StringLength(128)]
-        [EmailAddress]
+        [EmailAddressOptional]
         public string Email { get; set; }
 
         [Column("Image")]
